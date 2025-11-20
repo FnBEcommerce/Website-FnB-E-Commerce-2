@@ -10,6 +10,19 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/delivery', function () {
+    return Inertia::render('delivery');
+})->name('delivery');
+
+Route::prefix('/admin')->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('admin/dashboard');
+    })->name('admin.dashboard');
+    Route::get('customers-management', function () {
+        return Inertia::render('admin/customers-management');
+    })->name('admin.customers_management');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
