@@ -1,0 +1,7 @@
+php artisan make:migration create_user_table
+php artisan make:migration create_product_table
+php artisan make:migration create_shop_branch_table
+php artisan make:migration create_shopbranch_product_table
+php artisan make:migration create_order_table
+php artisan make:migration create_order_detail_table
+php artisan make:migration create_transaction_table
