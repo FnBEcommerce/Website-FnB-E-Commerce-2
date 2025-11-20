@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class ShopBranch extends Model
 {
     use HasFactory;
     // 1. Definisi nama tabel (jika singular)
-    protected $table = 'user'; 
+    protected $table = 'shop_branch'; 
 
     // 2. Definisi Primary Key custom
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'shop_branch_id';
 
     // 3. Matikan timestamp default Laravel (created_at, updated_at)
     public $timestamps = false;

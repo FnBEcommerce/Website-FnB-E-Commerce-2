@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class OrderDetail extends Model
 {
     use HasFactory;
     // 1. Definisi nama tabel (jika singular)
-    protected $table = 'user'; 
+    protected $table = 'order_detail'; 
 
     // 2. Definisi Primary Key custom
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'order_detail_id';
 
     // 3. Matikan timestamp default Laravel (created_at, updated_at)
     public $timestamps = false;
@@ -30,5 +30,10 @@ class User extends Model
         static::updating(function ($model) {
             $model->last_updated = now();
         });
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
     }
 }
