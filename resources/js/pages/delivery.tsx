@@ -22,11 +22,28 @@ interface CartItem {
     quantity: number;
 }
 
+interface OrderItem {
+    order_id: number;
+    orderdetail_quantity: number;
+    orderdetail_subtotal: string;
+    product: {
+        date_created: string;
+        last_updated: string;
+        product_category: string;
+        product_description: string;
+        product_id: number;
+        product_name: string;
+        product_price: string;
+        product_stock: number;
+    };
+}
+
 interface DeliveryPageProps {
     orderNumber: string;
     cartItems: CartItem[];
     orderDetails: OrderDetails;
     onBackToHome: () => void;
+    orderItems: OrderItem[];
 }
 
 export default function Delivery({
@@ -34,14 +51,13 @@ export default function Delivery({
     cartItems,
     orderDetails,
     onBackToHome,
+    orderItems,
 }: DeliveryPageProps) {
-    // const subtotal = cartItems.reduce(
-    //     (acc, item) => acc + item.price * item.quantity,
-    //     0,
-    // );
-    const subtotal = 10000;
-    const shipping = subtotal > 50 ? 0 : 9.99;
-    const tax = subtotal * 0.1;
+    const subtotal = orderItems
+        .map((item) => parseInt(item.orderdetail_subtotal))
+        .reduce((prev, next) => prev + next);
+    const shipping = subtotal > 20000 ? 0 : 12000;
+    const tax = Math.ceil(subtotal * 0.11);
     const total = subtotal + shipping + tax;
 
     const estimatedDelivery = new Date();
@@ -89,7 +105,7 @@ export default function Delivery({
                     </p>
                     <div className="inline-block rounded-lg border-2 border-border bg-card px-4 py-2">
                         <p className="text-muted-foreground">Order Number</p>
-                        <p className="text-primary">{2}</p>
+                        <p className="text-primary">{orderNumber}</p>
                     </div>
                 </Card>
 
@@ -206,25 +222,24 @@ export default function Delivery({
                 {/* Order Summary */}
                 <Card className="mb-8 border-2 border-border p-6">
                     <h3 className="mb-4">Order Summary</h3>
-                    {/* <div className="mb-4 space-y-4">
-                        {cartItems.map((item) => (
-                            <div
-                                key={item.id}
-                                className="flex justify-between gap-4"
-                            >
+                    <div className="mb-4 space-y-4">
+                        {orderItems.map((item, i) => (
+                            <div key={i} className="flex justify-between gap-4">
                                 <div className="flex-1">
-                                    <p>{item.name}</p>
+                                    <p>{item.product.product_name}</p>
                                     <p className="text-muted-foreground">
-                                        Quantity: {item.quantity}
+                                        Quantity: {item.orderdetail_quantity}
                                     </p>
                                 </div>
                                 <p>
-                                    ${(item.price * item.quantity).toFixed(2)}
+                                    Rp
+                                    {parseInt(item.product.product_price) *
+                                        item.orderdetail_quantity}
                                 </p>
                             </div>
                         ))}
-                    </div> */}
-                    <div className="mb-4 space-y-4">
+                    </div>
+                    {/* <div className="mb-4 space-y-4">
                         {Array(2)
                             .fill(null)
                             .map((_, i) => (
@@ -241,14 +256,14 @@ export default function Delivery({
                                     <p>$10</p>
                                 </div>
                             ))}
-                    </div>
+                    </div> */}
                     <Separator className="my-4" />
                     <div className="mb-4 space-y-2">
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">
                                 Subtotal
                             </span>
-                            <span>${subtotal.toFixed(2)}</span>
+                            <span>Rp {subtotal}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">
@@ -256,23 +271,21 @@ export default function Delivery({
                             </span>
                             <span>
                                 {shipping === 0 ? (
-                                    <span className="text-secondary">Free</span>
+                                    <span className="text-gray-400">Free</span>
                                 ) : (
-                                    `$${shipping.toFixed(2)}`
+                                    `Rp ${shipping}`
                                 )}
                             </span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Tax</span>
-                            <span>${tax.toFixed(2)}</span>
+                            <span>Rp {tax}</span>
                         </div>
                     </div>
                     <Separator className="my-4" />
                     <div className="flex justify-between">
                         <span>Total Paid</span>
-                        <span className="text-primary">
-                            ${total.toFixed(2)}
-                        </span>
+                        <span className="text-primary">Rp {total}</span>
                     </div>
                 </Card>
 

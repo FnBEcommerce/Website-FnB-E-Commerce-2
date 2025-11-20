@@ -31,4 +31,9 @@ class OrderDetail extends Model
             $model->last_updated = now();
         });
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
 }
