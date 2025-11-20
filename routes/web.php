@@ -30,9 +30,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('/test', function () {
-    $users = User::all();
-    return response()->json($users);
-})->name('home');
-
 require __DIR__.'/settings.php';
