@@ -9,6 +9,11 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
+Route::get('/index', function () {
+    return Inertia::render('index', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('index');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
