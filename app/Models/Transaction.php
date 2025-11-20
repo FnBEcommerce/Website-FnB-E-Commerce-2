@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Transaction extends Model
 {
     // 1. Definisi nama tabel (jika singular)
-    protected $table = 'user'; 
+    protected $table = 'transaction'; 
 
     // 2. Definisi Primary Key custom
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'transaction_id';
 
     // 3. Matikan timestamp default Laravel (created_at, updated_at)
     public $timestamps = false;

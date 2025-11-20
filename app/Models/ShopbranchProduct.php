@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class ShopbranchProduct extends Model
 {
     // 1. Definisi nama tabel (jika singular)
-    protected $table = 'user'; 
+    protected $table = 'shopbranch_product'; 
 
     // 2. Definisi Primary Key custom
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'shopbranch_product_id';
 
     // 3. Matikan timestamp default Laravel (created_at, updated_at)
     public $timestamps = false;
