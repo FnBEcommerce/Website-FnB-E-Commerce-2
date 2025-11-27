@@ -16,9 +16,9 @@ return new class extends Migration
             $table->text('product_name');
             $table->text('product_category');
             $table->decimal('product_price', 10, 2);
+            $table->decimal('product_discount_price', 10, 0);
             $table->text('product_description');
             $table->integer('product_stock')->nullable();
-            
             $table->timestamp('date_created')->useCurrent();
             $table->dateTime('last_updated')->nullable();
         });

@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_detail', function (Blueprint $table) {
-            $table->integer('orderdetail_id')->autoIncrement();
-            $table->integer('order_id');
+        Schema::create('review', function (Blueprint $table) {
+            $table->integer('review_id')->autoIncrement();
             $table->integer('product_id');
-            $table->integer('orderdetail_quantity');
-            $table->decimal('orderdetail_subtotal', 10, 2);
+            $table->integer('user_id');
+            $table->integer('rating');
+            $table->text('review_comment');
             $table->timestamp('date_created')->useCurrent();
             $table->dateTime('last_updated')->nullable();
 
-            $table->foreign('order_id')->references('order_id')->on('order')->onDelete('restrict');
             $table->foreign('product_id')->references('product_id')->on('product')->onDelete('restrict');
+            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('restrict');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_detail');
+        Schema::dropIfExists('review');
     }
 };

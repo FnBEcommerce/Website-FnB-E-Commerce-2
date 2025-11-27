@@ -14,18 +14,11 @@ return new class extends Migration
         Schema::create('shopbranch_product', function (Blueprint $table) {
             $table->integer('shop_id');
             $table->integer('product_id');
-
-            // Composite Primary Key
+            
             $table->primary(['shop_id', 'product_id']);
 
-            // Foreign Keys (Restrict Delete/Update)
-            $table->foreign('shop_id')
-                ->references('shop_id')->on('shop_branch')
-                ->onDelete('restrict')->onUpdate('restrict');
-
-            $table->foreign('product_id')
-                ->references('product_id')->on('product')
-                ->onDelete('restrict')->onUpdate('restrict');
+            $table->foreign('shop_id')->references('shop_id')->on('shop_branch')->onDelete('restrict');
+            $table->foreign('product_id')->references('product_id')->on('product')->onDelete('restrict');
         });
     }
 

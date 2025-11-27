@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShopBranch extends Model
+class Review extends Model
 {
     use HasFactory;
     // 1. Definisi nama tabel (jika singular)
-    protected $table = 'shop_branch'; 
+    protected $table = 'review'; 
 
     // 2. Definisi Primary Key custom
-    protected $primaryKey = 'shop_id';
+    protected $primaryKey = 'review_id';
 
     // 3. Matikan timestamp default Laravel (created_at, updated_at)
     public $timestamps = false;
