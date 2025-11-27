@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
@@ -14,15 +15,11 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/delivery/{order}', [DeliveryController::class, "index"])->name('delivery');
+Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('admin/dashboard');
-    })->name('admin.dashboard');
-    Route::get('customer-management', function () {
-        return Inertia::render('admin/customer-management');
-    })->name('admin.customer_management');
+    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

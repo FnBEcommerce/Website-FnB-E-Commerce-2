@@ -12,7 +12,7 @@ use Laravel\Fortify\Features;
 
 class DeliveryController extends Controller
 {
-    public function index(Order $order) {
+    public function detail(Order $order) {
         $orderItems = OrderDetail::with('product')
         ->where('order_id', $order->order_id)
         ->get([
