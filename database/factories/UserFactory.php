@@ -17,10 +17,13 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-        'username' => fake()->userName(),
-        'password' => bcrypt('password123'),
-        'date_created' => now(),
-        'last_updated' => now(),
-    ];
+            'username' => $this->faker->userName(),
+            'password' => bcrypt('password'), // default password
+            'address_1' => $this->faker->address(),
+            'address_2' => $this->faker->address(),
+            'role' => $this->faker->randomElement(['admin', 'customer']),
+            'date_created' => now(),
+            'last_updated' => now(),
+        ];
     }
 }

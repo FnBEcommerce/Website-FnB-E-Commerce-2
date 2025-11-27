@@ -2,80 +2,66 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Models\Product;
+use App\Models\Courier;
 use App\Models\ShopBranch;
+use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\Transaction;
-use Illuminate\Support\Facades\DB;
+use App\Models\Review;
 
 class DatabaseSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        // 1. Buat Data Master (User, Product, Shop)
+        // 1. Buat Data Master (Independen)
         $users = User::factory(10)->create();
-        $products = Product::factory(50)->create();
+        $couriers = Courier::factory(5)->create();
         $shops = ShopBranch::factory(5)->create();
+        $products = Product::factory(20)->create();
 
-        // 2. Isi Tabel Pivot ShopBranch <-> Product (Many-to-Many)
-        // Setiap toko akan memiliki 10-20 produk acak
+        // dd($shops->first());
+
+        // 2. Isi Pivot Table (ShopBranch - Product)
         foreach ($shops as $shop) {
-            // Ambil ID produk acak
-            $randomProducts = $products->random(rand(10, 20))->pluck('product_id');
-            
-            // Attach menggunakan query builder atau relationship jika sudah dibuat di model
-            foreach($randomProducts as $prodId) {
+            // Ambil 5 produk acak untuk setiap toko
+            // dd($shop);
+            $randomProducts = $products->random(5);
+            foreach($randomProducts as $prod) {
                 DB::table('shopbranch_product')->insert([
-                    'shop_id' => $shop->shop_branch_id,
-                    'product_id' => $prodId
+                    'shop_id' => $shop->shop_id,
+                    'product_id' => $prod->product_id
                 ]);
             }
         }
 
-        // 3. Buat Transaksi & Order (Logika Kompleks)
-        foreach ($users as $user) {
-            // Setiap user membuat 1-3 order
-            Order::factory(rand(1, 3))->create([
-                'user_id' => $user->user_id
-            ])->each(function ($order) use ($products) {
-                
-                // A. Buat Order Detail (Item Belanja)
-                $subtotalOrder = 0;
-                $itemsCount = rand(1, 5); // Beli 1-5 jenis barang
-                $selectedProducts = $products->random($itemsCount);
+        // 3. Buat Order & Detail (Dependen)
+        // Kita loop manual agar relasi ID nya valid dari data yang sudah ada
+        for ($i = 0; $i < 10; $i++) {
+            $order = Order::factory()->create([
+                'user_id' => $users->random()->user_id,
+                'courier_id' => $couriers->random()->courier_id,
+                'shop_id' => $shops->random()->shop_id,
+            ]);
 
-                foreach ($selectedProducts as $product) {
-                    $qty = rand(1, 3);
-                    $lineTotal = $product->product_price * $qty;
-                    $subtotalOrder += $lineTotal;
-
-                    OrderDetail::create([
-                        'order_id' => $order->order_id,
-                        'product_id' => $product->product_id,
-                        'orderdetail_quantity' => $qty,
-                        'orderdetail_subtotal' => $lineTotal,
-                        'date_created' => now(),
-                        'last_updated' => now(),
-                    ]);
-                    
-                    // Kurangi stok produk (Opsional)
-                    // $product->decrement('product_stock', $qty);
-                }
-
-                // B. Update Total Harga di Tabel Order
-                $order->update(['order_total' => $subtotalOrder]);
-
-                // C. Buat Record Transaction
-                Transaction::create([
-                    'order_id' => $order->order_id,
-                    'date_created' => now(),
-                    'last_updated' => now(),
-                ]);
-            });
+            // Buat Detail Order
+            OrderDetail::factory(2)->create([
+                'order_id' => $order->order_id,
+                'product_id' => $products->random()->product_id,
+                'orderdetail_quantity' => 1,
+                'orderdetail_subtotal' => 50000 // Dummy value
+            ]);
         }
+
+        // 4. Buat Review
+        Review::factory(10)->create([
+            'user_id' => $users->random()->user_id,
+            'product_id' => $products->random()->product_id,
+            'rating' => rand(1, 5),
+            'review_comment' => 'Produk bagus!',
+            'date_created' => now()
+        ]);
     }
 }

@@ -88,10 +88,13 @@ class ProductFactory extends Factory
             "Asian Food"
         ];
 
+        $price = fake()->randomFloat(2, 10000, 50000);
+
         return [
         'product_name' => fake()->randomElement($product_names),
         'product_category' => fake()->randomElement($product_categories),
-        'product_price' => fake()->randomFloat(2, 10000, 50000),
+        'product_price' => $price,
+        'product_discount_price' => $price * 0.9,
         'product_description' => fake()->paragraphs(3, true),
         'product_stock' => fake()->numberBetween(10, 100),
         'date_created' => now(),

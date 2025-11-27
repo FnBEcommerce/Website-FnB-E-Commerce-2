@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shop_branch', function (Blueprint $table) {
-            $table->integer('shop_id')->autoIncrement();
-            $table->string('shop_name', 100)->nullable();
-            $table->string('shop_address', 255)->nullable();
-            $table->string('shop_phonenumber', 20)->nullable();
+        Schema::create('courier', function (Blueprint $table) {
+            $table->integer('courier_id')->autoIncrement();
+            $table->string('courier_name', 100);
+            $table->string('courier_license_plate', 50);
+            $table->string('courier_phone_number', 50);
             $table->timestamp('date_created')->useCurrent();
             $table->dateTime('last_updated')->nullable();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shop_branch');
+        Schema::dropIfExists('courier');
     }
 };
