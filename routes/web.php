@@ -18,8 +18,12 @@ Route::get('/', function () {
 Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
-    Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
+      Route::get('dashboard', function () {
+        return Inertia::render('dashboard/dashboard-index');
+    })->name('admin.dashboard');
+    Route::get('customer-management', function () {
+        return Inertia::render('admin/customer-management');
+    })->name('admin.customer_management');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
