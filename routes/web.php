@@ -26,8 +26,8 @@ Route::get('/delivery/{order}', function (Order $order) {
 })->name('delivery');
 
 Route::prefix('/admin')->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('admin/dashboard');
+      Route::get('dashboard', function () {
+        return Inertia::render('dashboard/dashboard-index');
     })->name('admin.dashboard');
     Route::get('customer-management', function () {
         return Inertia::render('admin/customer-management');
