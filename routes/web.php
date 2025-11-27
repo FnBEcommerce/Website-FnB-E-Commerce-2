@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\DeliveryController;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -13,17 +14,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/delivery/{order}', function (Order $order) {
-    $orderItems = OrderDetail::with('product')
-        ->where('order_id', $order->order_id)
-        ->get([
-            'order_id',
-            'orderdetail_quantity',
-            'orderdetail_subtotal',
-            'product_id'
-        ]);
-    return Inertia::render('delivery', ['orderNumber' => $order->order_id, 'orderItems' => $orderItems]);
-})->name('delivery');
+Route::get('/delivery/{order}', [DeliveryController::class, "index"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
     Route::get('dashboard', function () {
