@@ -45,17 +45,17 @@ export const sidebarData: SidebarData = {
             items: [
                 {
                     title: 'Dashboard',
-                    url: '/admin/dashboard',
+                    url: '/admin',
                     icon: LayoutDashboard,
                 },
                 {
                     title: 'Manajemen Produk',
-                    url: '/admin/dashboard',
+                    url: '/admin/product-management',
                     icon: Package,
                 },
                 {
                     title: 'Manajemen Keuangan',
-                    url: '/apps',
+                    url: '/admin/cashflow-management',
                     icon: Banknote,
                 },
                 {
