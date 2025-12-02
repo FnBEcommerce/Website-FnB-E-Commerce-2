@@ -83,6 +83,7 @@ export default function CustomerManagement() {
                         {/* Content */}
                         <div className="container mx-auto px-6 py-6">
                             <Tabs
+                                orientation="vertical"
                                 value={activeTab}
                                 onValueChange={setActiveTab}
                                 className="w-full"
