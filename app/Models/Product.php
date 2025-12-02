@@ -31,4 +31,14 @@ class Product extends Model
             $model->last_updated = now();
         });
     }
+
+    public function reviews() {
+        return $this->hasMany(Review::class, "product_id", "product_id");
+    }
+    public function orderDetails() {
+        return $this->hasMany(OrderDetail::class, "product_id", "product_id");
+    }
+    public function shopbranchProducts() {
+        return $this->hasMany(ShopbranchProduct::class, "product_id", "product_id");
+    }
 }

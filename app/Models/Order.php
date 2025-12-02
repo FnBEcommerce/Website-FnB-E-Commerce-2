@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Order extends Model
 {
@@ -30,5 +31,21 @@ class Order extends Model
         static::updating(function ($model) {
             $model->last_updated = now();
         });
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, "user_id", "user_id");
+    }
+
+    public function courier() {
+        return $this->belongsTo(Courier::class, "courier_id", "courier_id");
+    }
+    
+    public function orderDetails() {
+        return $this->hasMany(OrderDetail::class, "order_id", "order_id");
+    }
+
+    public function shopBranch() {
+        return $this->belongsTo(ShopBranch::class, "shop_id", "shop_id");
     }
 }

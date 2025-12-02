@@ -31,4 +31,11 @@ class ShopBranch extends Model
             $model->last_updated = now();
         });
     }
+
+    public function orders() {
+        return $this->hasMany(Order::class, "shop_id", "shop_id");
+    }
+    public function shopbranchProducts() {
+        return $this->hasMany(Order::class, "shop_id", "shop_id");
+    }
 }

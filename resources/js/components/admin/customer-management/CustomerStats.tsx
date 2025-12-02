@@ -13,69 +13,92 @@ import {
     YAxis,
 } from 'recharts';
 
-const statsData = [
-    {
-        title: 'Total Pelanggan',
-        value: '2,847',
-        change: '+12.5%',
-        icon: Users,
-        color: 'text-blue-600',
-        bgColor: 'bg-blue-100',
-    },
-    {
-        title: 'Pesanan Bulan Ini',
-        value: '1,234',
-        change: '+8.2%',
-        icon: ShoppingCart,
-        color: 'text-green-600',
-        bgColor: 'bg-green-100',
-    },
-    {
-        title: 'Pelanggan Aktif',
-        value: '1,892',
-        change: '+15.3%',
-        icon: TrendingUp,
-        color: 'text-purple-600',
-        bgColor: 'bg-purple-100',
-    },
-    {
-        title: 'Rata-rata Transaksi',
-        value: 'Rp 125K',
-        change: '+5.1%',
-        icon: DollarSign,
-        color: 'text-orange-600',
-        bgColor: 'bg-orange-100',
-    },
-];
+// const monthlyCustomers = [
+//     { month: 'Jan', pelanggan: 245, pesanan: 580 },
+//     { month: 'Feb', pelanggan: 289, pesanan: 645 },
+//     { month: 'Mar', pelanggan: 312, pesanan: 720 },
+//     { month: 'Apr', pelanggan: 356, pesanan: 810 },
+//     { month: 'Mei', pelanggan: 398, pesanan: 920 },
+//     { month: 'Jun', pelanggan: 425, pesanan: 1050 },
+// ];
 
-const monthlyCustomers = [
-    { month: 'Jan', pelanggan: 245, pesanan: 580 },
-    { month: 'Feb', pelanggan: 289, pesanan: 645 },
-    { month: 'Mar', pelanggan: 312, pesanan: 720 },
-    { month: 'Apr', pelanggan: 356, pesanan: 810 },
-    { month: 'Mei', pelanggan: 398, pesanan: 920 },
-    { month: 'Jun', pelanggan: 425, pesanan: 1050 },
-];
+// const customerSegmentation = [
+//     { name: 'Pelanggan Setia', value: 45, color: '#10b981' },
+//     { name: 'Pelanggan Aktif', value: 30, color: '#3b82f6' },
+//     { name: 'Pelanggan Baru', value: 15, color: '#f59e0b' },
+//     { name: 'Tidak Aktif', value: 10, color: '#ef4444' },
+// ];
 
-const customerSegmentation = [
-    { name: 'Pelanggan Setia', value: 45, color: '#10b981' },
-    { name: 'Pelanggan Aktif', value: 30, color: '#3b82f6' },
-    { name: 'Pelanggan Baru', value: 15, color: '#f59e0b' },
-    { name: 'Tidak Aktif', value: 10, color: '#ef4444' },
-];
+// const statsData = [
+//     {
+//         title: 'Total Pelanggan',
+//         value: '100',
+//         change: '+12.5%',
+//         icon: Users,
+//         color: 'text-blue-600',
+//         bgColor: 'bg-blue-100',
+//     },
+//     {
+//         title: 'Pesanan Bulan Ini',
+//         value: '20',
+//         change: '+8.2%',
+//         icon: ShoppingCart,
+//         color: 'text-green-600',
+//         bgColor: 'bg-green-100',
+//     },
+//     {
+//         title: 'Pelanggan Aktif',
+//         value: '1,892',
+//         change: '+15.3%',
+//         icon: TrendingUp,
+//         color: 'text-purple-600',
+//         bgColor: 'bg-purple-100',
+//     },
+//     {
+//         title: 'Rata-rata Transaksi',
+//         value: 'Rp 125K',
+//         change: '+5.1%',
+//         icon: DollarSign,
+//         color: 'text-orange-600',
+//         bgColor: 'bg-orange-100',
+//     },
+// ];
 
-export function CustomerStats() {
+export function CustomerStats({
+    data: { monthlyCustomers, customerSegmentation, statsData },
+}: {
+    data: any;
+}) {
+    const statCards = [
+        {
+            title: 'Total Pelanggan',
+            icon: Users,
+        },
+        {
+            title: 'Pesanan Bulan Ini',
+            icon: ShoppingCart,
+        },
+        {
+            title: 'Pelanggan Aktif',
+            icon: TrendingUp,
+        },
+        {
+            title: 'Rata-rata Transaksi',
+            icon: DollarSign,
+        },
+    ];
+
     return (
         <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {statsData.map((stat, index) => {
-                    const Icon = stat.icon;
+                    const Icon = statCards[index].icon;
                     return (
                         <Card key={index}>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">
-                                    {stat.title}
+                                    {statCards[index].title}
                                 </CardTitle>
                                 <Icon />
                             </CardHeader>

@@ -31,4 +31,8 @@ class Courier extends Model
             $model->last_updated = now();
         });
     }
+
+    public function orders() {
+        return $this->hasMany(Order::class, "courier_id", "courier_id");
+    }
 }

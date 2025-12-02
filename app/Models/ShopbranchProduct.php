@@ -31,4 +31,11 @@ class ShopbranchProduct extends Model
             $model->last_updated = now();
         });
     }
+
+    public function shopBranch() {
+        return $this->belongsTo(ShopBranch::class, "shop_id", "shop_id");
+    } 
+    public function product() {
+        return $this->belongsTo(Product::class, "product_id", "product_id");
+    } 
 }
