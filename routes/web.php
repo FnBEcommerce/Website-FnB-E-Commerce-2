@@ -19,6 +19,18 @@ Route::get("/auth", function() {
     return Inertia::render('auth');
 })->name('auth');
 
+Route::get("/checkout", function() {
+    return Inertia::render('checkout');
+})->name('checkout');
+
+Route::get("/products", function() {
+    return Inertia::render('product-listing');
+})->name('products');
+
+Route::get("/products/{id}", function() {
+    return Inertia::render('product-detail');
+})->name('products.detail');
+
 Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
