@@ -39,7 +39,9 @@ export function Dashboard() {
                         Dashboard
                     </h1>
                     <div className="flex items-center space-x-2">
-                        <Button>Download</Button>
+                        <Button className="rounded bg-blue-500 px-4 py-2 text-white">
+                            Download
+                        </Button>
                     </div>
                 </div>
                 <Tabs
