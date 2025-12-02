@@ -49,8 +49,19 @@ const topNav = [
     },
 ];
 
-export default function CustomerManagement() {
+export default function CustomerManagement({
+    monthlyCustomers,
+    customerSegmentation,
+    statsData,
+    customersData,
+    productsData,
+    ratingDistribution,
+    areaData,
+    monthlyAreaData,
+}: any) {
     const [activeTab, setActiveTab] = useState('overview');
+
+    // console.log(users);
 
     return (
         <AuthenticatedLayout>
@@ -116,7 +127,13 @@ export default function CustomerManagement() {
                         </div>
 
                         <TabsContent value="overview">
-                            <CustomerStats />
+                            <CustomerStats
+                                data={{
+                                    monthlyCustomers,
+                                    customerSegmentation,
+                                    statsData,
+                                }}
+                            />
                         </TabsContent>
 
                         <TabsContent value="customers">
@@ -129,7 +146,7 @@ export default function CustomerManagement() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <CustomerList />
+                                    <CustomerList data={{ customersData }} />
                                 </CardContent>
                             </Card>
                         </TabsContent>
@@ -144,7 +161,12 @@ export default function CustomerManagement() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <ProductEvaluation />
+                                    <ProductEvaluation
+                                        data={{
+                                            productsData,
+                                            ratingDistribution,
+                                        }}
+                                    />
                                 </CardContent>
                             </Card>
                         </TabsContent>
@@ -159,7 +181,9 @@ export default function CustomerManagement() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <AreaSalesReport />
+                                    <AreaSalesReport
+                                        data={{ areaData, monthlyAreaData }}
+                                    />
                                 </CardContent>
                             </Card>
                         </TabsContent>

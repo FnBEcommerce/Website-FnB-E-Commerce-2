@@ -39,94 +39,89 @@ import {
     YAxis,
 } from 'recharts';
 
-const areaData = [
-    {
-        area: 'Jakarta Selatan',
-        totalCustomers: 845,
-        totalOrders: 3250,
-        totalRevenue: 42500000,
-        avgOrderValue: 130769,
-        topProduct: 'Nasi Goreng Spesial',
-        growth: 15.3,
-    },
-    {
-        area: 'Jakarta Pusat',
-        totalCustomers: 698,
-        totalOrders: 2780,
-        totalRevenue: 38200000,
-        avgOrderValue: 137410,
-        topProduct: 'Ayam Geprek',
-        growth: 12.8,
-    },
-    {
-        area: 'Jakarta Barat',
-        totalCustomers: 612,
-        totalOrders: 2450,
-        totalRevenue: 32800000,
-        avgOrderValue: 133878,
-        topProduct: 'Kopi Latte Premium',
-        growth: 10.5,
-    },
-    {
-        area: 'Jakarta Timur',
-        totalCustomers: 534,
-        totalOrders: 2120,
-        totalRevenue: 28500000,
-        avgOrderValue: 134433,
-        topProduct: 'Es Teh Manis',
-        growth: 8.7,
-    },
-    {
-        area: 'Bandung',
-        totalCustomers: 478,
-        totalOrders: 1890,
-        totalRevenue: 25600000,
-        avgOrderValue: 135449,
-        topProduct: 'Nasi Goreng Spesial',
-        growth: 11.2,
-    },
-    {
-        area: 'Surabaya',
-        totalCustomers: 423,
-        totalOrders: 1650,
-        totalRevenue: 22100000,
-        avgOrderValue: 133939,
-        topProduct: 'Sate Ayam',
-        growth: 9.8,
-    },
-    {
-        area: 'Yogyakarta',
-        totalCustomers: 356,
-        totalOrders: 1420,
-        totalRevenue: 18900000,
-        avgOrderValue: 133099,
-        topProduct: 'Mie Goreng',
-        growth: 7.5,
-    },
-    {
-        area: 'Semarang',
-        totalCustomers: 289,
-        totalOrders: 1150,
-        totalRevenue: 15400000,
-        avgOrderValue: 133913,
-        topProduct: 'Ayam Geprek',
-        growth: 6.3,
-    },
-];
+// const areaData = [
+//     {
+//         area: 'Jakarta Selatan',
+//         totalCustomers: 845,
+//         totalOrders: 3250,
+//         totalRevenue: 42500000,
+//         avgOrderValue: 130769,
+//         topProduct: 'Nasi Goreng Spesial',
+//         growth: 15.3,
+//     },
+//     {
+//         area: 'Jakarta Pusat',
+//         totalCustomers: 698,
+//         totalOrders: 2780,
+//         totalRevenue: 38200000,
+//         avgOrderValue: 137410,
+//         topProduct: 'Ayam Geprek',
+//         growth: 12.8,
+//     },
+//     {
+//         area: 'Jakarta Barat',
+//         totalCustomers: 612,
+//         totalOrders: 2450,
+//         totalRevenue: 32800000,
+//         avgOrderValue: 133878,
+//         topProduct: 'Kopi Latte Premium',
+//         growth: 10.5,
+//     },
+//     {
+//         area: 'Jakarta Timur',
+//         totalCustomers: 534,
+//         totalOrders: 2120,
+//         totalRevenue: 28500000,
+//         avgOrderValue: 134433,
+//         topProduct: 'Es Teh Manis',
+//         growth: 8.7,
+//     },
+//     {
+//         area: 'Bandung',
+//         totalCustomers: 478,
+//         totalOrders: 1890,
+//         totalRevenue: 25600000,
+//         avgOrderValue: 135449,
+//         topProduct: 'Nasi Goreng Spesial',
+//         growth: 11.2,
+//     },
+//     {
+//         area: 'Surabaya',
+//         totalCustomers: 423,
+//         totalOrders: 1650,
+//         totalRevenue: 22100000,
+//         avgOrderValue: 133939,
+//         topProduct: 'Sate Ayam',
+//         growth: 9.8,
+//     },
+//     {
+//         area: 'Yogyakarta',
+//         totalCustomers: 356,
+//         totalOrders: 1420,
+//         totalRevenue: 18900000,
+//         avgOrderValue: 133099,
+//         topProduct: 'Mie Goreng',
+//         growth: 7.5,
+//     },
+//     {
+//         area: 'Semarang',
+//         totalCustomers: 289,
+//         totalOrders: 1150,
+//         totalRevenue: 15400000,
+//         avgOrderValue: 133913,
+//         topProduct: 'Ayam Geprek',
+//         growth: 6.3,
+//     },
+// ];
 
-const monthlyAreaData = [
-    { month: 'Jan', jaksel: 3.2, jakpus: 2.8, jakbar: 2.4, jaktim: 2.0 },
-    { month: 'Feb', jaksel: 3.5, jakpus: 3.0, jakbar: 2.6, jaktim: 2.2 },
-    { month: 'Mar', jaksel: 3.8, jakpus: 3.3, jakbar: 2.8, jaktim: 2.4 },
-    { month: 'Apr', jaksel: 4.0, jakpus: 3.5, jakbar: 3.0, jaktim: 2.6 },
-    { month: 'Mei', jaksel: 4.2, jakpus: 3.7, jakbar: 3.2, jaktim: 2.7 },
-    { month: 'Jun', jaksel: 4.5, jakpus: 3.9, jakbar: 3.4, jaktim: 2.9 },
-];
-
-const areaRevenueShare = areaData.map((area) => ({
-    name: area.area,
-    value: area.totalRevenue,
-}));
+// const monthlyAreaData = [
+//     { month: 'Jan', jaksel: 3.2, jakpus: 2.8, jakbar: 2.4, jaktim: 2.0 },
+//     { month: 'Feb', jaksel: 3.5, jakpus: 3.0, jakbar: 2.6, jaktim: 2.2 },
+//     { month: 'Mar', jaksel: 3.8, jakpus: 3.3, jakbar: 2.8, jaktim: 2.4 },
+//     { month: 'Apr', jaksel: 4.0, jakpus: 3.5, jakbar: 3.0, jaktim: 2.6 },
+//     { month: 'Mei', jaksel: 4.2, jakpus: 3.7, jakbar: 3.2, jaktim: 2.7 },
+//     { month: 'Jun', jaksel: 4.5, jakpus: 3.9, jakbar: 3.4, jaktim: 2.9 },
+// ];
 
 const COLORS = [
     '#f97316',
@@ -139,7 +134,12 @@ const COLORS = [
     '#84cc16',
 ];
 
-export function AreaSalesReport() {
+export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
+    const areaRevenueShare = areaData.map((area: any) => ({
+        name: area.area,
+        value: area.totalRevenue,
+    }));
+
     const [sortBy, setSortBy] = useState('revenue');
     const [timeFilter, setTimeFilter] = useState('month');
 

@@ -15,15 +15,15 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get("/auth", function() {
+    return Inertia::render('auth');
+})->name('auth');
+
 Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
-      Route::get('/', function () {
-        return Inertia::render('admin/index');
-    })->name('admin.dashboard');
-    Route::get('/customer-management', function () {
-        return Inertia::render('admin/customer-management');
-    })->name('admin.customer_management');
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
