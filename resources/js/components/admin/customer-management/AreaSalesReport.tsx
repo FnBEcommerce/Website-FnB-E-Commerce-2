@@ -16,7 +16,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Download, MapPin, TrendingUp, Users } from 'lucide-react';
+import {
+    Download,
+    MapPin,
+    Medal,
+    TrendingUp,
+    Trophy,
+    Users,
+} from 'lucide-react';
 import { useState } from 'react';
 import {
     Bar,
@@ -449,51 +456,56 @@ export function AreaSalesReport() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-orange-600">
-                            🏆 Area Terbaik (Pendapatan)
+                        <CardTitle className="flex items-center gap-2 text-orange-600">
+                            <Trophy className="size-6" /> Area Terbaik
+                            (Pendapatan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-3">
+                        <ul className="space-y-4">
                             {sortedAreas.slice(0, 3).map((area, index) => (
-                                <div
+                                <li
                                     key={area.area}
-                                    className={`rounded-lg p-4 ${
-                                        index === 0
-                                            ? 'border-2 border-orange-500 bg-orange-50'
-                                            : 'bg-slate-50'
-                                    }`}
+                                    className="flex items-center gap-4"
                                 >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="flex items-center gap-2">
-                                                {index === 0 && '🥇'}
-                                                {index === 1 && '🥈'}
-                                                {index === 2 && '🥉'}
-                                                {area.area}
-                                            </p>
-                                            <p className="text-slate-600">
-                                                {area.totalOrders} pesanan
-                                            </p>
-                                        </div>
-                                        <p className="text-orange-600">
-                                            {formatCurrency(area.totalRevenue)}
+                                    {index === 0 && (
+                                        <Medal className="size-7 shrink-0 text-yellow-500" />
+                                    )}
+                                    {index === 1 && (
+                                        <Medal className="size-7 shrink-0 text-gray-400" />
+                                    )}
+                                    {index === 2 && (
+                                        <Medal className="size-7 shrink-0 text-orange-600" />
+                                    )}
+                                    <div>
+                                        <p className="font-semibold">
+                                            {area.area}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            {area.totalOrders.toLocaleString(
+                                                'id-ID',
+                                            )}{' '}
+                                            pesanan
                                         </p>
                                     </div>
-                                </div>
+                                    <p className="ms-auto text-base font-semibold text-orange-600">
+                                        {formatCurrency(area.totalRevenue)}
+                                    </p>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-blue-600">
-                            👥 Area Terbanyak (Pelanggan)
+                        <CardTitle className="flex items-center gap-2 text-blue-600">
+                            <Users className="size-6" /> Area Terbanyak
+                            (Pelanggan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-3">
+                        <ul className="space-y-4">
                             {[...areaData]
                                 .sort(
                                     (a, b) =>
@@ -501,77 +513,86 @@ export function AreaSalesReport() {
                                 )
                                 .slice(0, 3)
                                 .map((area, index) => (
-                                    <div
+                                    <li
                                         key={area.area}
-                                        className={`rounded-lg p-4 ${
-                                            index === 0
-                                                ? 'border-2 border-blue-500 bg-blue-50'
-                                                : 'bg-slate-50'
-                                        }`}
+                                        className="flex items-center gap-4"
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="flex items-center gap-2">
-                                                    {index === 0 && '🥇'}
-                                                    {index === 1 && '🥈'}
-                                                    {index === 2 && '🥉'}
-                                                    {area.area}
-                                                </p>
-                                                <p className="text-slate-600">
-                                                    {area.totalOrders} pesanan
-                                                </p>
-                                            </div>
-                                            <p className="text-blue-600">
-                                                {area.totalCustomers} pelanggan
+                                        <div className="flex items-center gap-4">
+                                            {index === 0 && (
+                                                <Medal className="size-7 shrink-0 text-yellow-500" />
+                                            )}
+                                            {index === 1 && (
+                                                <Medal className="size-7 shrink-0 text-gray-400" />
+                                            )}
+                                            {index === 2 && (
+                                                <Medal className="size-7 shrink-0 text-orange-600" />
+                                            )}
+                                            <p className="font-semibold">
+                                                {area.area}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {area.totalOrders.toLocaleString(
+                                                    'id-ID',
+                                                )}{' '}
+                                                pesanan
                                             </p>
                                         </div>
-                                    </div>
+                                        <div className="text-base font-semibold text-blue-600">
+                                            {area.totalCustomers.toLocaleString(
+                                                'id-ID',
+                                            )}{' '}
+                                            pelanggan
+                                        </div>
+                                    </li>
                                 ))}
-                        </div>
+                        </ul>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-green-600">
-                            📈 Area Tercepat (Pertumbuhan)
+                        <CardTitle className="flex items-center gap-2 text-green-600">
+                            <TrendingUp className="size-6" /> Area Tercepat
+                            (Pertumbuhan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-3">
+                        <ul className="space-y-4">
                             {[...areaData]
                                 .sort((a, b) => b.growth - a.growth)
                                 .slice(0, 3)
                                 .map((area, index) => (
-                                    <div
+                                    <li
                                         key={area.area}
-                                        className={`rounded-lg p-4 ${
-                                            index === 0
-                                                ? 'border-2 border-green-500 bg-green-50'
-                                                : 'bg-slate-50'
-                                        }`}
+                                        className="flex items-center gap-4"
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="flex items-center gap-2">
-                                                    {index === 0 && '🥇'}
-                                                    {index === 1 && '🥈'}
-                                                    {index === 2 && '🥉'}
-                                                    {area.area}
-                                                </p>
-                                                <p className="text-slate-600">
-                                                    {area.totalCustomers}{' '}
-                                                    pelanggan
-                                                </p>
-                                            </div>
-                                            <div className="flex items-center gap-1 text-green-600">
-                                                <TrendingUp className="size-4" />
-                                                {area.growth}%
-                                            </div>
+                                        {index === 0 && (
+                                            <Medal className="size-7 shrink-0 text-yellow-500" />
+                                        )}
+                                        {index === 1 && (
+                                            <Medal className="size-7 shrink-0 text-gray-400" />
+                                        )}
+                                        {index === 2 && (
+                                            <Medal className="size-7 shrink-0 text-orange-600" />
+                                        )}
+                                        <div>
+                                            <p className="font-semibold">
+                                                {area.area}
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {area.totalCustomers.toLocaleString(
+                                                    'id-ID',
+                                                )}{' '}
+                                                pelanggan
+                                            </p>
                                         </div>
-                                    </div>
+                                        <div className="ms-auto flex items-center gap-1 text-lg font-semibold text-green-600">
+                                            <TrendingUp className="size-5" />
+                                            {area.growth}%
+                                        </div>
+                                    </li>
                                 ))}
-                        </div>
+                        </ul>
                     </CardContent>
                 </Card>
             </div>

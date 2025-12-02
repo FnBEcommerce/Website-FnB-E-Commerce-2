@@ -68,30 +68,24 @@ export function CustomerStats() {
     return (
         <div className="space-y-6">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {statsData.map((stat, index) => {
                     const Icon = stat.icon;
                     return (
                         <Card key={index}>
-                            <CardContent className="p-6">
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <p className="mb-1 text-slate-600">
-                                            {stat.title}
-                                        </p>
-                                        <h2>{stat.value}</h2>
-                                        <p className="mt-2 text-green-600">
-                                            {stat.change} dari bulan lalu
-                                        </p>
-                                    </div>
-                                    <div
-                                        className={`rounded-lg p-3 ${stat.bgColor}`}
-                                    >
-                                        <Icon
-                                            className={`size-6 ${stat.color}`}
-                                        />
-                                    </div>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">
+                                    {stat.title}
+                                </CardTitle>
+                                <Icon />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">
+                                    {stat.value}
                                 </div>
+                                <p className="text-xs text-muted-foreground">
+                                    {stat.change} dari bulan lalu
+                                </p>
                             </CardContent>
                         </Card>
                     );

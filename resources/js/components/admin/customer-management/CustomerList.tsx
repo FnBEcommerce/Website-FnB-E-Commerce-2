@@ -25,7 +25,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Download, Eye, Filter, Search } from 'lucide-react';
+import { Download, Eye, Filter, Search, Star } from 'lucide-react';
 import { useState } from 'react';
 
 const customersData = [
@@ -272,7 +272,12 @@ export function CustomerList() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-1">
-                                            ⭐ {customer.avgRating}
+                                            <Star
+                                                fill="#FFC83D"
+                                                stroke=""
+                                                className="h-4.5 w-4.5"
+                                            />{' '}
+                                            {customer.avgRating}
                                         </div>
                                     </TableCell>
                                     <TableCell>
@@ -372,9 +377,17 @@ export function CustomerList() {
                                                         <p className="text-slate-500">
                                                             Rating Rata-rata
                                                         </p>
-                                                        <p>
-                                                            ⭐{' '}
-                                                            {customer.avgRating}
+                                                        <p className="flex items-center gap-1">
+                                                            <Star
+                                                                fill="#FFC83D"
+                                                                stroke=""
+                                                                className="h-4.5 w-4.5"
+                                                            />
+                                                            <span>
+                                                                {
+                                                                    customer.avgRating
+                                                                }
+                                                            </span>
                                                         </p>
                                                     </div>
                                                     <div>

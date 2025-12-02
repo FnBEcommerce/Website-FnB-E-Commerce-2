@@ -185,10 +185,6 @@ export function ProductEvaluation() {
         return 'text-red-600';
     };
 
-    const getStarEmoji = (count: number) => {
-        return '⭐'.repeat(count) + '☆'.repeat(5 - count);
-    };
-
     return (
         <div className="space-y-6">
             {/* Summary Cards */}
@@ -216,8 +212,13 @@ export function ProductEvaluation() {
                                 <p className="mb-1 text-slate-600">
                                     Rating Rata-rata
                                 </p>
-                                <h2 className="text-green-600">
-                                    {avgRatingAll} ⭐
+                                <h2 className="flex items-center gap-1 text-green-600">
+                                    <span>{avgRatingAll}</span>{' '}
+                                    <Star
+                                        fill="#FFC83D"
+                                        stroke=""
+                                        className="inline h-4.5 w-4.5"
+                                    />
                                 </h2>
                             </div>
                             <div className="rounded-lg bg-green-100 p-3">
@@ -397,7 +398,13 @@ export function ProductEvaluation() {
                                                 >
                                                     {product.avgRating}
                                                 </span>
-                                                <span>⭐</span>
+                                                <span>
+                                                    <Star
+                                                        fill="#FFC83D"
+                                                        stroke=""
+                                                        className="inline h-4.5 w-4.5"
+                                                    />
+                                                </span>
                                             </div>
                                         </TableCell>
                                         <TableCell>{product.rating5}</TableCell>
@@ -455,7 +462,12 @@ export function ProductEvaluation() {
                                         </div>
                                         <div className="text-right">
                                             <p className="text-green-600">
-                                                {product.avgRating} ⭐
+                                                {product.avgRating}{' '}
+                                                <Star
+                                                    fill="#FFC83D"
+                                                    stroke=""
+                                                    className="inline h-4.5 w-4.5"
+                                                />
                                             </p>
                                         </div>
                                     </div>
@@ -496,7 +508,12 @@ export function ProductEvaluation() {
                                         </div>
                                         <div className="text-right">
                                             <p className="text-orange-600">
-                                                {product.avgRating} ⭐
+                                                {product.avgRating}{' '}
+                                                <Star
+                                                    fill="#FFC83D"
+                                                    stroke=""
+                                                    className="inline h-4.5 w-4.5"
+                                                />
                                             </p>
                                         </div>
                                     </div>
