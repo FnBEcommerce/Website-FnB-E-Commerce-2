@@ -18,10 +18,10 @@ Route::get('/', function () {
 Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/admin')->group(function () {
-      Route::get('dashboard', function () {
-        return Inertia::render('dashboard/dashboard-index');
+      Route::get('/', function () {
+        return Inertia::render('admin/index');
     })->name('admin.dashboard');
-    Route::get('customer-management', function () {
+    Route::get('/customer-management', function () {
         return Inertia::render('admin/customer-management');
     })->name('admin.customer_management');
 });
