@@ -14,11 +14,41 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
 import { Analytics } from './components/analytics';
 import { Overview } from './components/overview';
 import { RecentSales } from './components/recent-sales';
 
+const topNav = [
+    {
+        title: 'Overview',
+        href: 'dashboard/overview',
+        isActive: true,
+        disabled: false,
+    },
+    {
+        title: 'Customers',
+        href: 'dashboard/customers',
+        isActive: false,
+        disabled: true,
+    },
+    {
+        title: 'Products',
+        href: 'dashboard/products',
+        isActive: false,
+        disabled: true,
+    },
+    {
+        title: 'Settings',
+        href: 'dashboard/settings',
+        isActive: false,
+        disabled: true,
+    },
+];
+
 export function Dashboard() {
+    const [activeTab, setActiveTab] = useState('overview');
+
     return (
         <>
             {/* ===== Top Heading ===sea== */}
@@ -39,14 +69,13 @@ export function Dashboard() {
                         Dashboard
                     </h1>
                     <div className="flex items-center space-x-2">
-                        <Button className="rounded bg-blue-500 px-4 py-2 text-white">
-                            Download
-                        </Button>
+                        <Button>Download</Button>
                     </div>
                 </div>
                 <Tabs
                     orientation="vertical"
-                    defaultValue="overview"
+                    value={activeTab}
+                    onValueChange={setActiveTab}
                     className="space-y-4"
                 >
                     <div className="w-full overflow-x-auto pb-2">
@@ -213,30 +242,3 @@ export function Dashboard() {
         </>
     );
 }
-
-const topNav = [
-    {
-        title: 'Overview',
-        href: 'dashboard/overview',
-        isActive: true,
-        disabled: false,
-    },
-    {
-        title: 'Customers',
-        href: 'dashboard/customers',
-        isActive: false,
-        disabled: true,
-    },
-    {
-        title: 'Products',
-        href: 'dashboard/products',
-        isActive: false,
-        disabled: true,
-    },
-    {
-        title: 'Settings',
-        href: 'dashboard/settings',
-        isActive: false,
-        disabled: true,
-    },
-];
