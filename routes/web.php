@@ -10,9 +10,7 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\DeliveryController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
+    return Inertia::render('home');
 })->name('home');
 
 Route::get("/auth", function() {
@@ -36,6 +34,8 @@ Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('de
 Route::prefix('/admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
+    Route::get('/cashflow-management', [AdminController::class, 'cashflowManagement'])->name('admin.cashflow_management');
+    Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.product_management');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
