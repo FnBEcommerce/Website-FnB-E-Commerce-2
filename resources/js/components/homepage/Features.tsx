@@ -1,0 +1,112 @@
+// import greyBackground from 'figma:asset/a0db27bdaccee7281040b12773da358fcf6e87f1.png';
+import { Clock, Heart, Truck } from 'lucide-react';
+import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { Card, CardContent } from '../ui/card';
+
+export function Features() {
+    const features = [
+        {
+            icon: Clock,
+            title: '25+ Year Shelf Life',
+            description:
+                'Our advanced freeze-drying process ensures your food stays fresh for decades without preservatives.',
+        },
+        {
+            icon: Truck,
+            title: 'Lightweight & Portable',
+            description:
+                'Perfect for camping, hiking, emergency preparedness, or convenient everyday meals.',
+        },
+        {
+            icon: Heart,
+            title: 'Easy Preparation',
+            description:
+                'Just add water and enjoy restaurant-quality meals in minutes. No cooking skills required.',
+        },
+    ];
+
+    return (
+        <section
+            className="relative bg-gradient-to-r from-orange-500 to-red-500 bg-cover bg-center bg-no-repeat py-20 text-white"
+            // style={{ backgroundImage: `url(${greyBackground})` }}
+        >
+            {/* Overlay for better text readability */}
+
+            <div className="relative z-10 container mx-auto px-4">
+                <div className="grid items-center gap-16 lg:grid-cols-2">
+                    {/* Content */}
+                    <div>
+                        <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">
+                            Why Choose Freeze Dried Foods?
+                        </h2>
+                        <p className="mb-8 text-lg text-white">
+                            Our innovative freeze-drying technology preserves
+                            food at its peak freshness, creating lightweight,
+                            nutritious meals that last for decades without
+                            refrigeration.
+                        </p>
+
+                        <div className="grid gap-6">
+                            {features.map((feature, index) => (
+                                <Card
+                                    key={index}
+                                    className="border-none bg-white shadow-none backdrop-blur-sm"
+                                >
+                                    <CardContent className="flex items-start space-x-4 p-6">
+                                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-green-100">
+                                            <feature.icon className="h-6 w-6 text-green-600" />
+                                        </div>
+                                        <div>
+                                            <h3 className="mb-2 text-lg font-semibold text-gray-800">
+                                                {feature.title}
+                                            </h3>
+                                            <p className="text-gray-600">
+                                                {feature.description}
+                                            </p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Image Grid */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                                <ImageWithFallback
+                                    src="https://images.unsplash.com/photo-1561758033-48d52648ae8b?w=300&h=300&fit=crop"
+                                    alt="Freeze dried strawberries"
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                            <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
+                                <ImageWithFallback
+                                    src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=300&h=225&fit=crop"
+                                    alt="Camping meal preparation"
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-4 pt-8">
+                            <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
+                                <ImageWithFallback
+                                    src="https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?w=300&h=225&fit=crop"
+                                    alt="Emergency food storage"
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                            <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
+                                <ImageWithFallback
+                                    src="https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=300&h=300&fit=crop"
+                                    alt="Healthy meal prep"
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
