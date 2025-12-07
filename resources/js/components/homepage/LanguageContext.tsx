@@ -16,36 +16,36 @@ const translations: Translations = {
     about: 'About Us',
     sustainability: 'Sustainability',
     contact: 'Contact',
-    
+
     // Hero Section
-    heroTitle: 'Premium Freeze Dried Foods for the',
-    heroTitleHighlight: 'Future',
-    heroDescription: 'Experience nutrition without compromise. TAGIDA Naturals\' agile approach to freeze-drying preserves maximum nutrients while creating sustainable, accessible food solutions for everyone.',
-    ecoFriendly: 'Eco-Friendly',
-    sustainablePackaging: 'Sustainable packaging',
-    longLasting: 'Long Lasting',
-    shelfLife: '25+ year shelf life',
-    nutrientRich: 'Nutrient Rich',
-    nutritionRetained: '98% nutrition retained',
-    accessible: 'Accessible',
-    easyPreparation: 'Easy preparation',
+    heroTitle: 'Makanan Cepat Saji Lezat, Untuk',
+    heroTitleHighlight: 'Teman Aktivitas Sehari-Hari',
+    heroDescription: 'Nikmati hidangan cepat saji yang praktis, enak, dan selalu siap menemani kesibukan anda. Menu kami dibuat dengan bahan pilihan dan diolah agar tetap segar, sehingga anda bisa menikmati makanan',
+    ecoFriendly: 'Kualitas Terjaga',
+    sustainablePackaging: 'Mutu selalu konsisten',
+    longLasting: 'Cepat & Praktis',
+    shelfLife: 'Waktu penyajian minim',
+    nutrientRich: 'Standar Higienis',
+    nutritionRetained: 'Proses sesuai regulasi',
+    accessible: 'Mudah Diakses',
+    easyPreparation: 'Tersedia kapan saja',
     shopNow: 'Shop Now',
     learnMore: 'Learn More',
-    freeShipping: 'Free Shipping',
-    dayReturns: '30-Day Returns',
+    freeShipping: 'Pengiriman Gratis',
+    dayReturns: 'Pengembalian 30 Hari',
     natural: '100% Natural',
-    
+
     // Products Section
     ourProducts: 'Our Products',
     premiumCollection: 'Premium Freeze Dried Collection',
     productsDescription: 'From nutrient-packed fruits to complete meal solutions, discover our range of carefully crafted freeze-dried foods that maintain their original taste and nutrition.',
     addToCart: 'Add to Cart',
     viewAllProducts: 'View All Products',
-    
+
     // Features Section
     whyChoose: 'Why Choose Freeze Dried Foods?',
     featuresDescription: 'Our innovative freeze-drying technology preserves food at its peak freshness, creating lightweight, nutritious meals that last for decades without refrigeration.',
-    
+
     // Shopping Cart
     shoppingCart: 'Shopping Cart',
     cartEmpty: 'Your cart is empty',
@@ -55,7 +55,7 @@ const translations: Translations = {
     shipping: 'Shipping',
     total: 'Total',
     checkout: 'Checkout',
-    
+
     // Footer
     stayConnected: 'Stay Connected',
     newsletterDesc: 'Get the latest updates on new products, sustainability initiatives, and exclusive offers from TAGIDA Naturals.',
@@ -72,7 +72,7 @@ const translations: Translations = {
     about: 'Hakkımızda',
     sustainability: 'Sürdürülebilirlik',
     contact: 'İletişim',
-    
+
     // Hero Section
     heroTitle: 'Geleceğin Premium Dondurarak',
     heroTitleHighlight: 'Kurutulmuş Gıdaları',
@@ -90,18 +90,18 @@ const translations: Translations = {
     freeShipping: 'Ücretsiz Kargo',
     dayReturns: '30 Gün İade',
     natural: '%100 Doğal',
-    
+
     // Products Section
     ourProducts: 'Ürünlerimiz',
     premiumCollection: 'Premium Dondurarak Kurutulmuş Koleksiyon',
     productsDescription: 'Besin değeri yüksek meyvelerden komple öğün çözümlerine kadar, orijinal lezzet ve besin değerini koruyan özenle hazırlanmış dondurarak kurutulmuş gıda ürünleri koleksiyonumuzu keşfedin.',
     addToCart: 'Sepete Ekle',
     viewAllProducts: 'Tüm Ürünleri Görüntüle',
-    
+
     // Features Section
     whyChoose: 'Neden Dondurarak Kurutulmuş Gıdalar?',
     featuresDescription: 'Yenilikçi dondurarak kurutma teknolojimiz, gıdaları en taze halinde koruyarak soğutma gerektirmeyen, hafif ve besleyici öğünler yaratır.',
-    
+
     // Shopping Cart
     shoppingCart: 'Alışveriş Sepeti',
     cartEmpty: 'Sepetiniz boş',
@@ -111,7 +111,7 @@ const translations: Translations = {
     shipping: 'Kargo',
     total: 'Toplam',
     checkout: 'Ödeme',
-    
+
     // Footer
     stayConnected: 'Bağlantıda Kalın',
     newsletterDesc: 'TAGIDA Naturals\'dan yeni ürünler, sürdürülebilirlik girişimleri ve özel teklifler hakkında en son güncellemeleri alın.',
@@ -128,7 +128,7 @@ const translations: Translations = {
     about: 'Über uns',
     sustainability: 'Nachhaltigkeit',
     contact: 'Kontakt',
-    
+
     // Hero Section
     heroTitle: 'Premium Gefriergetrocknete Lebensmittel für die',
     heroTitleHighlight: 'Zukunft',
@@ -146,18 +146,18 @@ const translations: Translations = {
     freeShipping: 'Kostenloser Versand',
     dayReturns: '30-Tage Rückgabe',
     natural: '100% Natürlich',
-    
+
     // Products Section
     ourProducts: 'Unsere Produkte',
     premiumCollection: 'Premium Gefriergetrocknete Kollektion',
     productsDescription: 'Von nährstoffreichen Früchten bis hin zu kompletten Mahlzeitenlösungen - entdecken Sie unser Sortiment sorgfältig hergestellter gefriergetrockneter Lebensmittel, die ihren ursprünglichen Geschmack und ihre Nährstoffe bewahren.',
     addToCart: 'In den Warenkorb',
     viewAllProducts: 'Alle Produkte Anzeigen',
-    
+
     // Features Section
     whyChoose: 'Warum Gefriergetrocknete Lebensmittel Wählen?',
     featuresDescription: 'Unsere innovative Gefriertrocknungstechnologie bewahrt Lebensmittel in ihrer höchsten Frische und schafft leichte, nahrhafte Mahlzeiten, die jahrzehntelang ohne Kühlung haltbar sind.',
-    
+
     // Shopping Cart
     shoppingCart: 'Warenkorb',
     cartEmpty: 'Ihr Warenkorb ist leer',
@@ -167,7 +167,7 @@ const translations: Translations = {
     shipping: 'Versand',
     total: 'Gesamt',
     checkout: 'Zur Kasse',
-    
+
     // Footer
     stayConnected: 'Bleiben Sie Verbunden',
     newsletterDesc: 'Erhalten Sie die neuesten Updates zu neuen Produkten, Nachhaltigkeitsinitiativen und exklusiven Angeboten von TAGIDA Naturals.',

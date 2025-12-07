@@ -139,10 +139,10 @@ export function Hero() {
                         <div className="absolute -top-4 -right-4 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur-sm">
                             <div className="text-center">
                                 <div className="text-2xl font-bold text-primary">
-                                    25+
+                                    100%
                                 </div>
                                 <div className="text-sm text-gray-600">
-                                    Years shelf life
+                                    Halal
                                 </div>
                             </div>
                         </div>
@@ -152,7 +152,7 @@ export function Hero() {
                                     98%
                                 </div>
                                 <div className="text-sm text-gray-600">
-                                    Nutrition retained
+                                    Berkualitas
                                 </div>
                             </div>
                         </div>

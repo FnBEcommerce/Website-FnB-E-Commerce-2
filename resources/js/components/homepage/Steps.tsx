@@ -11,39 +11,39 @@ export function Steps() {
     const steps = [
         {
             icon: UserPlus,
-            title: 'Create Account',
+            title: 'Buat Akun',
             description:
-                'Sign up in seconds and get access to exclusive meal plans tailored to your dietary preferences.',
+                'Daftar dengan cepat dan dapatkan akses ke berbagai menu makanan cepat saji pilihan.',
         },
         {
             icon: ShoppingCart,
-            title: 'Choose Your Meals',
+            title: 'Pilih Menu Favoritmu',
             description:
-                'Browse our curated menu of fresh, chef-prepared dishes and select your favorites for the week.',
+                'Jelajahi berbagai menu yang tersedia dan pilih hidangan yang paling cocok dengan selera anda.',
         },
         {
             icon: Package,
-            title: 'Customize Your Plan',
+            title: 'Sesuaikan Paket',
             description:
-                'Select your portion sizes, delivery frequency, and dietary requirements to fit your lifestyle.',
+                'Atur porsi, jumlah pesanan, dan jadwal pengiriman sesuai kebutuhan.',
         },
         {
             icon: Clock,
-            title: 'Track Your Order',
+            title: 'Lacak Pesanan',
             description:
-                'Get real-time updates on your delivery status and know exactly when your fresh meals will arrive.',
+                'Pantau proses pengiriman secara real-time dan tahu kapan pesanan akan sampai.',
         },
         {
             icon: Utensils,
-            title: 'Heat & Enjoy',
+            title: 'Panaskan & Nikmati',
             description:
-                'Simply heat up your meal in minutes and enjoy restaurant-quality food in the comfort of your home.',
+                'Hangatkan sebentar, dan hidangan lezat siap Anda santap di mana pun.',
         },
         {
             icon: Star,
-            title: 'Rate & Review',
+            title: 'Beri Penilaian',
             description:
-                'Share your experience and help us improve our menu based on your feedback and preferences.',
+                'Bantu kami berkembang dengan memberikan ulasan setelah menyantap menu kami.',
         },
     ];
 
@@ -52,10 +52,10 @@ export function Steps() {
             {/* Section Header */}
             <div className="mb-16 text-center">
                 <h2 className="mb-2 text-3xl font-bold text-orange-600 md:text-4xl">
-                    Simple Process
+                    Proses Sederhana
                 </h2>
                 <p className="mx-auto max-w-2xl text-lg text-gray-600">
-                    From kitchen to your table in three easy steps
+                    Dari dapur kami ke meja Anda dalam beberapa langkah mudah
                 </p>
             </div>
 

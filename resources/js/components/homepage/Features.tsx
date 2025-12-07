@@ -7,21 +7,21 @@ export function Features() {
     const features = [
         {
             icon: Clock,
-            title: '25+ Year Shelf Life',
+            title: 'Lebih Awet',
             description:
-                'Our advanced freeze-drying process ensures your food stays fresh for decades without preservatives.',
+                'Dikemas secara higienis untuk menjaga kualitas dan kesegarannya.',
         },
         {
             icon: Truck,
-            title: 'Lightweight & Portable',
+            title: 'Ringan & Mudah Dibawa',
             description:
-                'Perfect for camping, hiking, emergency preparedness, or convenient everyday meals.',
+                'Cocok untuk bekal, piknik, atau sekadar camilan cepat di sela aktivitas.',
         },
         {
             icon: Heart,
-            title: 'Easy Preparation',
+            title: 'Mudah Disiapkan',
             description:
-                'Just add water and enjoy restaurant-quality meals in minutes. No cooking skills required.',
+                'Cukup panaskan sebentar dan makanan siap dinikmati—tanpa perlu keahlian memasak.',
         },
     ];
 
@@ -37,13 +37,11 @@ export function Features() {
                     {/* Content */}
                     <div>
                         <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">
-                            Why Choose Freeze Dried Foods?
+                            Kenapa Memilih Makanan Cepat Saji Kami?
                         </h2>
                         <p className="mb-8 text-lg text-white">
-                            Our innovative freeze-drying technology preserves
-                            food at its peak freshness, creating lightweight,
-                            nutritious meals that last for decades without
-                            refrigeration.
+                            Hidangan cepat saji kami dibuat untuk anda yang ingin makan enak tanpa membuang waktu.
+                            Praktis untuk kerja, kuliah, perjalanan, atau saat tidak sempat memasak.
                         </p>
 
                         <div className="grid gap-6">
