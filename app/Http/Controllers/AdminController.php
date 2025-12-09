@@ -376,4 +376,11 @@ class AdminController extends Controller
 
         return Inertia::render('admin/customer-management', $props);
     }
+
+    public function cashflowManagement() {
+        return Inertia::render('admin/cashflow-management');
+    }
+    public function productManagement() {
+        return Inertia::render('admin/product-management');
+    }
 }
