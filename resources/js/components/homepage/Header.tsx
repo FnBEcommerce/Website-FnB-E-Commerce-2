@@ -32,19 +32,19 @@ export function Header() {
                             href="/"
                             className="text-xl font-medium transition-colors hover:text-green-600"
                         >
-                            {'Home'}
+                            {'beranda'}
                         </a>
                         <a
                             href="#products"
                             className="text-xl font-medium transition-colors hover:text-green-600"
                         >
-                            {'Product'}
+                            {'produk'}
                         </a>
                         <a
                             href="#about"
                             className="text-xl font-medium transition-colors hover:text-green-600"
                         >
-                            {'About'}
+                            {'tentang'}
                         </a>
                     </nav>
 
@@ -97,33 +97,33 @@ export function Header() {
                         <div className="flex flex-col space-y-4">
                             <a
                                 href="#home"
-                                className="transition-colors hover:text-green-600"
+                                className="transition-colors hover:text-orange-600"
                             >
-                                {'home'}
+                                {'beranda'}
                             </a>
                             <a
                                 href="#products"
-                                className="transition-colors hover:text-green-600"
+                                className="transition-colors hover:text-orange-600"
                             >
-                                {'products'}
+                                {'produk'}
                             </a>
                             <a
                                 href="#about"
-                                className="transition-colors hover:text-green-600"
+                                className="transition-colors hover:text-orange-600"
                             >
-                                {'about'}
+                                {'tentang'}
                             </a>
                             <a
                                 href="#sustainability"
-                                className="transition-colors hover:text-green-600"
+                                className="transition-colors hover:text-orange-600"
                             >
-                                {'sustainability'}
+                                {'keberlanjutan'}
                             </a>
                             <a
                                 href="#contact"
-                                className="transition-colors hover:text-green-600"
+                                className="transition-colors hover:text-orange-600"
                             >
-                                {'contact'}
+                                {'kontak'}
                             </a>
                         </div>
                     </nav>

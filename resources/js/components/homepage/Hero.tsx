@@ -98,7 +98,7 @@ export function Hero() {
                                 size="lg"
                                 className="cursor-pointer bg-white text-primary shadow-lg hover:bg-white/90"
                             >
-                                {t('Check Our Products')}
+                                {t('checkOurProducts')}
                             </Button>
                             <Button
                                 size="lg"

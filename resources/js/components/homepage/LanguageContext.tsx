@@ -11,11 +11,11 @@ interface Translations {
 const translations: Translations = {
   en: {
     // Navigation
-    home: 'Home',
-    products: 'Products',
-    about: 'About Us',
-    sustainability: 'Sustainability',
-    contact: 'Contact',
+    home: 'Beranda',
+    products: 'Produk',
+    about: 'Tentang Kami',
+    sustainability: 'Keberlanjutan',
+    contact: 'Kontak',
 
     // Hero Section
     heroTitle: 'Makanan Cepat Saji Lezat, Untuk',
@@ -29,8 +29,9 @@ const translations: Translations = {
     nutritionRetained: 'Proses sesuai regulasi',
     accessible: 'Mudah Diakses',
     easyPreparation: 'Tersedia kapan saja',
+    checkOurProducts: 'Cek Produk Kami',
     shopNow: 'Shop Now',
-    learnMore: 'Learn More',
+    learnMore: 'Lebih Lanjut',
     freeShipping: 'Pengiriman Gratis',
     dayReturns: 'Pengembalian 30 Hari',
     natural: '100% Natural',
@@ -57,12 +58,12 @@ const translations: Translations = {
     checkout: 'Checkout',
 
     // Footer
-    stayConnected: 'Stay Connected',
-    newsletterDesc: 'Get the latest updates on new products, sustainability initiatives, and exclusive offers from TAGIDA Naturals.',
-    subscribe: 'Subscribe',
-    quickLinks: 'Quick Links',
-    customerService: 'Customer Service',
-    contactInfo: 'Contact Info',
+    stayConnected: 'Tetap Terhubung dengan Kami',
+    newsletterDesc: 'Dapatkan pembaruan terbaru tentang produk baru, inisiatif keberlanjutan, dan penawaran eksklusif.',
+    subscribe: 'Ikuti',
+    quickLinks: 'Akses Cepat',
+    customerService: 'Layanan Pelanggan',
+    contactInfo: 'Info Kontak',
     certifications: 'Certifications'
   },
   tr: {

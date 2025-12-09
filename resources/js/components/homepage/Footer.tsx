@@ -48,15 +48,13 @@ export function Footer() {
                     <div>
                         <div className="mb-6">
                             <img
-                                // src={tagidaLogoLight}
+                                src="/images/logo-pbp.png"
                                 alt="TAGIDA Naturals Logo"
                                 className="h-12 w-auto object-contain"
                             />
                         </div>
                         <p className="mb-6 text-gray-400">
-                            Leading the future of sustainable nutrition with
-                            premium freeze-dried foods that preserve taste,
-                            nutrition, and the planet.
+                            Memimpin masa depan kuliner praktis dengan makanan cepat saji berkualitas yang mengutamakan rasa, kecepatan, dan kenyamanan.
                         </p>
                         <div className="flex space-x-4">
                             <Button
@@ -101,7 +99,7 @@ export function Footer() {
                                     href="#products"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    All Products
+                                    Semua Produk
                                 </a>
                             </li>
                             <li>
@@ -125,7 +123,7 @@ export function Footer() {
                                     href="#recipes"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Recipes
+                                    Resep
                                 </a>
                             </li>
                             <li>
@@ -133,7 +131,7 @@ export function Footer() {
                                     href="#nutrition"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Nutrition Guide
+                                    Panduan Nutrisi
                                 </a>
                             </li>
                             <li>
@@ -141,7 +139,7 @@ export function Footer() {
                                     href="#bulk"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Bulk Orders
+                                    Pembelian Grosir
                                 </a>
                             </li>
                         </ul>
@@ -158,7 +156,7 @@ export function Footer() {
                                     href="#help"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Help Center
+                                    Pusat Bantuan
                                 </a>
                             </li>
                             <li>
@@ -166,7 +164,7 @@ export function Footer() {
                                     href="#shipping"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Shipping Info
+                                    Info Pengiriman
                                 </a>
                             </li>
                             <li>
@@ -174,7 +172,7 @@ export function Footer() {
                                     href="#returns"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Returns & Exchanges
+                                    Pengembalian & Penukaran
                                 </a>
                             </li>
                             <li>
@@ -182,7 +180,7 @@ export function Footer() {
                                     href="#warranty"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Product Warranty
+                                    Garansi Produk
                                 </a>
                             </li>
                             <li>
@@ -198,7 +196,7 @@ export function Footer() {
                                     href="#track"
                                     className="text-gray-400 transition-colors hover:text-white"
                                 >
-                                    Track Your Order
+                                    Lacak Pesanan Anda
                                 </a>
                             </li>
                         </ul>
@@ -213,25 +211,25 @@ export function Footer() {
                             <div className="flex items-start space-x-3">
                                 <MapPin className="mt-0.5 h-5 w-5 text-green-400" />
                                 <div className="text-gray-400">
-                                    <p>123 Green Valley Drive</p>
-                                    <p>Sustainable City, SC 12345</p>
+                                    <p>Krian, Sidoarjo, Jawa Timur</p>
+                                    <p></p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Phone className="h-5 w-5 text-green-400" />
                                 <span className="text-gray-400">
-                                    1-800-TAGIDA1
+                                    081-***-***
                                 </span>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Mail className="h-5 w-5 text-green-400" />
                                 <span className="text-gray-400">
-                                    hello@tagidanaturals.com
+                                    PerusahaanFNB@gmail.com
                                 </span>
                             </div>
                         </div>
 
-                        {/* Certifications */}
+                        {/* Certifications
                         <div className="mt-6">
                             <h5 className="mb-3 font-semibold">
                                 {t('certifications')}
@@ -242,7 +240,7 @@ export function Footer() {
                                     USDA Organic • Non-GMO • Gluten-Free
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -250,7 +248,7 @@ export function Footer() {
 
                 {/* Bottom Bar */}
                 <div className="flex flex-col items-center justify-between text-sm text-gray-400 md:flex-row">
-                    <p>© 2025 TAGIDA Naturals. All rights reserved.</p>
+                    <p>© 2025 FNB e-Commerce. All rights reserved.</p>
                     <div className="mt-4 flex space-x-6 md:mt-0">
                         <a
                             href="#privacy"
