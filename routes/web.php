@@ -45,7 +45,7 @@ Route::prefix('/admin')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return Inertia::render('dashboard-laravel');
     })->name('dashboard');
 });
 
