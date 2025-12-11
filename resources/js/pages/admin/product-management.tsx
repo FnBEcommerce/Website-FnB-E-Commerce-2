@@ -43,72 +43,6 @@ export type Product = {
     status: 'Aktif' | 'Tidak Aktif';
 };
 
-const initialProducts: Product[] = [
-    {
-        id: '1',
-        name: 'Nasi Goreng Spesial',
-        category: 'Makanan',
-        price: 35000,
-        stock: 50,
-        branch: 'Jakarta Pusat',
-        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400',
-        description: 'Nasi goreng dengan telur, ayam, dan sayuran segar',
-        discount: 10,
-        rating: 4.5,
-        status: 'Aktif',
-    },
-    {
-        id: '2',
-        name: 'Es Teh Manis',
-        category: 'Minuman',
-        price: 8000,
-        stock: 100,
-        branch: 'Jakarta Selatan',
-        image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400',
-        description: 'Teh manis dingin yang menyegarkan',
-        rating: 4.2,
-        status: 'Aktif',
-    },
-    {
-        id: '3',
-        name: 'Ayam Geprek',
-        category: 'Makanan',
-        price: 25000,
-        stock: 30,
-        branch: 'Jakarta Barat',
-        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400',
-        description: 'Ayam goreng crispy dengan sambal pedas',
-        discount: 15,
-        rating: 4.7,
-        status: 'Aktif',
-    },
-    {
-        id: '4',
-        name: 'Kopi Susu Gula Aren',
-        category: 'Minuman',
-        price: 18000,
-        stock: 75,
-        branch: 'Jakarta Timur',
-        image: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400',
-        description: 'Kopi susu dengan gula aren original',
-        discount: 5,
-        rating: 4.8,
-        status: 'Aktif',
-    },
-    {
-        id: '5',
-        name: 'Mie Goreng Seafood',
-        category: 'Makanan',
-        price: 32000,
-        stock: 20,
-        branch: 'Jakarta Pusat',
-        image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400',
-        description: 'Mie goreng dengan seafood premium',
-        rating: 4.3,
-        status: 'Tidak Aktif',
-    },
-];
-
 const topNav = [
     {
         title: 'Overview',
@@ -136,7 +70,13 @@ const topNav = [
     },
 ];
 
-export default function ProductManagement() {
+type ProductManagementProps = {
+    products: Product[];
+};
+
+export default function ProductManagement({
+    products: initialProducts,
+}: ProductManagementProps) {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -275,7 +215,9 @@ export default function ProductManagement() {
                                             </div>
                                             <Select
                                                 value={categoryFilter}
-                                                onValueChange={setCategoryFilter}
+                                                onValueChange={
+                                                    setCategoryFilter
+                                                }
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Semua Kategori" />
@@ -353,9 +295,7 @@ export default function ProductManagement() {
                                             </div>
                                         </div>
                                         <ProductTable
-                                            products={
-                                                filteredAndSortedProducts
-                                            }
+                                            products={filteredAndSortedProducts}
                                             onEdit={handleOpenDialog}
                                             onDelete={handleDeleteProduct}
                                         />
@@ -369,9 +309,7 @@ export default function ProductManagement() {
             <ProductDialog
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
-                onSave={
-                    editingProduct ? handleEditProduct : handleAddProduct
-                }
+                onSave={editingProduct ? handleEditProduct : handleAddProduct}
                 product={editingProduct}
             />
         </AuthenticatedLayout>
