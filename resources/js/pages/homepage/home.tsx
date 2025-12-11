@@ -208,7 +208,7 @@ function Products({ products }: ProductsProps) {
                 <ProductCard
                     id={product.id}
                     name={product.name}
-                    price={product.price}
+                    priceDiscount={product.priceDiscount}
                     image={product.image}
                     rating={product.rating}
                     category={product.category}
