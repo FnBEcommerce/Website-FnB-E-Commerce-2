@@ -30,21 +30,35 @@ export function Header() {
                     <nav className="hidden items-center space-x-8 md:flex">
                         <a
                             href="/"
-                            className="text-xl font-medium transition-colors hover:text-green-600"
+                            className="text-xl font-medium transition-colors hover:text-orange-600"
                         >
                             {'beranda'}
                         </a>
                         <a
                             href="#products"
-                            className="text-xl font-medium transition-colors hover:text-green-600"
+                            className="text-xl font-medium transition-colors hover:text-orange-600"
                         >
                             {'produk'}
                         </a>
                         <a
                             href="#about"
-                            className="text-xl font-medium transition-colors hover:text-green-600"
+                            className="text-xl font-medium transition-colors hover:text-orange-600"
                         >
                             {'tentang'}
+                        </a>
+
+                        <a
+                            href="#sustainability"
+                            className="text-xl font-medium transition-colors hover:text-orange-600"
+                        >
+                            {'keberlanjutan'}
+                        </a>
+
+                        <a
+                            href="#contact"
+                            className="text-xl font-medium transition-colors hover:text-orange-600"
+                        >
+                            {'kontak'}
                         </a>
                     </nav>
 

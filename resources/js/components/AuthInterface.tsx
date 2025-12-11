@@ -33,9 +33,9 @@ export function AuthInterface() {
             <div className="relative z-10 text-center">
               <h2 className="mb-4">Halo, Pelanggan !</h2>
               <p className="mb-8 text-white/90">
-                Masukkan detail pribadi Anda
+                Belum mendaftar ?
                 <br />
-                dan mulailah memesan
+                silahkan klik tombol di bawah ini
               </p>
               <button
                 onClick={() => setIsSignUp(true)}
@@ -67,11 +67,11 @@ export function AuthInterface() {
             <div className="absolute top-1/2 left-10 w-24 h-24 bg-orange-100/10 rounded-full"></div>
 
             <div className="relative z-10 text-center">
-              <h2 className="mb-4">Selamat Datang kembali!</h2>
+              <h2 className="mb-4">Halo Pelanggan !</h2>
               <p className="mb-8 text-white/90">
-                Untuk tetap terhubung dengan kami, silakan
+                Sudah memiliki akun ?
                 <br />
-                Masuk dengan informasi pribadi Anda
+                silahkan klik tombol di bawah ini
               </p>
               <button
                 onClick={() => setIsSignUp(false)}
