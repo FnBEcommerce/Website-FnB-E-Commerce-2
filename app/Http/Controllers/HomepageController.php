@@ -130,7 +130,63 @@ class HomepageController extends Controller
     }
 
     public function productDetail() {
-        return Inertia::render('homepage/product-details');
+        // Product Images (Indexed Array)
+        $productImages = [
+            'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            'https://images.unsplash.com/photo-1624935984039-395c058e3944?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBzcGljZXMlMjBpbmdyZWRpZW50c3xlbnwxfHx8fDE3NjA0MTY3NjN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            'https://images.unsplash.com/photo-1756361947369-8c0e1e8d6828?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbnN0YW50JTIwZm9vZCUyMHBhY2thZ2V8ZW58MXx8fHwxNzYwNTEzNjg2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+        ];
+
+        // Suggested Products (Array of Associative Arrays)
+        $suggestedProducts = [
+            [
+                'id' => '1',
+                'name' => '7-Minute Khichdi - Classic Dal',
+                'description' => 'Traditional dal khichdi with authentic spices',
+                'priceDiscount' => 79,
+                'priceOrigin' => 99,
+                'rating' => 4.6,
+                'image' => 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+                'badge' => '20% OFF',
+            ],
+            [
+                'id' => '2',
+                'name' => '7-Minute Khichdi - Spinach Special',
+                'description' => 'Nutritious khichdi with fresh spinach & herbs',
+                'priceDiscount' => 95,
+                'priceOrigin' => 125,
+                'rating' => 4.7,
+                'image' => 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+                'badge' => '24% OFF',
+            ],
+            [
+                'id' => '3',
+                'name' => '7-Minute Khichdi - Masala Mix',
+                'description' => 'Spicy khichdi with aromatic masala blend',
+                'priceDiscount' => 89,
+                'priceOrigin' => 90,
+                'rating' => 4.5,
+                'image' => 'https://images.unsplash.com/photo-1647545401842-4974e4bcbda5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwbWVhbCUyMHByZXAlMjBib3dsfGVufDF8fHx8MTc2MDQ2MzY3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+                'badge' => null, // Perhatikan penanganan nilai null
+            ],
+            [
+                'id' => '4',
+                'name' => 'Variety Pack - 4 Flavors',
+                'description' => 'Try all our delicious khichdi varieties',
+                'priceDiscount' => 320,
+                'priceOrigin' => 400,
+                'rating' => 4.8,
+                'image' => 'https://images.unsplash.com/photo-1756361947369-8c0e1e8d6828?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbnN0YW50JTIwZm9vZCUyMHBhY2thZ2V8ZW58MXx8fHwxNzYwNTEzNjg2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+                'badge' => 'BEST VALUE',
+            ],
+        ];
+        $props = [
+            'productImages' => $productImages,
+            'suggestedProducts' => $suggestedProducts,
+        ];
+        
+        return Inertia::render('homepage/product-details', $props);
     }
 
      public function productListing() {

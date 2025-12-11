@@ -2,21 +2,11 @@ import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { SuggestedProduct } from '@/pages/homepage/product-details';
 import { Star } from 'lucide-react';
 
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    originalPrice?: number;
-    rating: number;
-    image: string;
-    badge?: string;
-}
-
 interface SuggestedProductsProps {
-    products: Product[];
+    products: SuggestedProduct[];
 }
 
 export function SuggestedProducts({ products }: SuggestedProductsProps) {
@@ -90,11 +80,11 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
                                     className="text-[20px] text-primary"
                                     style={{ fontWeight: 700 }}
                                 >
-                                    Rp {product.price}
+                                    Rp {product.priceDiscount}
                                 </span>
-                                {product.originalPrice && (
+                                {product.priceOrigin && (
                                     <span className="text-[14px] text-gray-400 line-through">
-                                        Rp {product.originalPrice}
+                                        Rp {product.priceOrigin}
                                     </span>
                                 )}
                             </div>
