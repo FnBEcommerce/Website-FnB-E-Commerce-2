@@ -1,33 +1,28 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    Clock,
-    Flame,
-    Heart,
-    Leaf,
-    Minus,
-    Plus,
-    Star,
-    TrendingUp,
-} from 'lucide-react';
+import { Product } from '@/types/product';
+import { formatPrice } from '@/utils/format-price';
+import { Minus, Plus, Star } from 'lucide-react';
 import { useState } from 'react';
 
 interface ProductOverviewProps {
+    product: Product;
     onNavigateToCheckout?: () => void;
 }
 
 export function ProductOverview({
+    product,
     onNavigateToCheckout,
 }: ProductOverviewProps) {
     const [quantity, setQuantity] = useState(1);
 
-    const features = [
-        { icon: Clock, text: '7-Minute Prep', color: 'text-green-600' },
-        { icon: Leaf, text: '100% Natural', color: 'text-green-700' },
-        { icon: Heart, text: 'Healthy Choice', color: 'text-red-500' },
-        { icon: Flame, text: 'Authentic Taste', color: 'text-orange-600' },
-        { icon: TrendingUp, text: 'Ready to Cook', color: 'text-blue-600' },
-    ];
+    // const features = [
+    //     { icon: Clock, text: '7-Minute Prep', color: 'text-green-600' },
+    //     { icon: Leaf, text: '100% Natural', color: 'text-green-700' },
+    //     { icon: Heart, text: 'Healthy Choice', color: 'text-red-500' },
+    //     { icon: Flame, text: 'Authentic Taste', color: 'text-orange-600' },
+    //     { icon: TrendingUp, text: 'Ready to Cook', color: 'text-blue-600' },
+    // ];
 
     return (
         <div className="space-y-6">
@@ -37,7 +32,7 @@ export function ProductOverview({
                     className="mb-2 text-[32px] text-gray-900"
                     style={{ fontWeight: 700 }}
                 >
-                    7-Minute Khichdi - Superb Vegetable
+                    {product.name}
                 </h1>
             </div>
 
@@ -48,15 +43,17 @@ export function ProductOverview({
                         <Star
                             key={star}
                             className={`h-5 w-5 ${
-                                star <= 4
+                                star <= product.rating
                                     ? 'fill-yellow-400 text-yellow-400'
                                     : 'text-gray-300'
                             }`}
                         />
                     ))}
                 </div>
-                <span className="text-gray-700">4.5/5</span>
-                <span className="text-gray-500">(100+ ratings)</span>
+                <span className="text-gray-700">{product.rating}/5</span>
+                <span className="text-gray-500">
+                    ({product.reviews ? product.reviews.length : 0} ratings)
+                </span>
             </div>
 
             {/* Price & Discount */}
@@ -66,33 +63,33 @@ export function ProductOverview({
                         className="text-[36px] text-primary"
                         style={{ fontWeight: 700 }}
                     >
-                        Rp 89,000
+                        {formatPrice(product.priceDiscount)}
                     </span>
                     <span className="text-[20px] text-gray-400 line-through">
-                        Rp 100,000
+                        {formatPrice(product.priceOrigin)}
                     </span>
                 </div>
                 <Badge className="bg-red-500 px-3 py-1 text-white hover:bg-red-600">
-                    25% OFF
+                    0% OFF
                 </Badge>
             </div>
 
             {/* Key Features */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {features.map((feature, index) => {
-                    const Icon = feature.icon;
-                    return (
-                        <div
-                            key={index}
-                            className="flex items-center gap-2 rounded-lg border border-primary bg-amber-50 p-3"
-                        >
-                            <Icon className={`h-5 w-5 ${feature.color}`} />
-                            <span className="text-[14px] text-gray-700">
-                                {feature.text}
-                            </span>
-                        </div>
-                    );
-                })}
+                {product.foodType &&
+                    product.foodType.map((text, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className="flex items-center gap-2 rounded-lg border border-primary bg-amber-50 p-3"
+                            >
+                                {/* <Icon className={`h-5 w-5 ${t.color}`} /> */}
+                                <span className="text-[14px] text-gray-700">
+                                    {text}
+                                </span>
+                            </div>
+                        );
+                    })}
             </div>
 
             {/* Quantity Selector */}

@@ -1,3 +1,5 @@
+import { Review } from './review';
+
 export type Product = {
     id: string;
     name: string;
@@ -11,4 +13,6 @@ export type Product = {
     popular?: boolean;
     rating: number;
     preparationTime?: string;
+    badge?: string;
+    reviews?: Review[];
 };

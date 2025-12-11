@@ -138,6 +138,77 @@ class HomepageController extends Controller
             'https://images.unsplash.com/photo-1756361947369-8c0e1e8d6828?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbnN0YW50JTIwZm9vZCUyMHBhY2thZ2V8ZW58MXx8fHwxNzYwNTEzNjg2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
         ];
 
+        $product = [
+            'id'=> '10',
+            'name'=> 'Supreme Truffle Burger',
+            'quantity'=> 10,
+            'description'=> 'Burger sapi premium dengan saus truffle jamur, keju swiss, dan bawang karamel.',
+            'foodType'=> ['Daging', 'Gurih', 'Chef Recommended'],
+            'priceDiscount'=> 85000,
+            'priceOrigin'=> 110000,
+            'image'=> 'https://images.unsplash.com/photo-1563115652-66e692719e1f?q=80&w=435&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            'category'=> 'Main Course',
+            'popular'=> true,
+            'rating'=> 4,
+            'preparationTime'=> '20-25 mins',
+            'reviews' => [
+                [
+                    'user' => [
+                        'fullName' => 'Budi Santoso',
+                        'email' => 'budi.santoso@example.com',
+                        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+                        'fullNumber' => '+6281234567890',
+                        'birthDate' => '1990-05-15',
+                        'gender' => 'Male',
+                        'addressInfo' => [
+                            'street' => 'Jl. Sudirman No. 45, Kebayoran Baru',
+                            'city' => 'Jakarta Selatan',
+                            'state' => 'DKI Jakarta',
+                        ],
+                    ],
+                    'totalRating' => 5,
+                    'type' => 'Delivery Order', // Konteks: Tipe layanan
+                    'description' => 'Sangat puas! Truffle Burger-nya sampai dalam keadaan masih hangat. Rotinya lembut dan dagingnya juicy banget. Packaging aman tidak tumpah.',
+                ],
+                [
+                    'user' => [
+                        'fullName' => 'Siti Aminah',
+                        'email' => 'siti.aminah@testmail.com',
+                        'password' => 'secret12345',
+                        'fullNumber' => '+6281987654321',
+                        'birthDate' => '1995-11-20',
+                        'gender' => 'Female',
+                        'addressInfo' => [
+                            'street' => 'Jl. Dago Pakar Utara No. 10',
+                            'city' => 'Bandung',
+                            'state' => 'Jawa Barat',
+                        ],
+                    ],
+                    'totalRating' => 4,
+                    'type' => 'Dine-in',
+                    'description' => 'Tempatnya cozy banget buat nugas. Iced Matcha Latte enak, creamy tapi ga bikin eneg. Cuma sayang pelayanan agak sedikit lama pas jam makan siang.',
+                ],
+                [
+                    'user' => [
+                        'fullName' => 'Rian Hidayat',
+                        'email' => 'rian.h@workmail.com',
+                        'password' => 'pass_rian_88',
+                        'fullNumber' => '+628567890123',
+                        'birthDate' => '1988-03-10',
+                        'gender' => 'Male',
+                        'addressInfo' => [
+                            'street' => 'Jl. Pemuda No. 88',
+                            'city' => 'Surabaya',
+                            'state' => 'Jawa Timur',
+                        ],
+                    ],
+                    'totalRating' => 3,
+                    'type' => 'Takeaway',
+                    'description' => 'Pesan Spicy Aglio Olio buat dibawa pulang. Rasanya oke, pedasnya pas. Tapi porsinya agak sedikit kurang banyak untuk harga segini.',
+                ],
+            ]
+        ];
+
         // Suggested Products (Array of Associative Arrays)
         $suggestedProducts = [
             [
@@ -183,6 +254,7 @@ class HomepageController extends Controller
         ];
         $props = [
             'productImages' => $productImages,
+            'product' => $product,
             'suggestedProducts' => $suggestedProducts,
         ];
         
