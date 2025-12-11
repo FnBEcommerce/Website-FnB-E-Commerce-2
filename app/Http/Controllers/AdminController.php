@@ -378,7 +378,72 @@ class AdminController extends Controller
     }
 
     public function cashflowManagement() {
-        return Inertia::render('admin/cashflow-management');
+        $summaryData = [
+            'totalRevenue' => 125750000,
+            'totalOrders' => 1247,
+            'averageOrder' => 100843,
+            'growth' => 12.5,
+            'revenueGrowth' => 15.2,
+            'ordersGrowth' => 8.3,
+            'averageGrowth' => 6.4,
+        ];
+
+        $dailyTrendData = [
+            ['name' => 'Sen', 'pendapatan' => 95000000, 'pesanan' => 890],
+            ['name' => 'Sel', 'pendapatan' => 88000000, 'pesanan' => 825],
+            ['name' => 'Rab', 'pendapatan' => 102000000, 'pesanan' => 950],
+            ['name' => 'Kam', 'pendapatan' => 118000000, 'pesanan' => 1100],
+            ['name' => 'Jum', 'pendapatan' => 125000000, 'pesanan' => 1180],
+            ['name' => 'Sab', 'pendapatan' => 135000000, 'pesanan' => 1280],
+        ];
+
+        $weeklyTrendData = [
+            ['name' => '1-7 Jan', 'pendapatan' => 650000000, 'pesanan' => 6200],
+            ['name' => '8-14 Jan', 'pendapatan' => 680000000, 'pesanan' => 6450],
+            ['name' => '15-21 Jan', 'pendapatan' => 750000000, 'pesanan' => 7100],
+            ['name' => '22-28 Jan', 'pendapatan' => 820000000, 'pesanan' => 7800],
+            ['name' => '29-4 Feb', 'pendapatan' => 890000000, 'pesanan' => 8500],
+            ['name' => '5-12 Feb', 'pendapatan' => 910000000, 'pesanan' => 8700],
+        ];
+
+        $monthlyTrendData = [
+            ['name' => 'Jan', 'pendapatan' => 2850000000, 'pesanan' => 26700],
+            ['name' => 'Feb', 'pendapatan' => 2640000000, 'pesanan' => 24500], // Feb hari lebih sedikit
+            ['name' => 'Mar', 'pendapatan' => 3060000000, 'pesanan' => 28900],
+            ['name' => 'Apr', 'pendapatan' => 3250000000, 'pesanan' => 30500],
+            ['name' => 'Mei', 'pendapatan' => 3450000000, 'pesanan' => 32100],
+            ['name' => 'Jun', 'pendapatan' => 3600000000, 'pesanan' => 34000],
+        ];
+
+        $yearlyTrendData = [
+            ['name' => '2019', 'pendapatan' => 28500000000, 'pesanan' => 270000],
+            ['name' => '2020', 'pendapatan' => 24000000000, 'pesanan' => 220000], // Dip pandemi
+            ['name' => '2021', 'pendapatan' => 32000000000, 'pesanan' => 295000],
+            ['name' => '2022', 'pendapatan' => 38000000000, 'pesanan' => 350000],
+            ['name' => '2023', 'pendapatan' => 42500000000, 'pesanan' => 390000],
+            ['name' => '2024', 'pendapatan' => 46000000000, 'pesanan' => 425000],
+        ];
+
+        $trendDataPeriod = [
+            'dailyTrendData' => $dailyTrendData,
+            'weeklyTrendData' => $weeklyTrendData,
+            'monthlyTrendData' => $monthlyTrendData,
+            'yearlyTrendData' => $yearlyTrendData,
+        ];
+
+        $categoryData = [
+            ['name' => 'Makanan', 'pendapatan' => 78000000, 'pesanan' => 650],
+            ['name' => 'Minuman', 'pendapatan' => 32000000, 'pesanan' => 420],
+            ['name' => 'Snack', 'pendapatan' => 15750000, 'pesanan' => 180],
+        ];
+
+        $props = [
+            'summaryData' => $summaryData,
+            'trendDataPeriod' => $trendDataPeriod,
+            'categoryData' => $categoryData,
+        ];
+
+        return Inertia::render('admin/cashflow-management', $props);
     }
     public function productManagement() {
         return Inertia::render('admin/product-management');

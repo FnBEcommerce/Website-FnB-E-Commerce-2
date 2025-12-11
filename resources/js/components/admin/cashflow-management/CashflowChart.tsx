@@ -1,4 +1,8 @@
-import { PeriodType } from '@/pages/admin/cashflow-management';
+import {
+    PeriodType,
+    TrendDataItem,
+    TrendDataPeriod,
+} from '@/pages/admin/cashflow-management';
 import {
     Bar,
     BarChart,
@@ -15,64 +19,26 @@ import {
 interface CashflowChartProps {
     period: PeriodType;
     type: 'trend' | 'category';
+    trendDataPeriod: TrendDataPeriod;
+    categoryData: TrendDataItem[];
 }
 
-export function CashflowChart({ period, type }: CashflowChartProps) {
-    // Mock data for trend chart
-
-    const dailyTrendData = [
-        { name: 'Sen', pendapatan: 95000000, pesanan: 890 },
-        { name: 'Sel', pendapatan: 88000000, pesanan: 825 },
-        { name: 'Rab', pendapatan: 102000000, pesanan: 950 },
-        { name: 'Kam', pendapatan: 118000000, pesanan: 1100 },
-        { name: 'Jum', pendapatan: 125000000, pesanan: 1180 },
-        { name: 'Sab', pendapatan: 135000000, pesanan: 1280 },
-    ];
-
-    const weeklyTrendData = [
-        { name: '', pendapatan: 95000000, pesanan: 890 },
-        { name: '', pendapatan: 88000000, pesanan: 825 },
-        { name: '', pendapatan: 102000000, pesanan: 950 },
-        { name: '', pendapatan: 118000000, pesanan: 1100 },
-        { name: '', pendapatan: 125000000, pesanan: 1180 },
-        { name: '', pendapatan: 135000000, pesanan: 1280 },
-    ];
-
-    const monthlyTrendData = [
-        { name: 'Jan', pendapatan: 95000000, pesanan: 890 },
-        { name: 'Feb', pendapatan: 88000000, pesanan: 825 },
-        { name: 'Mar', pendapatan: 102000000, pesanan: 950 },
-        { name: 'Apr', pendapatan: 118000000, pesanan: 1100 },
-        { name: 'Mei', pendapatan: 125000000, pesanan: 1180 },
-        { name: 'Jun', pendapatan: 135000000, pesanan: 1280 },
-    ];
-
-    const yearlyTrendData = [
-        { name: '2019', pendapatan: 95000000, pesanan: 890 },
-        { name: '2020', pendapatan: 88000000, pesanan: 825 },
-        { name: '2021', pendapatan: 102000000, pesanan: 950 },
-        { name: '2022', pendapatan: 118000000, pesanan: 1100 },
-        { name: '2023', pendapatan: 125000000, pesanan: 1180 },
-        { name: '2024', pendapatan: 135000000, pesanan: 1280 },
-    ];
-
-    const chosePeriod = {
-        daily: dailyTrendData,
-        weekly: weeklyTrendData,
-        monthly: monthlyTrendData,
-        yearly: yearlyTrendData,
+export function CashflowChart({
+    period,
+    type,
+    trendDataPeriod,
+    categoryData,
+}: CashflowChartProps) {
+    const trenDataPeriodOption = {
+        daily: trendDataPeriod.dailyTrendData,
+        weekly: trendDataPeriod.weeklyTrendData,
+        monthly: trendDataPeriod.monthlyTrendData,
+        yearly: trendDataPeriod.yearlyTrendData,
     };
 
-    const trendData = chosePeriod[period];
+    const trendData = trenDataPeriodOption[period];
 
-    // Mock data for category breakdown
-    const categoryData = [
-        { name: 'Makanan', pendapatan: 78000000, pesanan: 650 },
-        { name: 'Minuman', pendapatan: 32000000, pesanan: 420 },
-        { name: 'Snack', pendapatan: 15750000, pesanan: 180 },
-    ];
-
-    const formatCurrency = (value: number) => {
+    const formatCurrency = (value: number): string => {
         return `Rp ${(value / 1000000).toFixed(1)}jt`;
     };
 

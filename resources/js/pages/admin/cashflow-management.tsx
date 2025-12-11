@@ -20,12 +20,7 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
-import {
-    CreditCard,
-    DollarSign,
-    ShoppingCart,
-    TrendingUp,
-} from 'lucide-react';
+import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -57,21 +52,43 @@ const topNav = [
     },
 ];
 
-export default function CashflowManagement() {
+export type TrendDataItem = {
+    name: string;
+    pendapatan: number;
+    pesanan: number;
+};
+
+export type TrendDataPeriod = {
+    dailyTrendData: TrendDataItem[];
+    weeklyTrendData: TrendDataItem[];
+    monthlyTrendData: TrendDataItem[];
+    yearlyTrendData: TrendDataItem[];
+};
+
+type SummaryData = {
+    totalRevenue: number;
+    totalOrders: number;
+    averageOrder: number;
+    growth: number;
+    revenueGrowth: number;
+    ordersGrowth: number;
+    averageGrowth: number;
+};
+
+type CashflowManagementProps = {
+    summaryData: SummaryData;
+    trendDataPeriod: TrendDataPeriod;
+    categoryData: TrendDataItem[];
+};
+
+export default function CashflowManagement({
+    summaryData,
+    trendDataPeriod,
+    categoryData,
+}: CashflowManagementProps) {
     const [period, setPeriod] = useState<PeriodType>('monthly');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [activeTab, setActiveTab] = useState('overview');
-
-    // Mock data - in real app, this would come from API
-    const summaryData = {
-        totalRevenue: 125750000,
-        totalOrders: 1247,
-        averageOrder: 100843,
-        growth: 12.5,
-        revenueGrowth: 15.2,
-        ordersGrowth: 8.3,
-        averageGrowth: 6.4,
-    };
 
     return (
         <AuthenticatedLayout>
@@ -185,10 +202,14 @@ export default function CashflowManagement() {
                                 <CardContent>
                                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                                         <CashflowChart
+                                            categoryData={categoryData}
+                                            trendDataPeriod={trendDataPeriod}
                                             period={period}
                                             type="trend"
                                         />
                                         <CashflowChart
+                                            categoryData={categoryData}
+                                            trendDataPeriod={trendDataPeriod}
                                             period={period}
                                             type="category"
                                         />
