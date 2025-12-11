@@ -136,7 +136,7 @@ export function Hero() {
                             />
                         </div>
                         {/* Floating Elements */}
-                        <div className="border absolute -top-4 -right-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
+                        <div className="absolute -top-4 -right-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
                             <div className="text-center">
                                 <div className="text-2xl font-bold text-white">
                                     100%
@@ -146,7 +146,7 @@ export function Hero() {
                                 </div>
                             </div>
                         </div>
-                        <div className="border absolute -bottom-4 -left-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
+                        <div className="absolute -bottom-4 -left-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
                             <div className="text-center">
                                 <div className="text-2xl font-bold text-white">
                                     98%
