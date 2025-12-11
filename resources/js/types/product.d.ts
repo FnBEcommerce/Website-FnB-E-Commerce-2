@@ -1,8 +1,11 @@
 export type Product = {
     id: string;
     name: string;
+    quantity?: number;
     description?: string;
-    price: number;
+    foodType?: string[];
+    priceDiscount: number;
+    priceOrigin?: number;
     image: string;
     category: string;
     popular?: boolean;

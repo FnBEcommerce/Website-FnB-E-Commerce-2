@@ -385,3 +385,203 @@ class AdminController extends Controller
         return Inertia::render('admin/product-management');
     }
 }
+
+
+// AdminController.php
+
+/* namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Review;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
+use Carbon\Carbon;
+
+class AdminController extends Controller
+{
+    public function index() {
+        return Inertia::render('admin/index');
+    }
+
+    public function customerManagement() {
+        // --- 1. Fetch Basic Data ---
+        // Ambil data pelanggan beserta relasi order dan review
+        $customers = User::where('role', 'customer')
+            ->with(['orders', 'reviews'])
+            ->get();
+        
+        $products = Product::with(['orderDetails', 'reviews'])->get();
+        $allOrders = Order::all();
+        $currentMonth = Carbon::now()->month;
+
+        // --- 2. Calculate Stats Data (Kartu Atas) ---
+        $totalPelanggan = $customers->count();
+        $pesananBulanIni = Order::whereMonth('date_created', $currentMonth)->count();
+        
+        // Pelanggan Aktif: Yang pernah order dalam 3 bulan terakhir
+        $activeThreshold = Carbon::now()->subMonths(3);
+        $activeCustomersCount = Order::where('date_created', '>=', $activeThreshold)
+            ->distinct('user_id')
+            ->count('user_id');
+
+        $avgTransaction = $allOrders->avg('order_total') ?? 0;
+
+        $statsData = [
+            [
+                'title' => 'Total Pelanggan',
+                'value' => (string) $totalPelanggan,
+                'change' => '+0%', // Perlu logika history jika ingin dinamis
+            ],
+            [
+                'title' => 'Pesanan Bulan Ini',
+                'value' => (string) $pesananBulanIni,
+                'change' => 'Bulan ' . Carbon::now()->format('M'),
+            ],
+            [
+                'title' => 'Pelanggan Aktif (3 Bulan)',
+                'value' => (string) $activeCustomersCount,
+                'change' => 'Recency',
+            ],
+            [
+                'title' => 'Rata-rata Transaksi',
+                'value' => 'Rp ' . number_format($avgTransaction / 1000, 0) . 'K',
+                'change' => 'Avg',
+            ],
+        ];
+
+        // --- 3. Process Customers Data List ---
+        $customersData = $customers->map(function ($user) {
+            $totalSpent = $user->orders->sum('order_total');
+            $totalOrders = $user->orders->count();
+            $lastOrderDate = $user->orders->max('date_created');
+            
+            // Logika Status Sederhana
+            $status = 'Baru';
+            if ($totalOrders > 5) $status = 'Setia';
+            elseif ($totalOrders > 0) $status = 'Aktif';
+            if ($lastOrderDate && Carbon::parse($lastOrderDate)->diffInMonths(now()) > 3) $status = 'Tidak Aktif';
+
+            // Ekstrak Area dari Alamat (Mengambil kata terakhir setelah koma, misal: Jakarta Pusat)
+            $area = 'Unknown';
+            if ($user->address_1) {
+                $parts = explode(',', $user->address_1);
+                $area = trim(end($parts));
+            }
+
+            return [
+                'id' => 'CST' . str_pad($user->user_id, 3, '0', STR_PAD_LEFT),
+                'name' => $user->username, // Menggunakan username karena tabel user tidak ada kolom name
+                'email' => $user->username . '@example.com', // Placeholder krn tabel user tidak ada email
+                'phone' => '-', // Placeholder krn tabel user tidak ada no hp
+                'area' => $area,
+                'totalOrders' => $totalOrders,
+                'totalSpent' => (float) $totalSpent,
+                'lastOrder' => $lastOrderDate ? Carbon::parse($lastOrderDate)->format('Y-m-d') : '-',
+                'status' => $status,
+                'avgRating' => round($user->reviews->avg('rating'), 1) ?? 0,
+            ];
+        })->values();
+
+        // --- 4. Customer Segmentation (Chart Pie) ---
+        $segmentationCounts = $customersData->groupBy('status')->map->count();
+        $customerSegmentation = [
+            [ 'name' => 'Pelanggan Setia', 'value' => $segmentationCounts['Setia'] ?? 0, 'color' => '#10b981' ],
+            [ 'name' => 'Pelanggan Aktif', 'value' => $segmentationCounts['Aktif'] ?? 0, 'color' => '#3b82f6' ],
+            [ 'name' => 'Pelanggan Baru', 'value' => $segmentationCounts['Baru'] ?? 0, 'color' => '#f59e0b' ],
+            [ 'name' => 'Tidak Aktif', 'value' => $segmentationCounts['Tidak Aktif'] ?? 0, 'color' => '#ef4444' ],
+        ];
+
+        // --- 5. Monthly Customers (Chart Line) ---
+        $monthlyStats = Order::select(
+            DB::raw('DATE_FORMAT(date_created, "%b") as month'),
+            DB::raw('COUNT(DISTINCT user_id) as pelanggan'),
+            DB::raw('COUNT(order_id) as pesanan')
+        )
+        ->whereYear('date_created', Carbon::now()->year)
+        ->groupBy('month')
+        // PERBAIKAN DI SINI: Gunakan MIN() agar lolos validasi full_group_by
+        ->orderBy(DB::raw('MIN(date_created)'), 'asc') 
+        ->get();
+
+        // dd($monthlyStats);
+        
+        // Jika data kosong, gunakan dummy array struktur agar chart tidak error
+        $monthlyCustomers = $monthlyStats->isEmpty() ? [] : $monthlyStats->toArray();
+
+        // --- 6. Products Data ---
+        $productsData = $products->map(function ($product) {
+            $totalSold = $product->orderDetails->sum('orderdetail_quantity');
+            $reviews = $product->reviews;
+            
+            return [
+                'id' => 'PRD' . str_pad($product->product_id, 3, '0', STR_PAD_LEFT),
+                'name' => $product->product_name,
+                'category' => $product->product_category,
+                'totalReviews' => $reviews->count(),
+                'avgRating' => round($reviews->avg('rating'), 1) ?? 0,
+                'rating5' => $reviews->where('rating', 5)->count(),
+                'rating4' => $reviews->where('rating', 4)->count(),
+                'rating3' => $reviews->where('rating', 3)->count(),
+                'rating2' => $reviews->where('rating', 2)->count(),
+                'rating1' => $reviews->where('rating', 1)->count(),
+                'totalSold' => $totalSold,
+                'trend' => $totalSold > 10 ? 'up' : 'down', // Logika simpel trend
+            ];
+        })->values();
+
+        // --- 7. Rating Distribution ---
+        $allReviews = Review::all();
+        $ratingDistribution = [
+            [ 'rating' => '5 Bintang', 'count' => $allReviews->where('rating', 5)->count(), 'color' => '#10b981' ],
+            [ 'rating' => '4 Bintang', 'count' => $allReviews->where('rating', 4)->count(), 'color' => '#3b82f6' ],
+            [ 'rating' => '3 Bintang', 'count' => $allReviews->where('rating', 3)->count(), 'color' => '#f59e0b' ],
+            [ 'rating' => '2 Bintang', 'count' => $allReviews->where('rating', 2)->count(), 'color' => '#f97316' ],
+            [ 'rating' => '1 Bintang', 'count' => $allReviews->where('rating', 1)->count(), 'color' => '#ef4444' ],
+        ];
+
+        // --- 8. Area Data (Group by inferred city from address) ---
+        $areaData = $customersData->groupBy('area')->map(function ($group, $areaName) {
+            return [
+                'area' => $areaName,
+                'totalCustomers' => $group->count(),
+                'totalOrders' => $group->sum('totalOrders'),
+                'totalRevenue' => $group->sum('totalSpent'),
+                'avgOrderValue' => $group->avg('totalSpent'), // Simplifikasi
+                'topProduct' => '-', // Butuh query kompleks untuk ini
+                'growth' => rand(1, 15), // Placeholder/Mock
+            ];
+        })->values();
+
+        // Placeholder untuk Monthly Area Data (memerlukan query cross-tabulation yang kompleks)
+        $monthlyAreaData = [
+            [ 'month' => 'Jan', 'jaksel' => 3.2, 'jakpus' => 2.8, 'jakbar' => 2.4, 'jaktim' => 2.0 ],
+            // ... biarkan statis atau buat query group by month & area
+        ];
+
+        $props = [
+            'monthlyCustomers' => $monthlyCustomers,
+            'customerSegmentation' => $customerSegmentation,
+            'statsData' => $statsData,
+            'customersData' => $customersData,
+            'productsData' => $productsData,
+            'ratingDistribution' => $ratingDistribution,
+            'areaData' => $areaData,
+            'monthlyAreaData' => $monthlyAreaData
+        ];
+
+        dd($props);
+
+        return Inertia::render('admin/customer-management', $props);
+    }
+
+    public function cashflowManagement() {
+        return Inertia::render('admin/cashflow-management');
+    }
+    public function productManagement() {
+        return Inertia::render('admin/product-management');
+    }
+} */
+

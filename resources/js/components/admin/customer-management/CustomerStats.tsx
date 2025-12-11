@@ -64,11 +64,38 @@ import {
 //     },
 // ];
 
+interface MonthlyCustomer {
+    month: string;
+    pelanggan: number;
+    pesanan: number;
+}
+
+interface CustomerSegmentation {
+    name: string;
+    value: number;
+    color: string;
+}
+
+interface StatsData {
+    title: string;
+    value: string;
+    change: string;
+    icon: React.ElementType;
+    color: string;
+    bgColor: string;
+}
+
+interface CustomerStatsProps {
+    data: {
+        monthlyCustomers: MonthlyCustomer[];
+        customerSegmentation: CustomerSegmentation[];
+        statsData: StatsData[];
+    };
+}
+
 export function CustomerStats({
     data: { monthlyCustomers, customerSegmentation, statsData },
-}: {
-    data: any;
-}) {
+}: CustomerStatsProps) {
     const statCards = [
         {
             title: 'Total Pelanggan',

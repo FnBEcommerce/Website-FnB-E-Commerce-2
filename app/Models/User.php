@@ -36,4 +36,8 @@ class User extends Model
     public function orders() {
         return $this->hasMany(Order::class, "user_id", "user_id");
     }
+
+    public function reviews() {
+        return $this->hasMany(Review::class, "user_id", "user_id");
+    }
 }
