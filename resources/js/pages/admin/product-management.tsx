@@ -11,27 +11,27 @@ import { SearchProvider } from '@/context/search-provider';
 const topNav = [
     {
         title: 'Overview',
-        href: 'dashboard/overview',
+        href: 'admin',
         isActive: false,
         disabled: false,
     },
     {
         title: 'Customers',
-        href: 'dashboard/customers',
-        isActive: true,
-        disabled: true,
+        href: 'admin/customer-management',
+        isActive: false,
+        disabled: false,
     },
     {
         title: 'Products',
-        href: 'dashboard/products',
-        isActive: false,
-        disabled: true,
+        href: 'admin/product-management',
+        isActive: true,
+        disabled: false,
     },
     {
         title: 'Settings',
-        href: 'dashboard/settings',
+        href: 'admin/settings',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
 ];
 

@@ -1,4 +1,4 @@
-import { PeriodType } from '@/pages/admin/cashflow-management';
+
 import { ArrowUpDown, Download, Search } from 'lucide-react';
 import { useState } from 'react';
 
@@ -13,11 +13,7 @@ interface Transaction {
     customer: string;
 }
 
-interface TransactionTableProps {
-    period: PeriodType;
-}
-
-export function TransactionTable({ period }: TransactionTableProps) {
+export function TransactionTable() {
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;

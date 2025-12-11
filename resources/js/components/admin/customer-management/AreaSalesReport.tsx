@@ -123,6 +123,31 @@ import {
 //     { month: 'Jun', jaksel: 4.5, jakpus: 3.9, jakbar: 3.4, jaktim: 2.9 },
 // ];
 
+interface AreaData {
+    area: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalRevenue: number;
+    avgOrderValue: number;
+    topProduct: string;
+    growth: number;
+}
+
+interface MonthlyAreaData {
+    month: string;
+    jaksel: number;
+    jakpus: number;
+    jakbar: number;
+    jaktim: number;
+}
+
+interface AreaSalesReportProps {
+    data: {
+        areaData: AreaData[];
+        monthlyAreaData: MonthlyAreaData[];
+    };
+}
+
 const COLORS = [
     '#f97316',
     '#3b82f6',
@@ -134,8 +159,10 @@ const COLORS = [
     '#84cc16',
 ];
 
-export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
-    const areaRevenueShare = areaData.map((area: any) => ({
+export function AreaSalesReport({
+    data: { areaData, monthlyAreaData },
+}: AreaSalesReportProps) {
+    const areaRevenueShare = areaData.map((area) => ({
         name: area.area,
         value: area.totalRevenue,
     }));

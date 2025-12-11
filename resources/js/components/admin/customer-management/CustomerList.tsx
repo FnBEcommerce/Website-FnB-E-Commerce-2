@@ -127,7 +127,26 @@ import { useState } from 'react';
 //     },
 // ];
 
-export function CustomerList({ data: { customersData } }: any) {
+interface CustomerData {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    area: string;
+    totalOrders: number;
+    totalSpent: number;
+    lastOrder: string;
+    status: string;
+    avgRating: number;
+}
+
+interface CustomerListProps {
+    data: {
+        customersData: CustomerData[];
+    };
+}
+
+export function CustomerList({ data: { customersData } }: CustomerListProps) {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [areaFilter, setAreaFilter] = useState('all');

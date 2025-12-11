@@ -46,7 +46,7 @@ const topNav = [
     },
 ];
 
-export function Dashboard() {
+export function AdminDashboard() {
     const [activeTab, setActiveTab] = useState('overview');
 
     return (

@@ -25,29 +25,97 @@ import { useState } from 'react';
 const topNav = [
     {
         title: 'Overview',
-        href: 'dashboard/overview',
+        href: 'admin',
         isActive: false,
         disabled: false,
     },
     {
         title: 'Customers',
-        href: 'dashboard/customers',
+        href: 'admin/customer-management',
         isActive: true,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Products',
-        href: 'dashboard/products',
+        href: 'admin/product-management',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Settings',
-        href: 'dashboard/settings',
+        href: 'admin/settings',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
 ];
+
+interface CustomerManagementProps {
+    monthlyCustomers: {
+        month: string;
+        pelanggan: number;
+        pesanan: number;
+    }[];
+    customerSegmentation: {
+        name: string;
+        value: number;
+        color: string;
+    }[];
+    statsData: {
+        title: string;
+        value: string;
+        change: string;
+        icon: React.ElementType;
+        color: string;
+        bgColor: string;
+    }[];
+    customersData: {
+        id: string;
+        name: string;
+        email: string;
+        phone: string;
+        area: string;
+        totalOrders: number;
+        totalSpent: number;
+        lastOrder: string;
+        status: string;
+        avgRating: number;
+    }[];
+    productsData: {
+        id: string;
+        name: string;
+        category: string;
+        totalReviews: number;
+        avgRating: number;
+        rating5: number;
+        rating4: number;
+        rating3: number;
+        rating2: number;
+        rating1: number;
+        totalSold: number;
+        trend: string;
+    }[];
+    ratingDistribution: {
+        rating: string;
+        count: number;
+        color: string;
+    }[];
+    areaData: {
+        area: string;
+        totalCustomers: number;
+        totalOrders: number;
+        totalRevenue: number;
+        avgOrderValue: number;
+        topProduct: string;
+        growth: number;
+    }[];
+    monthlyAreaData: {
+        month: string;
+        jaksel: number;
+        jakpus: number;
+        jakbar: number;
+        jaktim: number;
+    }[];
+}
 
 export default function CustomerManagement({
     monthlyCustomers,
@@ -58,7 +126,7 @@ export default function CustomerManagement({
     ratingDistribution,
     areaData,
     monthlyAreaData,
-}: any) {
+}: CustomerManagementProps) {
     const [activeTab, setActiveTab] = useState('overview');
 
     // console.log(users);

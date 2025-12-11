@@ -10,8 +10,22 @@ import { TopNav } from '@/components/layout/top-nav';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { ThemeSwitch } from '@/components/theme-switch';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
-import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
+import {
+    CreditCard,
+    DollarSign,
+    ShoppingCart,
+    TrendingUp,
+} from 'lucide-react';
 import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -19,33 +33,34 @@ export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
 const topNav = [
     {
         title: 'Overview',
-        href: 'dashboard/overview',
+        href: 'admin',
         isActive: false,
         disabled: false,
     },
     {
         title: 'Customers',
-        href: 'dashboard/customers',
-        isActive: true,
-        disabled: true,
+        href: 'admin/customer-management',
+        isActive: false,
+        disabled: false,
     },
     {
         title: 'Products',
-        href: 'dashboard/products',
+        href: 'admin/product-management',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Settings',
-        href: 'dashboard/settings',
+        href: 'admin/settings',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
 ];
 
 export default function CashflowManagement() {
     const [period, setPeriod] = useState<PeriodType>('monthly');
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [activeTab, setActiveTab] = useState('overview');
 
     // Mock data - in real app, this would come from API
     const summaryData = {
@@ -61,7 +76,7 @@ export default function CashflowManagement() {
     return (
         <AuthenticatedLayout>
             <SearchProvider>
-                {/* ===== Top Heading ===sea== */}
+                {/* ===== Top Heading ===== */}
                 <Header>
                     <TopNav links={topNav} />
                     <div className="ms-auto flex items-center space-x-4">
@@ -74,87 +89,128 @@ export default function CashflowManagement() {
 
                 {/* ===== Main ===== */}
                 <Main>
-                    <div className="min-h-screen bg-gray-50/50">
-                        {/* Header */}
-                        <div className="border-b bg-white">
-                            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                                    <div>
-                                        <h1 className="text-gray-900">
-                                            Manajemen Cash Flow
-                                        </h1>
-                                        <p className="mt-1 text-gray-500">
-                                            Monitor dan analisis pendapatan
-                                            penjualan F&B
-                                        </p>
-                                    </div>
-                                    <DateRangeFilter
-                                        period={period}
-                                        setPeriod={setPeriod}
-                                        selectedDate={selectedDate}
-                                        setSelectedDate={setSelectedDate}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Main Content */}
-                        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-                            {/* Summary Cards */}
-                            <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                <CashflowSummaryCard
-                                    title="Total Pendapatan"
-                                    amount={summaryData.totalRevenue}
-                                    growth={summaryData.revenueGrowth}
-                                    icon={DollarSign}
-                                    iconBgColor="bg-emerald-500"
-                                    iconColor="text-white"
-                                    period={period}
-                                />
-                                <CashflowSummaryCard
-                                    title="Total Pesanan"
-                                    amount={summaryData.totalOrders}
-                                    growth={summaryData.ordersGrowth}
-                                    icon={ShoppingCart}
-                                    iconBgColor="bg-blue-500"
-                                    iconColor="text-white"
-                                    period={period}
-                                    isCount
-                                />
-                                <CashflowSummaryCard
-                                    title="Rata-rata Pesanan"
-                                    amount={summaryData.averageOrder}
-                                    growth={summaryData.averageGrowth}
-                                    icon={CreditCard}
-                                    iconBgColor="bg-violet-500"
-                                    iconColor="text-white"
-                                    period={period}
-                                />
-                                <CashflowSummaryCard
-                                    title="Pertumbuhan"
-                                    amount={summaryData.growth}
-                                    growth={summaryData.growth}
-                                    icon={TrendingUp}
-                                    iconBgColor="bg-amber-500"
-                                    iconColor="text-white"
-                                    period={period}
-                                    isPercentage
-                                />
-                            </div>
-
-                            {/* Charts */}
-                            <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <CashflowChart period={period} type="trend" />
-                                <CashflowChart
-                                    period={period}
-                                    type="category"
-                                />
-                            </div>
-
-                            {/* Transactions Table */}
-                            <TransactionTable period={period} />
+                    <div className="mb-2 flex items-center justify-between space-y-2">
+                        <h1 className="text-2xl font-bold tracking-tight">
+                            Manajemen Cash Flow
+                        </h1>
+                        <div className="flex items-center space-x-2">
+                            <DateRangeFilter
+                                period={period}
+                                setPeriod={setPeriod}
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
+                            <Button>Download</Button>
                         </div>
                     </div>
+                    <Tabs
+                        orientation="vertical"
+                        value={activeTab}
+                        onValueChange={setActiveTab}
+                        className="space-y-4"
+                    >
+                        <div className="w-full overflow-x-auto pb-2">
+                            <TabsList>
+                                <TabsTrigger value="overview">
+                                    Overview
+                                </TabsTrigger>
+                                <TabsTrigger value="charts">Charts</TabsTrigger>
+                                <TabsTrigger value="transactions">
+                                    Transactions
+                                </TabsTrigger>
+                            </TabsList>
+                        </div>
+
+                        <TabsContent value="overview">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Ringkasan</CardTitle>
+                                    <CardDescription>
+                                        Ringkasan pendapatan penjualan F&B Anda.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                                        <CashflowSummaryCard
+                                            title="Total Pendapatan"
+                                            amount={summaryData.totalRevenue}
+                                            growth={summaryData.revenueGrowth}
+                                            icon={DollarSign}
+                                            iconBgColor="bg-emerald-500"
+                                            iconColor="text-white"
+                                            period={period}
+                                        />
+                                        <CashflowSummaryCard
+                                            title="Total Pesanan"
+                                            amount={summaryData.totalOrders}
+                                            growth={summaryData.ordersGrowth}
+                                            icon={ShoppingCart}
+                                            iconBgColor="bg-blue-500"
+                                            iconColor="text-white"
+                                            period={period}
+                                            isCount
+                                        />
+                                        <CashflowSummaryCard
+                                            title="Rata-rata Pesanan"
+                                            amount={summaryData.averageOrder}
+                                            growth={summaryData.averageGrowth}
+                                            icon={CreditCard}
+                                            iconBgColor="bg-violet-500"
+                                            iconColor="text-white"
+                                            period={period}
+                                        />
+                                        <CashflowSummaryCard
+                                            title="Pertumbuhan"
+                                            amount={summaryData.growth}
+                                            growth={summaryData.growth}
+                                            icon={TrendingUp}
+                                            iconBgColor="bg-amber-500"
+                                            iconColor="text-white"
+                                            period={period}
+                                            isPercentage
+                                        />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="charts">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Grafik</CardTitle>
+                                    <CardDescription>
+                                        Visualisasi data cash flow Anda.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                        <CashflowChart
+                                            period={period}
+                                            type="trend"
+                                        />
+                                        <CashflowChart
+                                            period={period}
+                                            type="category"
+                                        />
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="transactions">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Transaksi</CardTitle>
+                                    <CardDescription>
+                                        Daftar semua transaksi yang terekam.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <TransactionTable />
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                    </Tabs>
                 </Main>
             </SearchProvider>
         </AuthenticatedLayout>
