@@ -1,17 +1,16 @@
+import { PeriodType } from '@/pages/admin/cashflow-management';
 import { ArrowUpDown, Download, Search } from 'lucide-react';
 import { useState } from 'react';
-
-type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
 interface Transaction {
     id: string;
     date: string;
-    type: 'income' | 'expense';
     category: string;
     description: string;
     branch: string;
     amount: number;
     paymentMethod: string;
+    customer: string;
 }
 
 interface TransactionTableProps {
@@ -23,107 +22,107 @@ export function TransactionTable({ period }: TransactionTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // Mock transactions data
+    // Mock transactions data - only income
     const transactions: Transaction[] = [
         {
             id: 'TRX001',
             date: '2025-12-11 14:30',
-            type: 'income',
             category: 'Makanan',
             description: 'Pesanan #1234 - Nasi Goreng Special',
             branch: 'Cabang Jakarta Pusat',
             amount: 85000,
             paymentMethod: 'Transfer',
+            customer: 'Ahmad Rizki',
         },
         {
             id: 'TRX002',
             date: '2025-12-11 13:15',
-            type: 'income',
             category: 'Minuman',
             description: 'Pesanan #1233 - Es Teh Manis x3',
             branch: 'Cabang Jakarta Selatan',
             amount: 30000,
             paymentMethod: 'COD',
+            customer: 'Siti Nurhaliza',
         },
         {
             id: 'TRX003',
-            date: '2025-12-11 12:45',
-            type: 'expense',
-            category: 'Bahan Baku',
-            description: 'Pembelian sayuran segar',
-            branch: 'Cabang Jakarta Pusat',
-            amount: 450000,
-            paymentMethod: 'Transfer',
-        },
-        {
-            id: 'TRX004',
             date: '2025-12-11 11:20',
-            type: 'income',
             category: 'Paket',
             description: 'Pesanan #1232 - Paket Hemat A',
             branch: 'Cabang Jakarta Barat',
             amount: 125000,
             paymentMethod: 'Transfer',
+            customer: 'Budi Santoso',
         },
         {
-            id: 'TRX005',
-            date: '2025-12-11 10:30',
-            type: 'expense',
-            category: 'Operasional',
-            description: 'Biaya listrik bulan Desember',
-            branch: 'Cabang Jakarta Pusat',
-            amount: 850000,
-            paymentMethod: 'Transfer',
-        },
-        {
-            id: 'TRX006',
+            id: 'TRX004',
             date: '2025-12-10 16:45',
-            type: 'income',
             category: 'Makanan',
             description: 'Pesanan #1231 - Ayam Bakar',
             branch: 'Cabang Jakarta Timur',
             amount: 95000,
             paymentMethod: 'COD',
+            customer: 'Dewi Lestari',
         },
         {
-            id: 'TRX007',
+            id: 'TRX005',
             date: '2025-12-10 15:30',
-            type: 'income',
             category: 'Snack',
             description: 'Pesanan #1230 - Pisang Goreng x2',
             branch: 'Cabang Jakarta Selatan',
             amount: 40000,
             paymentMethod: 'Transfer',
+            customer: 'Andi Wijaya',
         },
         {
-            id: 'TRX008',
-            date: '2025-12-10 14:15',
-            type: 'expense',
-            category: 'Gaji',
-            description: 'Gaji karyawan periode Desember',
-            branch: 'Semua Cabang',
-            amount: 15000000,
-            paymentMethod: 'Transfer',
-        },
-        {
-            id: 'TRX009',
+            id: 'TRX006',
             date: '2025-12-10 13:00',
-            type: 'income',
             category: 'Minuman',
             description: 'Pesanan #1229 - Kopi Susu',
             branch: 'Cabang Jakarta Pusat',
             amount: 25000,
             paymentMethod: 'COD',
+            customer: 'Rina Hartati',
         },
         {
-            id: 'TRX010',
+            id: 'TRX007',
             date: '2025-12-10 12:30',
-            type: 'income',
             category: 'Makanan',
             description: 'Pesanan #1228 - Sate Ayam',
             branch: 'Cabang Jakarta Barat',
             amount: 75000,
             paymentMethod: 'Transfer',
+            customer: 'Joko Widodo',
+        },
+        {
+            id: 'TRX008',
+            date: '2025-12-09 16:20',
+            category: 'Paket',
+            description: 'Pesanan #1227 - Paket Keluarga',
+            branch: 'Cabang Jakarta Selatan',
+            amount: 185000,
+            paymentMethod: 'Transfer',
+            customer: 'Mega Putri',
+        },
+        {
+            id: 'TRX009',
+            date: '2025-12-09 14:45',
+            category: 'Makanan',
+            description: 'Pesanan #1226 - Nasi Uduk',
+            branch: 'Cabang Jakarta Timur',
+            amount: 45000,
+            paymentMethod: 'COD',
+            customer: 'Arif Rahman',
+        },
+        {
+            id: 'TRX010',
+            date: '2025-12-09 13:15',
+            category: 'Minuman',
+            description: 'Pesanan #1225 - Jus Alpukat x2',
+            branch: 'Cabang Jakarta Pusat',
+            amount: 50000,
+            paymentMethod: 'Transfer',
+            customer: 'Lina Marlina',
         },
     ];
 
@@ -136,6 +135,9 @@ export function TransactionTable({ period }: TransactionTableProps) {
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()) ||
             transaction.category
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+            transaction.customer
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()),
     );
@@ -160,32 +162,43 @@ export function TransactionTable({ period }: TransactionTableProps) {
         alert('Export data ke CSV');
     };
 
+    const totalRevenue = filteredTransactions.reduce(
+        (sum, t) => sum + t.amount,
+        0,
+    );
+
     return (
-        <div className="rounded-lg border border-gray-200 bg-white">
+        <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
             {/* Table Header */}
-            <div className="border-b border-gray-200 p-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <h3 className="text-gray-900">Detail Transaksi</h3>
+            <div className="border-b p-6">
+                <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h3 className="text-gray-900">Detail Transaksi</h3>
+                        <p className="mt-1 text-gray-500">
+                            Total {filteredTransactions.length} transaksi •{' '}
+                            {formatCurrency(totalRevenue)}
+                        </p>
+                    </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row">
                         {/* Search */}
                         <div className="relative">
-                            <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-gray-400" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Cari transaksi..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                className="w-full rounded-lg border py-2 pr-4 pl-9 focus:border-transparent focus:ring-2 focus:ring-emerald-500 focus:outline-none sm:w-64"
                             />
                         </div>
 
                         {/* Export Button */}
                         <button
                             onClick={handleExport}
-                            className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+                            className="flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-white shadow-sm transition-colors hover:bg-emerald-700"
                         >
-                            <Download className="h-5 w-5" />
+                            <Download className="h-4 w-4" />
                             Export
                         </button>
                     </div>
@@ -195,22 +208,19 @@ export function TransactionTable({ period }: TransactionTableProps) {
             {/* Table */}
             <div className="overflow-x-auto">
                 <table className="w-full">
-                    <thead className="border-b border-gray-200 bg-gray-50">
+                    <thead className="border-b bg-gray-50/50">
                         <tr>
                             <th className="px-6 py-3 text-left text-gray-700">
-                                <div className="flex items-center gap-2">
+                                <div className="flex cursor-pointer items-center gap-2 hover:text-gray-900">
                                     ID Transaksi
                                     <ArrowUpDown className="h-4 w-4" />
                                 </div>
                             </th>
                             <th className="px-6 py-3 text-left text-gray-700">
-                                <div className="flex items-center gap-2">
+                                <div className="flex cursor-pointer items-center gap-2 hover:text-gray-900">
                                     Tanggal & Waktu
                                     <ArrowUpDown className="h-4 w-4" />
                                 </div>
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Tipe
                             </th>
                             <th className="px-6 py-3 text-left text-gray-700">
                                 Kategori
@@ -219,67 +229,64 @@ export function TransactionTable({ period }: TransactionTableProps) {
                                 Deskripsi
                             </th>
                             <th className="px-6 py-3 text-left text-gray-700">
+                                Pelanggan
+                            </th>
+                            <th className="px-6 py-3 text-left text-gray-700">
                                 Cabang
                             </th>
                             <th className="px-6 py-3 text-left text-gray-700">
                                 Metode Bayar
                             </th>
                             <th className="px-6 py-3 text-right text-gray-700">
-                                <div className="flex items-center justify-end gap-2">
+                                <div className="flex cursor-pointer items-center justify-end gap-2 hover:text-gray-900">
                                     Jumlah
                                     <ArrowUpDown className="h-4 w-4" />
                                 </div>
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-100">
                         {paginatedTransactions.map((transaction) => (
                             <tr
                                 key={transaction.id}
-                                className="hover:bg-gray-50"
+                                className="transition-colors hover:bg-gray-50/50"
                             >
-                                <td className="px-6 py-4 text-gray-900">
-                                    {transaction.id}
+                                <td className="px-6 py-4">
+                                    <span className="text-gray-900">
+                                        {transaction.id}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-4 text-gray-600">
                                     {transaction.date}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span
-                                        className={`inline-flex rounded px-2 py-1 text-white ${
-                                            transaction.type === 'income'
-                                                ? 'bg-green-600'
-                                                : 'bg-red-600'
-                                        }`}
-                                    >
-                                        {transaction.type === 'income'
-                                            ? 'Pemasukan'
-                                            : 'Pengeluaran'}
+                                    <span className="inline-flex rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-blue-700">
+                                        {transaction.category}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {transaction.category}
+                                <td className="max-w-xs truncate px-6 py-4 text-gray-600">
+                                    {transaction.description}
                                 </td>
                                 <td className="px-6 py-4 text-gray-600">
-                                    {transaction.description}
+                                    {transaction.customer}
                                 </td>
                                 <td className="px-6 py-4 text-gray-600">
                                     {transaction.branch}
                                 </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {transaction.paymentMethod}
+                                <td className="px-6 py-4">
+                                    <span
+                                        className={`inline-flex rounded-md px-2.5 py-1 ${
+                                            transaction.paymentMethod ===
+                                            'Transfer'
+                                                ? 'border border-violet-100 bg-violet-50 text-violet-700'
+                                                : 'border border-amber-100 bg-amber-50 text-amber-700'
+                                        }`}
+                                    >
+                                        {transaction.paymentMethod}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <span
-                                        className={
-                                            transaction.type === 'income'
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
-                                        }
-                                    >
-                                        {transaction.type === 'income'
-                                            ? '+'
-                                            : '-'}
+                                    <span className="text-emerald-700">
                                         {formatCurrency(transaction.amount)}
                                     </span>
                                 </td>
@@ -290,7 +297,7 @@ export function TransactionTable({ period }: TransactionTableProps) {
             </div>
 
             {/* Pagination */}
-            <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4">
+            <div className="flex items-center justify-between border-t bg-gray-50/30 px-6 py-4">
                 <p className="text-gray-600">
                     Menampilkan {startIndex + 1} -{' '}
                     {Math.min(
@@ -305,22 +312,22 @@ export function TransactionTable({ period }: TransactionTableProps) {
                             setCurrentPage((prev) => Math.max(prev - 1, 1))
                         }
                         disabled={currentPage === 1}
-                        className="rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg border px-4 py-2 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         Sebelumnya
                     </button>
                     <div className="flex gap-1">
                         {Array.from(
-                            { length: totalPages },
+                            { length: Math.min(totalPages, 5) },
                             (_, i) => i + 1,
                         ).map((page) => (
                             <button
                                 key={page}
                                 onClick={() => setCurrentPage(page)}
-                                className={`rounded-lg px-4 py-2 ${
+                                className={`rounded-lg px-4 py-2 transition-colors ${
                                     currentPage === page
-                                        ? 'bg-blue-600 text-white'
-                                        : 'border border-gray-300 hover:bg-gray-50'
+                                        ? 'bg-emerald-600 text-white shadow-sm'
+                                        : 'border hover:bg-white'
                                 }`}
                             >
                                 {page}
@@ -334,7 +341,7 @@ export function TransactionTable({ period }: TransactionTableProps) {
                             )
                         }
                         disabled={currentPage === totalPages}
-                        className="rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-lg border px-4 py-2 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
                     >
                         Selanjutnya
                     </button>
