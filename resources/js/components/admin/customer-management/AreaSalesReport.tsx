@@ -159,19 +159,11 @@ const COLORS = [
     '#84cc16',
 ];
 
-<<<<<<< HEAD
+
 export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
     const areaRevenueShare = areaData.map((area: any) => ({
     name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
     value: area.totalRevenue,
-=======
-export function AreaSalesReport({
-    data: { areaData, monthlyAreaData },
-}: AreaSalesReportProps) {
-    const areaRevenueShare = areaData.map((area) => ({
-        name: area.area,
-        value: area.totalRevenue,
->>>>>>> 5f66accd661d05191e67f7dfffa4a85ad7decd4c
     }));
 
     const [sortBy, setSortBy] = useState('revenue');
