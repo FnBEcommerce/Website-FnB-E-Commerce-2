@@ -161,7 +161,7 @@ export default function HomePage({ products }: HomePageProps) {
                     <div className="container mx-auto px-4">
                         <div className="mb-14 flex justify-center">
                             <h2 className="text-4xl font-extrabold">
-                                Our Menu
+                                Menu Kami
                             </h2>
                         </div>
 

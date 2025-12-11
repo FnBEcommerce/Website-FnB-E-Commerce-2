@@ -51,8 +51,8 @@ export function Features() {
                                     className="border-none bg-white shadow-none backdrop-blur-sm"
                                 >
                                     <CardContent className="flex items-start space-x-4 p-6">
-                                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-green-100">
-                                            <feature.icon className="h-6 w-6 text-green-600" />
+                                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-orange-100">
+                                            <feature.icon className="h-6 w-6 text-orange-600" />
                                         </div>
                                         <div>
                                             <h3 className="mb-2 text-lg font-semibold text-gray-800">
@@ -72,15 +72,15 @@ export function Features() {
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-4">
                             <div className="aspect-square overflow-hidden rounded-xl shadow-lg">
-                                <ImageWithFallback
-                                    src="https://images.unsplash.com/photo-1561758033-48d52648ae8b?w=300&h=300&fit=crop"
+                                <img
+                                    src="images/coca.jpg"
                                     alt="Freeze dried strawberries"
                                     className="h-full w-full object-cover"
                                 />
                             </div>
                             <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-                                <ImageWithFallback
-                                    src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=300&h=225&fit=crop"
+                                <img
+                                    src="images/Pizza.jpg"
                                     alt="Camping meal preparation"
                                     className="h-full w-full object-cover"
                                 />
@@ -88,8 +88,8 @@ export function Features() {
                         </div>
                         <div className="space-y-4 pt-8">
                             <div className="aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
-                                <ImageWithFallback
-                                    src="https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?w=300&h=225&fit=crop"
+                                <img
+                                    src="images/Kentang.jpg"
                                     alt="Emergency food storage"
                                     className="h-full w-full object-cover"
                                 />

@@ -13,10 +13,9 @@ export function SignUpForm() {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      <h1 className="text-teal-500 mb-8">Create Account</h1>
+      <h1 className="text-orange-500 mb-8">Buat Akun Anda</h1>
 
-      {/* Social Login Buttons */}
-      <div className="flex justify-center gap-4 mb-6">
+      {/* <div className="flex justify-center gap-4 mb-6">
         <button className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
           <Facebook className="w-5 h-5" />
         </button>
@@ -35,17 +34,17 @@ export function SignUpForm() {
 
       <p className="text-center text-gray-500 text-sm mb-6">
         or use your email for registration:
-      </p>
+      </p> */}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
           <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Nama Pengguna"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             required
           />
         </div>
@@ -54,10 +53,10 @@ export function SignUpForm() {
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Kata Sandi"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             required
           />
         </div>
@@ -66,19 +65,19 @@ export function SignUpForm() {
           <Home className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Home Address"
+            placeholder="Alamat Rumah"
             value={homeAddress}
             onChange={(e) => setHomeAddress(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors mt-6"
+          className="w-full py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors mt-6"
         >
-          SIGN UP
+          DAFTAR
         </button>
       </form>
     </div>

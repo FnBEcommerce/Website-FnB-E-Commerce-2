@@ -23,7 +23,7 @@ export function Hero() {
                         <div className="space-y-4">
                             <h1 className="text-4xl leading-tight font-bold text-white drop-shadow-lg md:text-6xl">
                                 {t('heroTitle')}
-                                <span className="text-green-200">
+                                <span className="text-white">
                                     {' '}
                                     {t('heroTitleHighlight')}
                                 </span>
@@ -129,29 +129,29 @@ export function Hero() {
                     {/* Image */}
                     <div className="relative">
                         <div className="aspect-square overflow-hidden rounded-2xl shadow-2xl">
-                            <ImageWithFallback
-                                src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&h=600&fit=crop"
+                            <img
+                                src="images/menu.jpg"
                                 alt="Premium freeze dried fruits and vegetables"
                                 className="h-full w-full object-cover"
                             />
                         </div>
                         {/* Floating Elements */}
-                        <div className="absolute -top-4 -right-4 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur-sm">
+                        <div className="absolute -top-4 -right-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-primary">
+                                <div className="text-2xl font-bold text-white">
                                     100%
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-white">
                                     Halal
                                 </div>
                             </div>
                         </div>
-                        <div className="absolute -bottom-4 -left-4 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur-sm">
+                        <div className="absolute -bottom-4 -left-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">
                             <div className="text-center">
-                                <div className="text-2xl font-bold text-primary">
+                                <div className="text-2xl font-bold text-white">
                                     98%
                                 </div>
-                                <div className="text-sm text-gray-600">
+                                <div className="text-sm text-white">
                                     Berkualitas
                                 </div>
                             </div>

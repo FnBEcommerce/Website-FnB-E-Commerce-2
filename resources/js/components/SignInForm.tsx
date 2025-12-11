@@ -12,10 +12,9 @@ export function SignInForm() {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      <h1 className="text-teal-500 mb-8">Sign in to Diprella</h1>
+      <h1 className="text-orange-500 mb-8">Masuk ke FNB E-Commerce</h1>
 
-      {/* Social Login Buttons */}
-      <div className="flex justify-center gap-4 mb-6">
+      {/* <div className="flex justify-center gap-4 mb-6">
         <button className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
           <Facebook className="w-5 h-5" />
         </button>
@@ -30,21 +29,21 @@ export function SignInForm() {
         <button className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
           <Linkedin className="w-5 h-5" />
         </button>
-      </div>
+      </div> */}
 
-      <p className="text-center text-gray-500 text-sm mb-6">
+      {/* <p className="text-center text-gray-500 text-sm mb-6">
         or use your email account:
-      </p>
+      </p> */}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="relative">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Nama Pengguna"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             required
           />
         </div>
@@ -53,26 +52,26 @@ export function SignInForm() {
           <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Kata Sandi"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             required
           />
         </div>
 
         <button
           type="button"
-          className="text-gray-600 text-sm hover:text-teal-500 transition-colors"
+          className="text-gray-600 text-sm hover:text-orange-500 transition-colors"
         >
-          Forgot your password?
+          Lupa kata sandi Anda?
         </button>
 
         <button
           type="submit"
-          className="w-full py-3 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors mt-6"
+          className="w-full py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors mt-6"
         >
-          SIGN IN
+          MASUK
         </button>
       </form>
     </div>

@@ -34,7 +34,7 @@ export function Footer() {
                             placeholder="Enter your email"
                             className="border-gray-700 bg-gray-800 text-white placeholder-gray-400"
                         />
-                        <Button className="bg-green-600 hover:bg-green-700">
+                        <Button className="bg-orange-600 hover:bg-orange-700">
                             {t('subscribe')}
                         </Button>
                     </div>
@@ -209,20 +209,20 @@ export function Footer() {
                         </h4>
                         <div className="space-y-4">
                             <div className="flex items-start space-x-3">
-                                <MapPin className="mt-0.5 h-5 w-5 text-green-400" />
+                                <MapPin className="mt-0.5 h-5 w-5 text-orange-600" />
                                 <div className="text-gray-400">
                                     <p>Krian, Sidoarjo, Jawa Timur</p>
                                     <p></p>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <Phone className="h-5 w-5 text-green-400" />
+                                <Phone className="h-5 w-5 text-orange-600" />
                                 <span className="text-gray-400">
                                     081-***-***
                                 </span>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <Mail className="h-5 w-5 text-green-400" />
+                                <Mail className="h-5 w-5 text-orange-600" />
                                 <span className="text-gray-400">
                                     PerusahaanFNB@gmail.com
                                 </span>
