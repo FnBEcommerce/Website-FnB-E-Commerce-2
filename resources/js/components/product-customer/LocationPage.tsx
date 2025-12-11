@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { User } from '@/types/user';
 import {
     Briefcase,
     Check,
@@ -16,6 +17,7 @@ import {
 import { useState } from 'react';
 
 interface LocationPageProps {
+    user: User;
     onNavigateToCheckout: () => void;
     onNavigateToHome: () => void;
 }
@@ -24,16 +26,15 @@ interface SavedAddress {
     id: number;
     type: 'home' | 'work' | 'other';
     name: string;
-    address: string;
-    landmark: string;
+    address: string; // Menampung data Street
     city: string;
     state: string;
-    pincode: string;
     phone: string;
     isDefault: boolean;
 }
 
 export function LocationPage({
+    user,
     onNavigateToCheckout,
     onNavigateToHome,
 }: LocationPageProps) {
@@ -44,45 +45,60 @@ export function LocationPage({
     );
     const [detectingLocation, setDetectingLocation] = useState(false);
 
-    // Form states
+    // Form states: Variabel area diubah menjadi street
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
-        houseNo: '',
-        area: '',
-        landmark: '',
+        street: '',
         city: '',
         state: '',
-        pincode: '',
         addressType: 'home' as 'home' | 'work' | 'other',
     });
 
-    const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([
-        {
-            id: 1,
-            type: 'home',
-            name: 'Rajesh Kumar',
-            address: '123, Green Park Colony, Sector 12',
-            landmark: 'Near City Mall',
-            city: 'Mumbai',
-            state: 'Maharashtra',
-            pincode: '400001',
-            phone: '+91 98765 43210',
-            isDefault: true,
-        },
-        {
-            id: 2,
-            type: 'work',
-            name: 'Rajesh Kumar',
-            address: '456, Tech Park, Andheri East',
-            landmark: 'Opposite Metro Station',
-            city: 'Mumbai',
-            state: 'Maharashtra',
-            pincode: '400069',
-            phone: '+91 98765 43210',
-            isDefault: false,
-        },
-    ]);
+    const initialAddresses: SavedAddress[] = !user.altAddressInfo
+        ? [
+              {
+                  id: 1,
+                  type: user.addressInfo.label
+                      ? user.addressInfo.label
+                      : 'home',
+                  name: user.fullName,
+                  address: user.addressInfo.street,
+                  city: user.addressInfo.city,
+                  state: user.addressInfo.state,
+                  phone: user.fullNumber,
+                  isDefault: true,
+              },
+          ]
+        : [
+              {
+                  id: 1,
+                  type: user.addressInfo.label
+                      ? user.addressInfo.label
+                      : 'home',
+                  name: user.fullName,
+                  address: user.addressInfo.street,
+                  city: user.addressInfo.city,
+                  state: user.addressInfo.state,
+                  phone: user.fullNumber,
+                  isDefault: true,
+              },
+              {
+                  id: 2,
+                  type: user.altAddressInfo.label
+                      ? user.altAddressInfo.label
+                      : 'home',
+                  name: user.fullName,
+                  address: user.altAddressInfo.street,
+                  city: user.altAddressInfo.city,
+                  state: user.altAddressInfo.state,
+                  phone: user.fullNumber,
+                  isDefault: false,
+              },
+          ];
+
+    const [savedAddresses, setSavedAddresses] =
+        useState<SavedAddress[]>(initialAddresses);
 
     const recentSearches = [
         'Green Park Colony, Mumbai',
@@ -92,10 +108,9 @@ export function LocationPage({
 
     const detectCurrentLocation = () => {
         setDetectingLocation(true);
-        // Simulate location detection
         setTimeout(() => {
             setDetectingLocation(false);
-            setSearchQuery('Current Location: Powai, Mumbai 400076');
+            setSearchQuery('Current Location: Powai, Mumbai');
         }, 1500);
     };
 
@@ -104,14 +119,13 @@ export function LocationPage({
     };
 
     const saveNewAddress = () => {
+        // Validasi diperbarui: mengecek street, bukan area
         if (
             !formData.name ||
             !formData.phone ||
-            !formData.houseNo ||
-            !formData.area ||
+            !formData.street || // Updated
             !formData.city ||
-            !formData.state ||
-            !formData.pincode
+            !formData.state
         ) {
             alert('Please fill all required fields');
             return;
@@ -121,11 +135,9 @@ export function LocationPage({
             id: savedAddresses.length + 1,
             type: formData.addressType,
             name: formData.name,
-            address: `${formData.houseNo}, ${formData.area}`,
-            landmark: formData.landmark,
+            address: formData.street, // Updated: Menggunakan street
             city: formData.city,
             state: formData.state,
-            pincode: formData.pincode,
             phone: formData.phone,
             isDefault: savedAddresses.length === 0,
         };
@@ -135,12 +147,9 @@ export function LocationPage({
         setFormData({
             name: '',
             phone: '',
-            houseNo: '',
-            area: '',
-            landmark: '',
+            street: '', // Updated reset state
             city: '',
             state: '',
-            pincode: '',
             addressType: 'home',
         });
     };
@@ -246,7 +255,7 @@ export function LocationPage({
                                     onChange={(e) =>
                                         setSearchQuery(e.target.value)
                                     }
-                                    placeholder="Search for area, street name, landmark..."
+                                    placeholder="Search for area, street name..."
                                     className="border-2 border-gray-200 py-6 pl-12 text-[16px] focus:border-[#059669]"
                                 />
                             </div>
@@ -343,34 +352,17 @@ export function LocationPage({
                                             </div>
                                         </div>
 
+                                        {/* Updated Field: Street */}
                                         <div>
-                                            <Label htmlFor="houseNo">
-                                                House No. / Building Name *
+                                            <Label htmlFor="street">
+                                                Street *
                                             </Label>
                                             <Input
-                                                id="houseNo"
-                                                value={formData.houseNo}
+                                                id="street"
+                                                value={formData.street}
                                                 onChange={(e) =>
                                                     handleInputChange(
-                                                        'houseNo',
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                placeholder="123, Green Tower"
-                                                className="mt-1"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <Label htmlFor="area">
-                                                Area / Street / Colony *
-                                            </Label>
-                                            <Input
-                                                id="area"
-                                                value={formData.area}
-                                                onChange={(e) =>
-                                                    handleInputChange(
-                                                        'area',
+                                                        'street',
                                                         e.target.value,
                                                     )
                                                 }
@@ -379,25 +371,7 @@ export function LocationPage({
                                             />
                                         </div>
 
-                                        <div>
-                                            <Label htmlFor="landmark">
-                                                Landmark (Optional)
-                                            </Label>
-                                            <Input
-                                                id="landmark"
-                                                value={formData.landmark}
-                                                onChange={(e) =>
-                                                    handleInputChange(
-                                                        'landmark',
-                                                        e.target.value,
-                                                    )
-                                                }
-                                                placeholder="Near City Mall"
-                                                className="mt-1"
-                                            />
-                                        </div>
-
-                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                             <div>
                                                 <Label htmlFor="city">
                                                     City *
@@ -429,23 +403,6 @@ export function LocationPage({
                                                         )
                                                     }
                                                     placeholder="Maharashtra"
-                                                    className="mt-1"
-                                                />
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="pincode">
-                                                    Pincode *
-                                                </Label>
-                                                <Input
-                                                    id="pincode"
-                                                    value={formData.pincode}
-                                                    onChange={(e) =>
-                                                        handleInputChange(
-                                                            'pincode',
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    placeholder="400001"
                                                     className="mt-1"
                                                 />
                                             </div>
@@ -528,7 +485,9 @@ export function LocationPage({
 
                                         <div className="flex items-start gap-3 pr-8">
                                             <div
-                                                className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${getAddressColor(address.type)}`}
+                                                className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${getAddressColor(
+                                                    address.type,
+                                                )}`}
                                             >
                                                 {getAddressIcon(address.type)}
                                             </div>
@@ -556,13 +515,11 @@ export function LocationPage({
                                                     {address.phone}
                                                 </p>
                                                 <p className="text-[14px] text-gray-600">
-                                                    {address.address},{' '}
-                                                    {address.landmark}
+                                                    {address.address}
                                                 </p>
                                                 <p className="text-[14px] text-gray-600">
                                                     {address.city},{' '}
-                                                    {address.state} -{' '}
-                                                    {address.pincode}
+                                                    {address.state}
                                                 </p>
 
                                                 <div className="mt-3 flex gap-3">
@@ -704,7 +661,9 @@ export function LocationPage({
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <div
-                                                        className={`flex h-8 w-8 items-center justify-center rounded-full ${getAddressColor(address.type)}`}
+                                                        className={`flex h-8 w-8 items-center justify-center rounded-full ${getAddressColor(
+                                                            address.type,
+                                                        )}`}
                                                     >
                                                         {getAddressIcon(
                                                             address.type,
@@ -723,11 +682,11 @@ export function LocationPage({
                                                     {address.name}
                                                 </p>
                                                 <p className="text-[13px] text-gray-600">
-                                                    {address.address},{' '}
-                                                    {address.landmark},{' '}
+                                                    {address.address}
+                                                </p>
+                                                <p className="text-[13px] text-gray-600">
                                                     {address.city},{' '}
-                                                    {address.state} -{' '}
-                                                    {address.pincode}
+                                                    {address.state}
                                                 </p>
                                             </div>
                                         ))}

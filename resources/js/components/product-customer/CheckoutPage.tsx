@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import { User } from '@/types/user';
 import {
     Banknote,
     CreditCard,
@@ -19,11 +20,13 @@ import {
 import { useState } from 'react';
 
 interface CheckoutPageProps {
+    user: User;
     onNavigateToLocation: () => void;
     onNavigateToHome: () => void;
 }
 
 export function CheckoutPage({
+    user,
     onNavigateToLocation,
     onNavigateToHome,
 }: CheckoutPageProps) {
@@ -56,11 +59,9 @@ export function CheckoutPage({
     const [deliveryAddress, setDeliveryAddress] = useState({
         name: 'Rajesh Kumar',
         phone: '+91 98765 43210',
-        address: '123, Green Park Colony, Sector 12',
-        landmark: 'Near City Mall',
+        street: 'Green Park Colony, Sector 12', // Updated from address
         city: 'Mumbai',
         state: 'Maharashtra',
-        pincode: '400001',
     });
 
     const updateQuantity = (id: number, newQuantity: number) => {
@@ -177,14 +178,14 @@ export function CheckoutPage({
                                         <p className="mb-1 text-[14px] text-gray-700">
                                             {deliveryAddress.phone}
                                         </p>
+                                        {/* Updated Rendering: Street Only */}
                                         <p className="text-[14px] text-gray-600">
-                                            {deliveryAddress.address},{' '}
-                                            {deliveryAddress.landmark}
+                                            {deliveryAddress.street}
                                         </p>
+                                        {/* Updated Rendering: City, State Only (No Pincode) */}
                                         <p className="text-[14px] text-gray-600">
                                             {deliveryAddress.city},{' '}
-                                            {deliveryAddress.state} -{' '}
-                                            {deliveryAddress.pincode}
+                                            {deliveryAddress.state}
                                         </p>
                                     </div>
                                 </div>
@@ -607,36 +608,6 @@ export function CheckoutPage({
                                     Terms & Conditions
                                 </p>
                             </Card>
-
-                            {/* Trust Badges */}
-                            {/* <Card className="rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-yellow-50 p-4">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#059669]">
-                                            <span className="text-[12px] text-white">
-                                                ✓
-                                            </span>
-                                        </div>
-                                        <span>100% Safe & Secure Payments</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#059669]">
-                                            <span className="text-[12px] text-white">
-                                                ✓
-                                            </span>
-                                        </div>
-                                        <span>Easy Returns & Refunds</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                        <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#059669]">
-                                            <span className="text-[12px] text-white">
-                                                ✓
-                                            </span>
-                                        </div>
-                                        <span>Genuine Quality Products</span>
-                                    </div>
-                                </div>
-                            </Card> */}
                         </div>
                     </div>
                 </div>

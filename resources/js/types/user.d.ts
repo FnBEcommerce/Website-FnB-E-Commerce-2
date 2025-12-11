@@ -2,6 +2,7 @@ type AddressInfo = {
     street: string;
     city: string;
     state: string;
+    label?: 'home' | 'work' | 'other';
 };
 
 export type User = {
@@ -12,4 +13,5 @@ export type User = {
     birthDate: Date;
     gender: string;
     addressInfo: AddressInfo;
+    altAddressInfo?: AddressInfo;
 };

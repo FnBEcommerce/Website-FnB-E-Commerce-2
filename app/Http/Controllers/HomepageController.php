@@ -130,6 +130,25 @@ class HomepageController extends Controller
     }
 
     public function productDetail() {
+        $user = [
+            'fullName' => 'Budi Santoso',
+            'email' => 'budi.santoso@example.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+            'fullNumber' => '+6281234567890',
+            'birthDate' => '1990-05-15',
+            'gender' => 'Male',
+            'addressInfo' => [
+                'street' => 'Jl. Sudirman No. 45, Kebayoran Baru',
+                'city' => 'Jakarta Selatan',
+                'state' => 'DKI Jakarta',
+            ],
+            'altAddressInfo' => [
+                'street' => 'Jl. Dago Pakar Utara No. 12',
+                'city' => 'Bandung',
+                'state' => 'Jawa Barat',
+            ],
+        ];
+
         // Product Images (Indexed Array)
         $productImages = [
             'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
@@ -253,6 +272,7 @@ class HomepageController extends Controller
             ],
         ];
         $props = [
+            'user' => $user,
             'productImages' => $productImages,
             'product' => $product,
             'suggestedProducts' => $suggestedProducts,

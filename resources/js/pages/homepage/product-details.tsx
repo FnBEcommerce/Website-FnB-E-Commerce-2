@@ -10,6 +10,7 @@ import { SuggestedProducts } from '@/components/product-customer/SuggestedProduc
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import type { Product } from '@/types/product';
 import { Review } from '@/types/review';
+import { User } from '@/types/user';
 import { ReactNode } from 'react';
 
 export type SuggestedProduct = {
@@ -24,6 +25,7 @@ export type SuggestedProduct = {
 };
 
 type ProductDetailsProps = {
+    user: User;
     productImages: string[];
     product: Product;
     reviews: Review[];
@@ -31,6 +33,7 @@ type ProductDetailsProps = {
 };
 
 export default function ProductDetailsPage({
+    user,
     productImages,
     product,
     suggestedProducts,
@@ -100,6 +103,7 @@ export default function ProductDetailsPage({
             {currentPage === 'checkout' && (
                 <main className="flex-1">
                     <CheckoutPage
+                        user={user}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />
@@ -109,6 +113,7 @@ export default function ProductDetailsPage({
             {currentPage === 'location' && (
                 <main className="flex-1">
                     <LocationPage
+                        user={user}
                         onNavigateToCheckout={() => setCurrentPage('checkout')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />
