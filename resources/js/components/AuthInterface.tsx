@@ -24,24 +24,24 @@ export function AuthInterface() {
           </div>
 
           {/* Right Side - Welcome Panel */}
-          <div className="w-1/2 bg-gradient-to-br from-teal-400 to-teal-500 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden">
+          <div className="w-1/2 bg-gradient-to-br from-orange-400 to-orange-500 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden">
             {/* Decorative circles */}
-            <div className="absolute top-20 right-20 w-32 h-32 bg-teal-300/20 rounded-full"></div>
-            <div className="absolute bottom-20 left-20 w-40 h-40 bg-teal-600/20 rounded-full"></div>
-            <div className="absolute top-1/2 left-10 w-24 h-24 bg-teal-300/10 rounded-full"></div>
-            
+            <div className="absolute top-20 right-20 w-32 h-32 bg-red-300/20 rounded-full"></div>
+            <div className="absolute bottom-20 left-20 w-40 h-40 bg-red-600/20 rounded-full"></div>
+            <div className="absolute top-1/2 left-10 w-24 h-24 bg-orange-100/10 rounded-full"></div>
+
             <div className="relative z-10 text-center">
-              <h2 className="mb-4">Hello, Friend!</h2>
+              <h2 className="mb-4">Halo, Pelanggan !</h2>
               <p className="mb-8 text-white/90">
-                Enter your personal details
+                Masukkan detail pribadi Anda
                 <br />
-                and start journey with us
+                dan mulailah memesan
               </p>
               <button
                 onClick={() => setIsSignUp(true)}
                 className="px-12 py-3 border-2 border-white rounded-full hover:bg-white/10 transition-colors"
               >
-                SIGN UP
+                DAFTAR
               </button>
             </div>
           </div>
@@ -56,28 +56,28 @@ export function AuthInterface() {
       >
         <div className="flex h-full">
           {/* Left Side - Welcome Back Panel */}
-          <div className="w-1/2 bg-gradient-to-br from-teal-400 to-teal-500 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden">
+          <div className="w-1/2 bg-gradient-to-br from-orange-400 to-orange-500 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden">
             <div className="absolute top-8 left-8">
               <Logo light />
             </div>
-            
+
             {/* Decorative circles */}
-            <div className="absolute top-20 left-20 w-32 h-32 bg-teal-300/20 rounded-full"></div>
-            <div className="absolute bottom-20 right-20 w-40 h-40 bg-teal-600/20 rounded-full"></div>
-            <div className="absolute top-1/2 right-10 w-24 h-24 bg-teal-300/10 rounded-full"></div>
-            
+            <div className="absolute top-20 right-20 w-32 h-32 bg-red-300/20 rounded-full"></div>
+            <div className="absolute bottom-20 left-20 w-40 h-40 bg-red-600/20 rounded-full"></div>
+            <div className="absolute top-1/2 left-10 w-24 h-24 bg-orange-100/10 rounded-full"></div>
+
             <div className="relative z-10 text-center">
-              <h2 className="mb-4">Welcome Back!</h2>
+              <h2 className="mb-4">Selamat Datang kembali!</h2>
               <p className="mb-8 text-white/90">
-                To keep connected with us please
+                Untuk tetap terhubung dengan kami, silakan
                 <br />
-                login with your personal info
+                Masuk dengan informasi pribadi Anda
               </p>
               <button
                 onClick={() => setIsSignUp(false)}
                 className="px-12 py-3 border-2 border-white rounded-full hover:bg-white/10 transition-colors"
               >
-                SIGN IN
+                MASUK
               </button>
             </div>
           </div>
