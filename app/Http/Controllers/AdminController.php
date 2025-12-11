@@ -315,42 +315,42 @@ class AdminController extends Controller
                 'topProduct' => 'Es Teh Manis',
                 'growth' => 8.7,
             ],
-            [
-                'area' => 'Bandung',
-                'totalCustomers' => 478,
-                'totalOrders' => 1890,
-                'totalRevenue' => 25600000,
-                'avgOrderValue' => 135449,
-                'topProduct' => 'Nasi Goreng Spesial',
-                'growth' => 11.2,
-            ],
-            [
-                'area' => 'Surabaya',
-                'totalCustomers' => 423,
-                'totalOrders' => 1650,
-                'totalRevenue' => 22100000,
-                'avgOrderValue' => 133939,
-                'topProduct' => 'Sate Ayam',
-                'growth' => 9.8,
-            ],
-            [
-                'area' => 'Yogyakarta',
-                'totalCustomers' => 356,
-                'totalOrders' => 1420,
-                'totalRevenue' => 18900000,
-                'avgOrderValue' => 133099,
-                'topProduct' => 'Mie Goreng',
-                'growth' => 7.5,
-            ],
-            [
-                'area' => 'Semarang',
-                'totalCustomers' => 289,
-                'totalOrders' => 1150,
-                'totalRevenue' => 15400000,
-                'avgOrderValue' => 133913,
-                'topProduct' => 'Ayam Geprek',
-                'growth' => 6.3,
-            ],
+            // [
+            //     'area' => 'Bandung',
+            //     'totalCustomers' => 478,
+            //     'totalOrders' => 1890,
+            //     'totalRevenue' => 25600000,
+            //     'avgOrderValue' => 135449,
+            //     'topProduct' => 'Nasi Goreng Spesial',
+            //     'growth' => 11.2,
+            // ],
+            // [
+            //     'area' => 'Surabaya',
+            //     'totalCustomers' => 423,
+            //     'totalOrders' => 1650,
+            //     'totalRevenue' => 22100000,
+            //     'avgOrderValue' => 133939,
+            //     'topProduct' => 'Sate Ayam',
+            //     'growth' => 9.8,
+            // ],
+            // [
+            //     'area' => 'Yogyakarta',
+            //     'totalCustomers' => 356,
+            //     'totalOrders' => 1420,
+            //     'totalRevenue' => 18900000,
+            //     'avgOrderValue' => 133099,
+            //     'topProduct' => 'Mie Goreng',
+            //     'growth' => 7.5,
+            // ],
+            // [
+            //     'area' => 'Semarang',
+            //     'totalCustomers' => 289,
+            //     'totalOrders' => 1150,
+            //     'totalRevenue' => 15400000,
+            //     'avgOrderValue' => 133913,
+            //     'topProduct' => 'Ayam Geprek',
+            //     'growth' => 6.3,
+            // ],
         ];
 
         $monthlyAreaData = [
@@ -360,9 +360,10 @@ class AdminController extends Controller
             [ 'month' => 'Apr', 'jaksel' => 4.0, 'jakpus' => 3.5, 'jakbar' => 3.0, 'jaktim' => 2.6 ],
             [ 'month' => 'Mei', 'jaksel' => 4.2, 'jakpus' => 3.7, 'jakbar' => 3.2, 'jaktim' => 2.7 ],
             [ 'month' => 'Jun', 'jaksel' => 4.5, 'jakpus' => 3.9, 'jakbar' => 3.4, 'jaktim' => 2.9 ],
+
         ];
 
-        
+
         $props = [
             'monthlyCustomers' => $monthlyCustomers,
             'customerSegmentation' => $customerSegmentation,

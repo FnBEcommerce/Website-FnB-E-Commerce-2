@@ -136,8 +136,8 @@ const COLORS = [
 
 export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
     const areaRevenueShare = areaData.map((area: any) => ({
-        name: area.area,
-        value: area.totalRevenue,
+    name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
+    value: area.totalRevenue,
     }));
 
     const [sortBy, setSortBy] = useState('revenue');
@@ -298,9 +298,10 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
-                                    label={({ name, percent }) =>
-                                        `${name.split(' ')[0]}: ${(percent * 100).toFixed(0)}%`
-                                    }
+                                    label={({ name, percent }) => {
+                                        const formatted = name.split(/(?=[A-Z])/).join(' ');
+                                        return `${formatted}: ${(percent * 100).toFixed(0)}%`;
+                                    }}
                                     outerRadius={100}
                                     fill="#8884d8"
                                     dataKey="value"
@@ -312,6 +313,7 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                         />
                                     ))}
                                 </Pie>
+
                                 <Tooltip
                                     formatter={(value: number) =>
                                         formatCurrency(value)

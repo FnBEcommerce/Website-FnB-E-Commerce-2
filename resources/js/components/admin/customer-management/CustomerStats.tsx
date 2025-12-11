@@ -73,20 +73,26 @@ export function CustomerStats({
         {
             title: 'Total Pelanggan',
             icon: Users,
+            color: 'text-orange-600',
         },
         {
             title: 'Pesanan Bulan Ini',
             icon: ShoppingCart,
+            color: 'text-orange-600',
         },
         {
             title: 'Pelanggan Aktif',
             icon: TrendingUp,
+            color: 'text-orange-600',
         },
         {
             title: 'Rata-rata Transaksi',
             icon: DollarSign,
+            color: 'text-orange-600',
         },
     ];
+
+
 
     return (
         <div className="space-y-6">
@@ -100,12 +106,10 @@ export function CustomerStats({
                                 <CardTitle className="text-sm font-medium">
                                     {statCards[index].title}
                                 </CardTitle>
-                                <Icon />
+                                <Icon className={statCards[index].color} />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">
-                                    {stat.value}
-                                </div>
+                                <div className="text-2xl font-bold">{stat.value}</div>
                                 <p className="text-xs text-muted-foreground">
                                     {stat.change} dari bulan lalu
                                 </p>
@@ -131,14 +135,14 @@ export function CustomerStats({
                                 <Line
                                     type="monotone"
                                     dataKey="pelanggan"
-                                    stroke="#3b82f6"
+                                    stroke="#10b981"
                                     strokeWidth={2}
                                     name="Pelanggan Baru"
                                 />
                                 <Line
                                     type="monotone"
                                     dataKey="pesanan"
-                                    stroke="#10b981"
+                                    stroke="#3b82f6"
                                     strokeWidth={2}
                                     name="Total Pesanan"
                                 />
