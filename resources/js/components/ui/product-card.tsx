@@ -14,7 +14,7 @@ import type { Product } from '@/types/product';
 // }
 
 
-function ProductCard({ id, category, name, rating, price,image }: Product) {
+function ProductCard({ id, category, name, rating, priceDiscount ,image }: Product) {
   return (
    <div key={id} className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -50,7 +50,7 @@ function ProductCard({ id, category, name, rating, price,image }: Product) {
             </div>
             <div className="flex items-center justify-between">
                 <span className="text-gray-900">
-                    ${price.toFixed(2)}
+                    ${priceDiscount.toFixed(2)}
                 </span>
                 <Button className="bg-primary text-white hover:bg-orange-600">
                     Add
