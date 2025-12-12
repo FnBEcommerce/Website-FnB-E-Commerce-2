@@ -70,10 +70,14 @@ class DatabaseSeeder extends Seeder
                         // Create reviews for some of the products in the order
                         foreach ($order->orderDetails as $detail) {
                             if (rand(0, 1)) { // 50% chance to review
+                                $reviewDate = (clone $order->confirmed_at)->add(new \DateInterval('P' . rand(1, 7) . 'D'));
                                 Review::factory()
                                     ->for($order->user)
                                     ->for($detail->product)
-                                    ->create();
+                                    ->create([
+                                        'created_at' => $reviewDate,
+                                        'updated_at' => $reviewDate,
+                                    ]);
                             }
                         }
                     });
