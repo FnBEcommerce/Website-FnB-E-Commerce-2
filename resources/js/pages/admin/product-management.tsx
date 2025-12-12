@@ -260,58 +260,48 @@ export default function ProductManagement() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-4">
-                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                                            <div className="md:col-span-2">
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Cari produk..."
-                                                    value={searchQuery}
-                                                    onChange={(e) =>
-                                                        setSearchQuery(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-                                            <Select
-                                                value={categoryFilter}
-                                                onValueChange={setCategoryFilter}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Semua Kategori" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="all">
-                                                        Semua Kategori
-                                                    </SelectItem>
-                                                    <SelectItem value="Makanan">
-                                                        Makanan
-                                                    </SelectItem>
-                                                    <SelectItem value="Minuman">
-                                                        Minuman
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <Select
-                                                value={statusFilter}
-                                                onValueChange={setStatusFilter}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Semua Status" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="all">
-                                                        Semua Status
-                                                    </SelectItem>
-                                                    <SelectItem value="Aktif">
-                                                        Aktif
-                                                    </SelectItem>
-                                                    <SelectItem value="Tidak Aktif">
-                                                        Tidak Aktif
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
+                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        {/* KIRI: Input Search */}
+                                        <div className="flex-1 min-w-[240px]">
+                                            <Input
+                                                type="text"
+                                                placeholder="Cari produk..."
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
                                         </div>
+
+                                        {/* KANAN: Filters (mentok kanan) */}
+                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end w-full sm:w-auto">
+                                            {/* Filter Kategori */}
+                                            <div>
+                                                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Semua Kategori" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="all">Semua Kategori</SelectItem>
+                                                        <SelectItem value="Makanan">Makanan</SelectItem>
+                                                        <SelectItem value="Minuman">Minuman</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+
+                                            {/* Filter Status */}
+                                            <div>
+                                                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Semua Status" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="all">Semua Status</SelectItem>
+                                                        <SelectItem value="Aktif">Aktif</SelectItem>
+                                                        <SelectItem value="Tidak Aktif">Tidak Aktif</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        </div>
+                                    </div>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <Filter className="h-4 w-4 text-muted-foreground" />
