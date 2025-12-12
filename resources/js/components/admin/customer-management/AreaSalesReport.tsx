@@ -528,49 +528,39 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-blue-600">
-                            <Users className="size-6" /> Area Terbanyak
-                            (Pelanggan)
+                            <Users className="size-6" /> Area Terbanyak (Pelanggan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-4">
                             {[...areaData]
-                                .sort(
-                                    (a, b) =>
-                                        b.totalCustomers - a.totalCustomers,
-                                )
+                                .sort((a, b) => b.totalCustomers - a.totalCustomers)
                                 .slice(0, 3)
                                 .map((area, index) => (
                                     <li
                                         key={area.area}
                                         className="flex items-center gap-4"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            {index === 0 && (
-                                                <Medal className="size-7 shrink-0 text-yellow-500" />
-                                            )}
-                                            {index === 1 && (
-                                                <Medal className="size-7 shrink-0 text-gray-400" />
-                                            )}
-                                            {index === 2 && (
-                                                <Medal className="size-7 shrink-0 text-orange-600" />
-                                            )}
-                                            <p className="font-semibold">
-                                                {area.area}
-                                            </p>
+                                        {index === 0 && (
+                                            <Medal className="size-7 shrink-0 text-yellow-500" />
+                                        )}
+                                        {index === 1 && (
+                                            <Medal className="size-7 shrink-0 text-gray-400" />
+                                        )}
+                                        {index === 2 && (
+                                            <Medal className="size-7 shrink-0 text-orange-600" />
+                                        )}
+
+                                        <div>
+                                            <p className="font-semibold">{area.area}</p>
                                             <p className="text-sm text-muted-foreground">
-                                                {area.totalOrders.toLocaleString(
-                                                    'id-ID',
-                                                )}{' '}
-                                                pesanan
+                                                {area.totalOrders.toLocaleString('id-ID')} pesanan
                                             </p>
                                         </div>
-                                        <div className="text-base font-semibold text-blue-600">
-                                            {area.totalCustomers.toLocaleString(
-                                                'id-ID',
-                                            )}{' '}
-                                            pelanggan
-                                        </div>
+
+                                        <p className="ms-auto text-base font-semibold text-blue-600">
+                                            {area.totalCustomers.toLocaleString('id-ID')} pelanggan
+                                        </p>
                                     </li>
                                 ))}
                         </ul>

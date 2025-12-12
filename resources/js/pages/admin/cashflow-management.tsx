@@ -78,7 +78,7 @@ export default function CashflowManagement() {
             <SearchProvider>
                 {/* ===== Top Heading ===== */}
                 <Header>
-                    <TopNav links={topNav} />
+                    {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
                         <ThemeSwitch />
@@ -131,45 +131,53 @@ export default function CashflowManagement() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                                        <CashflowSummaryCard
-                                            title="Total Pendapatan"
-                                            amount={summaryData.totalRevenue}
-                                            growth={summaryData.revenueGrowth}
-                                            icon={DollarSign}
-                                            iconBgColor="bg-emerald-500"
-                                            iconColor="text-white"
-                                            period={period}
-                                        />
-                                        <CashflowSummaryCard
-                                            title="Total Pesanan"
-                                            amount={summaryData.totalOrders}
-                                            growth={summaryData.ordersGrowth}
-                                            icon={ShoppingCart}
-                                            iconBgColor="bg-blue-500"
-                                            iconColor="text-white"
-                                            period={period}
-                                            isCount
-                                        />
-                                        <CashflowSummaryCard
-                                            title="Rata-rata Pesanan"
-                                            amount={summaryData.averageOrder}
-                                            growth={summaryData.averageGrowth}
-                                            icon={CreditCard}
-                                            iconBgColor="bg-violet-500"
-                                            iconColor="text-white"
-                                            period={period}
-                                        />
-                                        <CashflowSummaryCard
-                                            title="Pertumbuhan"
-                                            amount={summaryData.growth}
-                                            growth={summaryData.growth}
-                                            icon={TrendingUp}
-                                            iconBgColor="bg-amber-500"
-                                            iconColor="text-white"
-                                            period={period}
-                                            isPercentage
-                                        />
-                                    </div>
+
+                                    {/* Total Pendapatan */}
+                                    <CashflowSummaryCard
+                                        title="Total Pendapatan"
+                                        amount={summaryData.totalRevenue}
+                                        growth={summaryData.revenueGrowth}
+                                        icon={DollarSign}
+                                        iconBgColor="bg-emerald-100"
+                                        iconColor="text-emerald-500"
+                                        period={period}
+                                    />
+
+                                    {/* Total Pesanan */}
+                                    <CashflowSummaryCard
+                                        title="Total Pesanan"
+                                        amount={summaryData.totalOrders}
+                                        growth={summaryData.ordersGrowth}
+                                        icon={ShoppingCart}
+                                        iconBgColor="bg-indigo-100"
+                                        iconColor="text-indigo-500"
+                                        period={period}
+                                        isCount
+                                    />
+
+                                    {/* Rata-rata Pesanan */}
+                                    <CashflowSummaryCard
+                                        title="Rata-rata Pesanan"
+                                        amount={summaryData.averageOrder}
+                                        growth={summaryData.averageGrowth}
+                                        icon={CreditCard}
+                                        iconBgColor="bg-amber-100"
+                                        iconColor="text-amber-500"
+                                        period={period}
+                                    />
+
+                                    {/* Pertumbuhan */}
+                                    <CashflowSummaryCard
+                                        title="Pertumbuhan"
+                                        amount={summaryData.growth}
+                                        growth={summaryData.growth}
+                                        icon={TrendingUp}
+                                        iconBgColor="bg-rose-100"
+                                        iconColor="text-rose-500"
+                                        period={period}
+                                        isPercentage
+                                    />
+                                </div>
                                 </CardContent>
                             </Card>
                         </TabsContent>

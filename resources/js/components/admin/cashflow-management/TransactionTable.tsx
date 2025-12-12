@@ -2,6 +2,15 @@
 import { ArrowUpDown, Download, Search } from 'lucide-react';
 import { useState } from 'react';
 
+import {
+    Table,
+    TableHeader,
+    TableRow,
+    TableHead,
+    TableBody,
+    TableCell,
+} from "@/components/ui/table";
+
 interface Transaction {
     id: string;
     date: string;
@@ -122,6 +131,13 @@ export function TransactionTable() {
         },
     ];
 
+    const categoryColors: Record<string, string> = {
+    Makanan: "border-red-100 bg-red-50 text-red-700",
+    Minuman: "border-blue-100 bg-blue-50 text-blue-700",
+    Paket: "border-emerald-100 bg-emerald-50 text-emerald-700",
+    Snack: "border-amber-100 bg-amber-50 text-amber-700",
+};
+
     const filteredTransactions = transactions.filter(
         (transaction) =>
             transaction.description
@@ -169,7 +185,7 @@ export function TransactionTable() {
             <div className="border-b p-6">
                 <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h3 className="text-gray-900">Detail Transaksi</h3>
+                        <h3 className="text-gray-900 font-bold">Detail Transaksi</h3>
                         <p className="mt-1 text-gray-500">
                             Total {filteredTransactions.length} transaksi •{' '}
                             {formatCurrency(totalRevenue)}
@@ -192,7 +208,7 @@ export function TransactionTable() {
                         {/* Export Button */}
                         <button
                             onClick={handleExport}
-                            className="flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-white shadow-sm transition-colors hover:bg-emerald-700"
+                            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-white shadow-sm transition-colors hover:bg-emerald-700"
                         >
                             <Download className="h-4 w-4" />
                             Export
@@ -202,94 +218,61 @@ export function TransactionTable() {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead className="border-b bg-gray-50/50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                <div className="flex cursor-pointer items-center gap-2 hover:text-gray-900">
-                                    ID Transaksi
-                                    <ArrowUpDown className="h-4 w-4" />
-                                </div>
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                <div className="flex cursor-pointer items-center gap-2 hover:text-gray-900">
-                                    Tanggal & Waktu
-                                    <ArrowUpDown className="h-4 w-4" />
-                                </div>
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Kategori
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Deskripsi
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Pelanggan
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Cabang
-                            </th>
-                            <th className="px-6 py-3 text-left text-gray-700">
-                                Metode Bayar
-                            </th>
-                            <th className="px-6 py-3 text-right text-gray-700">
-                                <div className="flex cursor-pointer items-center justify-end gap-2 hover:text-gray-900">
-                                    Jumlah
-                                    <ArrowUpDown className="h-4 w-4" />
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {paginatedTransactions.map((transaction) => (
-                            <tr
-                                key={transaction.id}
-                                className="transition-colors hover:bg-gray-50/50"
-                            >
-                                <td className="px-6 py-4">
-                                    <span className="text-gray-900">
-                                        {transaction.id}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {transaction.date}
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className="inline-flex rounded-md border border-blue-100 bg-blue-50 px-2.5 py-1 text-blue-700">
-                                        {transaction.category}
-                                    </span>
-                                </td>
-                                <td className="max-w-xs truncate px-6 py-4 text-gray-600">
-                                    {transaction.description}
-                                </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {transaction.customer}
-                                </td>
-                                <td className="px-6 py-4 text-gray-600">
-                                    {transaction.branch}
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span
-                                        className={`inline-flex rounded-md px-2.5 py-1 ${
-                                            transaction.paymentMethod ===
-                                            'Transfer'
-                                                ? 'border border-violet-100 bg-violet-50 text-violet-700'
-                                                : 'border border-amber-100 bg-amber-50 text-amber-700'
-                                        }`}
-                                    >
-                                        {transaction.paymentMethod}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 text-right">
-                                    <span className="text-emerald-700">
-                                        {formatCurrency(transaction.amount)}
-                                    </span>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="overflow-x-auto rounded-md border">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>ID Transaksi</TableHead>
+                        <TableHead>Tanggal & Waktu</TableHead>
+                        <TableHead>Kategori</TableHead>
+                        <TableHead>Deskripsi</TableHead>
+                        <TableHead>Pelanggan</TableHead>
+                        <TableHead>Cabang</TableHead>
+                        <TableHead>Metode Bayar</TableHead>
+                        <TableHead className="text-right">Jumlah</TableHead>
+                    </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                    {paginatedTransactions.map((transaction) => (
+                        <TableRow key={transaction.id}>
+                            <TableCell>{transaction.id}</TableCell>
+                            <TableCell>{transaction.date}</TableCell>
+                            <TableCell>
+                                <span
+                                    className={`inline-flex rounded-md px-2.5 py-1 ${
+                                        categoryColors[transaction.category] ||
+                                        "border-gray-200 bg-gray-100 text-gray-700"
+                                    }`}
+                                >
+                                    {transaction.category}
+                                </span>
+                            </TableCell>
+                            <TableCell className="max-w-xs truncate">
+                                {transaction.description}
+                            </TableCell>
+                            <TableCell>{transaction.customer}</TableCell>
+                            <TableCell>{transaction.branch}</TableCell>
+                            <TableCell>
+                                <span
+                                    className={`inline-flex rounded-md px-2.5 py-1 ${
+                                        transaction.paymentMethod === "Transfer"
+                                            ? "border border-blue-100 bg-blue-50 text-blue-700"
+                                            : "border border-green-100 bg-green-50 text-green-700"
+                                    }`}
+                                >
+                                    {transaction.paymentMethod}
+                                </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                                <span className="text-black">
+                                    {formatCurrency(transaction.amount)}
+                                </span>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
             </div>
 
             {/* Pagination */}

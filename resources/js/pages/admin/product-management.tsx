@@ -209,7 +209,7 @@ export default function ProductManagement() {
             <SearchProvider>
                 {/* ===== Top Heading ===== */}
                 <Header>
-                    <TopNav links={topNav} />
+                    {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
                         <ThemeSwitch />
