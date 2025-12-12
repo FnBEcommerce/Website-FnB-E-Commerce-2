@@ -219,6 +219,7 @@ export function CustomerStats({
                     <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {/* TODO: Ubah menjadi data dinamis */}
                     <div className="space-y-4">
                         {[
                             {
