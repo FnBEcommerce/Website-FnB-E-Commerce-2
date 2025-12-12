@@ -5,14 +5,14 @@ export type Product = {
     name: string;
     quantity?: number;
     description?: string;
-    foodType?: string[];
-    priceDiscount: number;
-    priceOrigin?: number;
+    food_type?: string[];
+    price_discount: number;
+    price_origin?: number;
     image: string;
     category: string;
     popular?: boolean;
     rating: number;
-    preparationTime?: string;
+    preparation_time?: string;
     badge?: string;
     reviews?: Review[];
 };

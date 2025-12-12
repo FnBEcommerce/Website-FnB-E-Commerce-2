@@ -63,10 +63,10 @@ export function ProductOverview({
                         className="text-[36px] text-primary"
                         style={{ fontWeight: 700 }}
                     >
-                        {formatPrice(product.priceDiscount)}
+                        {formatPrice(product.price_discount)}
                     </span>
                     <span className="text-[20px] text-gray-400 line-through">
-                        {formatPrice(product.priceOrigin)}
+                        {formatPrice(product.price_origin)}
                     </span>
                 </div>
                 <Badge className="bg-red-500 px-3 py-1 text-white hover:bg-red-600">
@@ -76,8 +76,8 @@ export function ProductOverview({
 
             {/* Key Features */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {product.foodType &&
-                    product.foodType.map((text, index) => {
+                {product.food_type &&
+                    product.food_type.map((text, index) => {
                         return (
                             <div
                                 key={index}

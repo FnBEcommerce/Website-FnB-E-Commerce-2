@@ -1,12 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Product } from '@/types';
 import { Edit2, Star, Trash2 } from 'lucide-react';
-import { Product } from './ProductManagement';
 
 type ProductTableProps = {
     products: Product[];
     onEdit: (product: Product) => void;
-    onDelete: (id: string) => void;
+    onDelete: (id: number) => void;
 };
 
 export function ProductTable({
@@ -72,7 +72,7 @@ export function ProductTable({
                                 <td className="px-4 py-4">
                                     <div className="flex items-center gap-3">
                                         <img
-                                            src={product.image}
+                                            src={product.image || undefined}
                                             alt={product.name}
                                             className="h-12 w-12 rounded-lg object-cover"
                                         />
@@ -83,12 +83,12 @@ export function ProductTable({
                                             <div className="text-sm text-slate-500">
                                                 {product.description}
                                             </div>
-                                            {product.discount && (
+                                            {product.badge && (
                                                 <Badge
-                                                    variant="success"
-                                                    className="mt-1"
+                                                    variant="default"
+                                                    className="mt-1 bg-green-100 text-green-800"
                                                 >
-                                                    Diskon {product.discount}%
+                                                    Diskon {product.badge}%
                                                 </Badge>
                                             )}
                                         </div>
@@ -106,21 +106,21 @@ export function ProductTable({
                                     </Badge>
                                 </td>
                                 <td className="px-4 py-4 text-slate-900">
-                                    {formatCurrency(product.price)}
+                                    {formatCurrency(product.price_discount)}
                                 </td>
                                 <td className="px-4 py-4">
                                     <span
                                         className={
-                                            product.stock < 30
+                                            product.quantity < 30
                                                 ? 'text-red-600'
                                                 : 'text-slate-900'
                                         }
                                     >
-                                        {product.stock} unit
+                                        {product.quantity} unit
                                     </span>
                                 </td>
                                 <td className="px-4 py-4 text-slate-600">
-                                    {product.branch}
+                                    {/* {product.branch} */}
                                 </td>
                                 <td className="px-4 py-4">
                                     {product.rating ? (
@@ -138,13 +138,15 @@ export function ProductTable({
                                 </td>
                                 <td className="px-4 py-4">
                                     <Badge
-                                        variant={
-                                            product.status === 'Aktif'
-                                                ? 'success'
-                                                : 'secondary'
+                                        className={
+                                            product.popular
+                                                ? 'bg-green-100 text-green-800'
+                                                : 'bg-gray-100 text-gray-800'
                                         }
                                     >
-                                        {product.status}
+                                        {product.popular
+                                            ? 'Aktif'
+                                            : 'Tidak Aktif'}
                                     </Badge>
                                 </td>
                                 <td className="px-4 py-4">

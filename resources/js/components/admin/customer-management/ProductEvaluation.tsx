@@ -172,6 +172,7 @@ interface RatingDistribution {
     rating: string;
     count: number;
     color: string;
+    [key: string]: any;
 }
 
 interface ProductEvaluationProps {

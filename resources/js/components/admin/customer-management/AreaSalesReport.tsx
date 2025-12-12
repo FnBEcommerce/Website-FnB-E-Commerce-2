@@ -326,7 +326,11 @@ export function AreaSalesReport({
                                     cy="50%"
                                     labelLine={false}
                                     label={({ name, percent }) =>
-                                        `${name.split(' ')[0]}: ${(percent * 100).toFixed(0)}%`
+                                        name && percent
+                                            ? `${name.split(' ')[0]}: ${(
+                                                  percent * 100
+                                              ).toFixed(0)}%`
+                                            : ''
                                     }
                                     outerRadius={100}
                                     fill="#8884d8"

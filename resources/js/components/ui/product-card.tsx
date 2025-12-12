@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types';
 
 // interface Product {
 //     id: number | string;
@@ -14,7 +14,7 @@ import type { Product } from '@/types/product';
 // }
 
 
-function ProductCard({ id, category, name, rating, priceDiscount ,image }: Product) {
+function ProductCard({ id, category, name, rating, price_discount ,image }: Product) {
   return (
    <div key={id} className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -26,7 +26,7 @@ function ProductCard({ id, category, name, rating, priceDiscount ,image }: Produ
             
             <ImageWithFallback
                 // src={`https://source.unsplash.com/400x400/?${image}`}
-                src={image}
+                src={image || ""}
                 alt={name}
                 className="h-full w-full object-cover"
             />
@@ -50,7 +50,7 @@ function ProductCard({ id, category, name, rating, priceDiscount ,image }: Produ
             </div>
             <div className="flex items-center justify-between">
                 <span className="text-gray-900">
-                    ${priceDiscount.toFixed(2)}
+                    ${price_discount.toFixed(2)}
                 </span>
                 <Button className="bg-primary text-white hover:bg-orange-600">
                     Add

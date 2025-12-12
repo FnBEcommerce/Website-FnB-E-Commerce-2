@@ -2,7 +2,7 @@ import { User } from './user';
 
 export type Review = {
     user: User;
-    totalRating: number;
+    total_rating: number;
     type: string;
     description: string;
 };

@@ -4,6 +4,6 @@ export type Order = {
     product: Product;
     quantity: number;
     total: number;
-    deliveryFee: number;
+    delivery_fee: number;
     subtotal: number;
 };

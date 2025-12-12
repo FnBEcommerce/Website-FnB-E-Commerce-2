@@ -5,7 +5,7 @@ import RootLayout from '@/components/layout/root-layout';
 import { ProductCard } from '@/components/ui/product-card';
 import { useCart } from '@/context/CartContext';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types';
 import type { ReactNode } from 'react';
 
 // interface Product {
@@ -190,25 +190,27 @@ interface ProductsProps {
 function Products({ products }: ProductsProps) {
     const { dispatch } = useCart();
 
-    const handleAddToCart = (product: Product) => {
-        dispatch({
-            type: 'ADD_ITEM',
-            payload: {
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                restaurant: 'Make your Bites',
-                image: product.image,
-            },
-        });
-    };
+    // const handleAddToCart = (product: Product) => {
+    //     dispatch({
+    //         type: 'ADD_ITEM',
+    //         payload: {
+    //             id: product.id,
+    //             name: product.name,
+    //             price: product.price,
+    //             restaurant: 'Make your Bites',
+    //             image: product.image,
+    //         },
+    //     });
+    // };
+    // console.log(products[0]);
     return (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
                 <ProductCard
+                    key={product.id}
                     id={product.id}
                     name={product.name}
-                    priceDiscount={product.priceDiscount}
+                    priceDiscount={product.price_discount}
                     image={product.image}
                     rating={product.rating}
                     category={product.category}

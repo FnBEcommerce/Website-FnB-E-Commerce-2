@@ -26,22 +26,23 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
+import { Product } from '@/types';
 import { Download, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 
-export type Product = {
-    id: string;
-    name: string;
-    category: 'Makanan' | 'Minuman';
-    price: number;
-    stock: number;
-    branch: string;
-    image: string;
-    description: string;
-    discount?: number;
-    rating?: number;
-    status: 'Aktif' | 'Tidak Aktif';
-};
+// export type Product = {
+//     id: string;
+//     name: string;
+//     category: 'Makanan' | 'Minuman';
+//     price: number;
+//     stock: number;
+//     branch: string;
+//     image: string;
+//     description: string;
+//     discount?: number;
+//     rating?: number;
+//     status: 'Aktif' | 'Tidak Aktif';
+// };
 
 const topNav = [
     {
@@ -87,9 +88,9 @@ export default function ProductManagement({
     const [activeTab, setActiveTab] = useState('products');
 
     const handleAddProduct = (product: Omit<Product, 'id'>) => {
-        const newProduct = {
+        const newProduct: Product = {
             ...product,
-            id: Date.now().toString(),
+            id: Date.now(),
         };
         setProducts([...products, newProduct]);
     };
@@ -98,7 +99,7 @@ export default function ProductManagement({
         setProducts(products.map((p) => (p.id === product.id ? product : p)));
     };
 
-    const handleDeleteProduct = (id: string) => {
+    const handleDeleteProduct = (id: number) => {
         setProducts(products.filter((p) => p.id !== id));
     };
 
@@ -118,27 +119,27 @@ export default function ProductManagement({
                 product.name
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase()) ||
-                product.description
+                (product.description || '')
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
             const matchesCategory =
                 categoryFilter === 'all' || product.category === categoryFilter;
-            const matchesStatus =
-                statusFilter === 'all' || product.status === statusFilter;
-            return matchesSearch && matchesCategory && matchesStatus;
+            // const matchesStatus =
+            //     statusFilter === 'all' || product.status === statusFilter;
+            return matchesSearch && matchesCategory /* && matchesStatus */;
         })
         .sort((a, b) => {
             switch (sortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'price-asc':
-                    return a.price - b.price;
+                    return a.price_discount - b.price_discount;
                 case 'price-desc':
-                    return b.price - a.price;
+                    return b.price_discount - a.price_discount;
                 case 'stock':
-                    return b.stock - a.stock;
+                    return (b.quantity ?? 0) - (a.quantity ?? 0);
                 case 'rating':
-                    return (b.rating || 0) - (a.rating || 0);
+                    return b.rating - a.rating;
                 default:
                     return 0;
             }

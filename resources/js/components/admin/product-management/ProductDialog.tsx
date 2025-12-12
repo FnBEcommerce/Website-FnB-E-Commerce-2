@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { Product } from '@/pages/admin/product-management';
+import type { Product } from '@/types';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -37,7 +43,7 @@ export function ProductDialog({
             setFormData({
                 name: product.name,
                 category: product.category,
-                price: product.price.toString(),
+                price: product.price_origin?.toString(),
                 stock: product.stock.toString(),
                 branch: product.branch,
                 image: product.image,
@@ -124,50 +130,59 @@ export function ProductDialog({
                         <div>
                             <Label htmlFor="category">Kategori *</Label>
                             <Select
-                                id="category"
                                 value={formData.category}
-                                onChange={(e) =>
+                                onValueChange={(value) =>
                                     setFormData({
                                         ...formData,
-                                        category: e.target.value as any,
+                                        category: value as any,
                                     })
                                 }
-                                required
                             >
-                                <option value="Makanan">Makanan</option>
-                                <option value="Minuman">Minuman</option>
+                                <SelectTrigger id="category">
+                                    <SelectValue placeholder="Pilih Kategori" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Makanan">
+                                        Makanan
+                                    </SelectItem>
+                                    <SelectItem value="Minuman">
+                                        Minuman
+                                    </SelectItem>
+                                </SelectContent>
                             </Select>
                         </div>
 
                         <div>
                             <Label htmlFor="branch">Cabang *</Label>
                             <Select
-                                id="branch"
                                 value={formData.branch}
-                                onChange={(e) =>
+                                onValueChange={(value) =>
                                     setFormData({
                                         ...formData,
-                                        branch: e.target.value,
+                                        branch: value,
                                     })
                                 }
-                                required
                             >
-                                <option value="">Pilih Cabang</option>
-                                <option value="Jakarta Pusat">
-                                    Jakarta Pusat
-                                </option>
-                                <option value="Jakarta Selatan">
-                                    Jakarta Selatan
-                                </option>
-                                <option value="Jakarta Barat">
-                                    Jakarta Barat
-                                </option>
-                                <option value="Jakarta Timur">
-                                    Jakarta Timur
-                                </option>
-                                <option value="Jakarta Utara">
-                                    Jakarta Utara
-                                </option>
+                                <SelectTrigger id="branch">
+                                    <SelectValue placeholder="Pilih Cabang" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Jakarta Pusat">
+                                        Jakarta Pusat
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Selatan">
+                                        Jakarta Selatan
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Barat">
+                                        Jakarta Barat
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Timur">
+                                        Jakarta Timur
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Utara">
+                                        Jakarta Utara
+                                    </SelectItem>
+                                </SelectContent>
                             </Select>
                         </div>
 
@@ -228,18 +243,23 @@ export function ProductDialog({
                         <div>
                             <Label htmlFor="status">Status *</Label>
                             <Select
-                                id="status"
                                 value={formData.status}
-                                onChange={(e) =>
+                                onValueChange={(value) =>
                                     setFormData({
                                         ...formData,
-                                        status: e.target.value as any,
+                                        status: value as any,
                                     })
                                 }
-                                required
                             >
-                                <option value="Aktif">Aktif</option>
-                                <option value="Tidak Aktif">Tidak Aktif</option>
+                                <SelectTrigger id="status">
+                                    <SelectValue placeholder="Pilih Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Aktif">Aktif</SelectItem>
+                                    <SelectItem value="Tidak Aktif">
+                                        Tidak Aktif
+                                    </SelectItem>
+                                </SelectContent>
                             </Select>
                         </div>
 
