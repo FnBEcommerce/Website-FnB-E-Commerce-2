@@ -25,12 +25,15 @@ class OrderDetailFactory extends Factory
         // You would typically fetch a product and use its price,
         // but for a simple factory, we'll use a random value.
         $price = $this->faker->randomFloat(2, 10000, 50000);
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
         return [
             'order_id' => Order::factory(),
             'product_id' => Product::factory(),
             'quantity' => $quantity,
             'subtotal' => $quantity * $price,
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

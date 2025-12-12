@@ -30,6 +30,7 @@ class OrderFactory extends Factory
         $deliveryOffset = $this->faker->numberBetween(-10, 20);
         $delivered_at = $status === 'completed' ? (clone $estimated_delivery_at)->modify("{$deliveryOffset} minutes") : null;
 
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
         return [
             'user_id' => User::factory(),
@@ -44,6 +45,8 @@ class OrderFactory extends Factory
             'processed_at' => $processed_at,
             'estimated_delivery_at' => $estimated_delivery_at,
             'delivered_at' => $delivered_at,
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

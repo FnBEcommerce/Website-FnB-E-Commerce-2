@@ -16,10 +16,14 @@ class ShopBranchFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+
         return [
             'name' => $this->faker->company(),
             'address' => $this->faker->address(),
             'phone_number' => $this->faker->phoneNumber(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

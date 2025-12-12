@@ -17,20 +17,25 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+        $birthDate = $this->faker->dateTimeBetween('-65 years', '-18 years');
+
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'email_verified_at' => $createdAt,
             'password' => bcrypt('password'), // password
             'remember_token' => Str::random(10),
             'phone_number' => $this->faker->phoneNumber(),
-            'birth_date' => $this->faker->date(),
+            'birth_date' => $birthDate->format('Y-m-d'),
             'gender' => $this->faker->randomElement(['male', 'female']),
             'street' => $this->faker->streetAddress(),
             'city' => $this->faker->city(),
             'state' => $this->faker->state(),
             'label' => 'home',
             'role' => 'user',
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 

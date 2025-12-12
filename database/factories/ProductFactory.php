@@ -36,6 +36,7 @@ class ProductFactory extends Factory
         $badges = ['New', 'Best Seller', 'Recommended'];
 
         $price = $this->faker->randomFloat(2, 10000, 100000);
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
         return [
             'name' => $this->faker->randomElement($product_names),
@@ -50,6 +51,8 @@ class ProductFactory extends Factory
             'preparation_time' => $this->faker->numberBetween(5, 45) . ' mins',
             'badge' => $this->faker->optional(0.4)->randomElement($badges), // 40% chance of having a badge
             'food_type' => $this->faker->randomElements($food_types, $this->faker->numberBetween(1, 3)),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }
