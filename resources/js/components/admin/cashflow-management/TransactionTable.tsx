@@ -29,113 +29,111 @@ export function TransactionTable() {
 
     // Mock transactions data - only income
     const transactions: Transaction[] = [
-        {
-            id: 'TRX001',
-            date: '2025-12-11 14:30',
-            category: 'Makanan',
-            description: 'Pesanan #1234 - Nasi Goreng Special',
-            branch: 'Cabang Jakarta Pusat',
-            amount: 85000,
-            paymentMethod: 'Transfer',
-            customer: 'Ahmad Rizki',
-        },
-        {
-            id: 'TRX002',
-            date: '2025-12-11 13:15',
-            category: 'Minuman',
-            description: 'Pesanan #1233 - Es Teh Manis x3',
-            branch: 'Cabang Jakarta Selatan',
-            amount: 30000,
-            paymentMethod: 'COD',
-            customer: 'Siti Nurhaliza',
-        },
-        {
-            id: 'TRX003',
-            date: '2025-12-11 11:20',
-            category: 'Paket',
-            description: 'Pesanan #1232 - Paket Hemat A',
-            branch: 'Cabang Jakarta Barat',
-            amount: 125000,
-            paymentMethod: 'Transfer',
-            customer: 'Budi Santoso',
-        },
-        {
-            id: 'TRX004',
-            date: '2025-12-10 16:45',
-            category: 'Makanan',
-            description: 'Pesanan #1231 - Ayam Bakar',
-            branch: 'Cabang Jakarta Timur',
-            amount: 95000,
-            paymentMethod: 'COD',
-            customer: 'Dewi Lestari',
-        },
-        {
-            id: 'TRX005',
-            date: '2025-12-10 15:30',
-            category: 'Snack',
-            description: 'Pesanan #1230 - Pisang Goreng x2',
-            branch: 'Cabang Jakarta Selatan',
-            amount: 40000,
-            paymentMethod: 'Transfer',
-            customer: 'Andi Wijaya',
-        },
-        {
-            id: 'TRX006',
-            date: '2025-12-10 13:00',
-            category: 'Minuman',
-            description: 'Pesanan #1229 - Kopi Susu',
-            branch: 'Cabang Jakarta Pusat',
-            amount: 25000,
-            paymentMethod: 'COD',
-            customer: 'Rina Hartati',
-        },
-        {
-            id: 'TRX007',
-            date: '2025-12-10 12:30',
-            category: 'Makanan',
-            description: 'Pesanan #1228 - Sate Ayam',
-            branch: 'Cabang Jakarta Barat',
-            amount: 75000,
-            paymentMethod: 'Transfer',
-            customer: 'Joko Widodo',
-        },
-        {
-            id: 'TRX008',
-            date: '2025-12-09 16:20',
-            category: 'Paket',
-            description: 'Pesanan #1227 - Paket Keluarga',
-            branch: 'Cabang Jakarta Selatan',
-            amount: 185000,
-            paymentMethod: 'Transfer',
-            customer: 'Mega Putri',
-        },
-        {
-            id: 'TRX009',
-            date: '2025-12-09 14:45',
-            category: 'Makanan',
-            description: 'Pesanan #1226 - Nasi Uduk',
-            branch: 'Cabang Jakarta Timur',
-            amount: 45000,
-            paymentMethod: 'COD',
-            customer: 'Arif Rahman',
-        },
-        {
-            id: 'TRX010',
-            date: '2025-12-09 13:15',
-            category: 'Minuman',
-            description: 'Pesanan #1225 - Jus Alpukat x2',
-            branch: 'Cabang Jakarta Pusat',
-            amount: 50000,
-            paymentMethod: 'Transfer',
-            customer: 'Lina Marlina',
-        },
-    ];
+    {
+        id: "TRX001",
+        date: "2025-12-11 14:30",
+        category: "Makanan",
+        description: "Pesanan #1234 - Nasi Goreng Special",
+        branch: "Cabang Jakarta Pusat",
+        amount: 85000,
+        paymentMethod: "Transfer",
+        customer: "Ahmad Rizki",
+    },
+    {
+        id: "TRX002",
+        date: "2025-12-11 13:15",
+        category: "Minuman",
+        description: "Pesanan #1233 - Es Teh Manis x3",
+        branch: "Cabang Jakarta Selatan",
+        amount: 30000,
+        paymentMethod: "COD",
+        customer: "Siti Nurhaliza",
+    },
+    {
+        id: "TRX003",
+        date: "2025-12-11 11:20",
+        category: "Makanan", // paket diubah jadi makanan
+        description: "Pesanan #1232 - Paket Hemat A",
+        branch: "Cabang Jakarta Barat",
+        amount: 125000,
+        paymentMethod: "Transfer",
+        customer: "Budi Santoso",
+    },
+    {
+        id: "TRX004",
+        date: "2025-12-10 16:45",
+        category: "Makanan",
+        description: "Pesanan #1231 - Ayam Bakar",
+        branch: "Cabang Jakarta Timur",
+        amount: 95000,
+        paymentMethod: "COD",
+        customer: "Dewi Lestari",
+    },
+    {
+        id: "TRX005",
+        date: "2025-12-10 15:30",
+        category: "Makanan", // Snack -> Makanan
+        description: "Pesanan #1230 - Pisang Goreng x2",
+        branch: "Cabang Jakarta Selatan",
+        amount: 40000,
+        paymentMethod: "Transfer",
+        customer: "Andi Wijaya",
+    },
+    {
+        id: "TRX006",
+        date: "2025-12-10 13:00",
+        category: "Minuman",
+        description: "Pesanan #1229 - Kopi Susu",
+        branch: "Cabang Jakarta Pusat",
+        amount: 25000,
+        paymentMethod: "COD",
+        customer: "Rina Hartati",
+    },
+    {
+        id: "TRX007",
+        date: "2025-12-10 12:30",
+        category: "Makanan",
+        description: "Pesanan #1228 - Sate Ayam",
+        branch: "Cabang Jakarta Barat",
+        amount: 75000,
+        paymentMethod: "Transfer",
+        customer: "Joko Widodo",
+    },
+    {
+        id: "TRX008",
+        date: "2025-12-09 16:20",
+        category: "Makanan",
+        description: "Pesanan #1227 - Ayam",
+        branch: "Cabang Jakarta Selatan",
+        amount: 185000,
+        paymentMethod: "Transfer",
+        customer: "Mega Putri",
+    },
+    {
+        id: "TRX009",
+        date: "2025-12-09 14:45",
+        category: "Makanan",
+        description: "Pesanan #1226 - Nasi Uduk",
+        branch: "Cabang Jakarta Timur",
+        amount: 45000,
+        paymentMethod: "COD",
+        customer: "Arif Rahman",
+    },
+    {
+        id: "TRX010",
+        date: "2025-12-09 13:15",
+        category: "Minuman",
+        description: "Pesanan #1225 - Jus Alpukat x2",
+        branch: "Cabang Jakarta Pusat",
+        amount: 50000,
+        paymentMethod: "Transfer",
+        customer: "Lina Marlina",
+    },
+];
 
     const categoryColors: Record<string, string> = {
     Makanan: "border-red-100 bg-red-50 text-red-700",
     Minuman: "border-blue-100 bg-blue-50 text-blue-700",
-    Paket: "border-emerald-100 bg-emerald-50 text-emerald-700",
-    Snack: "border-amber-100 bg-amber-50 text-amber-700",
 };
 
     const filteredTransactions = transactions.filter(
@@ -208,7 +206,7 @@ export function TransactionTable() {
                         {/* Export Button */}
                         <button
                             onClick={handleExport}
-                            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-white shadow-sm transition-colors hover:bg-emerald-700"
+                            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-white shadow-sm transition-colors hover:bg-orange-400"
                         >
                             <Download className="h-4 w-4" />
                             Export
@@ -305,7 +303,7 @@ export function TransactionTable() {
                                 onClick={() => setCurrentPage(page)}
                                 className={`rounded-lg px-4 py-2 transition-colors ${
                                     currentPage === page
-                                        ? 'bg-emerald-600 text-white shadow-sm'
+                                        ? 'bg-primary text-white shadow-sm'
                                         : 'border hover:bg-white'
                                 }`}
                             >

@@ -69,7 +69,6 @@ export function CashflowChart({ period, type }: CashflowChartProps) {
     const categoryData = [
         { name: 'Makanan', pendapatan: 78000000, pesanan: 650 },
         { name: 'Minuman', pendapatan: 32000000, pesanan: 420 },
-        { name: 'Snack', pendapatan: 15750000, pesanan: 180 },
     ];
 
     const formatCurrency = (value: number) => {

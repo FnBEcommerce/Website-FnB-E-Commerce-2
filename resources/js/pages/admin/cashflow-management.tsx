@@ -91,15 +91,15 @@ export default function CashflowManagement() {
                 <Main>
                     <div className="mb-2 flex items-center justify-between space-y-2">
                         <h1 className="text-2xl font-bold tracking-tight">
-                            Manajemen Cash Flow
+                            Manajemen Keuangan
                         </h1>
                         <div className="flex items-center space-x-2">
-                            <DateRangeFilter
+                            {/* <DateRangeFilter
                                 period={period}
                                 setPeriod={setPeriod}
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
-                            />
+                            /> */}
                             <Button>Download</Button>
                         </div>
                     </div>
@@ -109,17 +109,22 @@ export default function CashflowManagement() {
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <div className="w-full overflow-x-auto pb-2">
-                            <TabsList>
-                                <TabsTrigger value="overview">
-                                    Overview
-                                </TabsTrigger>
-                                <TabsTrigger value="charts">Charts</TabsTrigger>
-                                <TabsTrigger value="transactions">
-                                    Transactions
-                                </TabsTrigger>
-                            </TabsList>
-                        </div>
+                        <div className="w-full flex flex-col items-start justify-between gap-3 pb-2 md:flex-row md:items-center">
+                        {/* Tab List - Left */}
+                        <TabsList className="shrink-0">
+                            <TabsTrigger value="overview">Overview</TabsTrigger>
+                            <TabsTrigger value="charts">Charts</TabsTrigger>
+                            <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                        </TabsList>
+
+                        {/* Date Range Filter - Right */}
+                        <DateRangeFilter
+                            period={period}
+                            setPeriod={setPeriod}
+                            selectedDate={selectedDate}
+                            setSelectedDate={setSelectedDate}
+                        />
+                    </div>
 
                         <TabsContent value="overview">
                             <Card>
