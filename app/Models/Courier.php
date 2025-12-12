@@ -8,31 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Courier extends Model
 {
     use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'courier'; 
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'courier_id';
+    protected $fillable = [
+        'name',
+        'license_plate',
+        'phone_number',
+    ];
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
-
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    public function orders()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
-    }
-
-    public function orders() {
-        return $this->hasMany(Order::class, "courier_id", "courier_id");
+        return $this->hasMany(Order::class);
     }
 }

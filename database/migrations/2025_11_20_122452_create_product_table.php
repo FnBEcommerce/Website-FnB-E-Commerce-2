@@ -11,16 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product', function (Blueprint $table) {
-            $table->integer('product_id')->autoIncrement();
-            $table->text('product_name');
-            $table->text('product_category');
-            $table->decimal('product_price', 10, 2);
-            $table->decimal('product_discount_price', 10, 0);
-            $table->text('product_description');
-            $table->integer('product_stock')->nullable();
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('category');
+            $table->decimal('price_origin', 10, 2)->nullable();
+            $table->decimal('price_discount', 10, 2);
+            $table->integer('quantity')->default(0);
+            $table->string('image')->nullable();
+            $table->boolean('popular')->default(false);
+            $table->decimal('rating', 2, 1)->default(0);
+            $table->string('preparation_time')->nullable();
+            $table->string('badge')->nullable();
+            $table->json('food_type')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 };

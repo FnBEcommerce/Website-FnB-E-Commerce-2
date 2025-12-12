@@ -21,10 +21,9 @@ class ReviewFactory extends Factory
         return [
             'user_id' => User::factory(),
             'product_id' => Product::factory(),
-            'rating' => fake()->numberBetween(1, 5),
-            'review_comment' => fake()->paragraph(5),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'rating' => $this->faker->numberBetween(1, 5),
+            'type' => $this->faker->randomElement(['food', 'service', 'ambience']),
+            'description' => $this->faker->paragraph(3),
         ];
     }
 }

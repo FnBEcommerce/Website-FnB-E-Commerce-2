@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courier', function (Blueprint $table) {
-            $table->integer('courier_id')->autoIncrement();
-            $table->string('courier_name', 100);
-            $table->string('courier_license_plate', 50);
-            $table->string('courier_phone_number', 50);
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
+        Schema::create('couriers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('license_plate');
+            $table->string('phone_number');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courier');
+        Schema::dropIfExists('couriers');
     }
 };

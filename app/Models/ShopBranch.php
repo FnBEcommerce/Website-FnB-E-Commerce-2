@@ -4,38 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ShopBranch extends Model
 {
     use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'shop_branch'; 
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'shop_id';
+    protected $fillable = [
+        'name',
+        'address',
+        'phone_number',
+    ];
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
-
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    public function orders()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
+        return $this->hasMany(Order::class);
     }
 
-    public function orders() {
-        return $this->hasMany(Order::class, "shop_id", "shop_id");
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_shop_branch');
     }
-    public function shopbranchProducts() {
-        return $this->hasMany(Order::class, "shop_id", "shop_id");
+
+    /**
+     * The users that belong to the shop branch.
+     */
+    public function assignedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'shop_branch_user');
     }
 }
