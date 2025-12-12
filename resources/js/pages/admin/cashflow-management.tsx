@@ -90,6 +90,8 @@ export default function CashflowManagement({
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [activeTab, setActiveTab] = useState('overview');
 
+    console.log(summaryData, trendDataPeriod, categoryData);
+
     return (
         <AuthenticatedLayout>
             <SearchProvider>
