@@ -178,7 +178,7 @@ export function TransactionTable() {
     );
 
     return (
-        <div className="px-6 overflow-hidden rounded-xl border bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
             {/* Table Header */}
             <div className="border-b p-6">
                 <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -216,7 +216,7 @@ export function TransactionTable() {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto rounded-md border">
+            <div className="px-6 overflow-x-auto rounded-md">
             <Table>
                 <TableHeader>
                     <TableRow>
