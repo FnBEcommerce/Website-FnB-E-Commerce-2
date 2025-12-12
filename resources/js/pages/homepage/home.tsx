@@ -210,7 +210,7 @@ function Products({ products }: ProductsProps) {
                     key={product.id}
                     id={product.id}
                     name={product.name}
-                    priceDiscount={product.price_discount}
+                    price_discount={product.price_discount}
                     image={product.image}
                     rating={product.rating}
                     category={product.category}

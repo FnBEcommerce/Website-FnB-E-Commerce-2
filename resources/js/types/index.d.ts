@@ -30,7 +30,7 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
-export interface User {
+export type User = {
     id: number;
     name: string;
     email: string;
@@ -49,18 +49,18 @@ export interface User {
     role: string;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Courier {
+export type Courier = {
     id: number;
     name: string;
     license_plate: string;
     phone_number: string;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Product {
+export type Product = {
     id: number;
     name: string;
     description: string | null;
@@ -76,18 +76,18 @@ export interface Product {
     food_type: any | null;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface ShopBranch {
+export type ShopBranch = {
     id: number;
     name: string;
     address: string;
     phone_number: string;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Order {
+export type Order = {
     id: number;
     user_id: number;
     shop_branch_id: number;
@@ -103,9 +103,9 @@ export interface Order {
     delivered_at: string | null;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface OrderDetail {
+export type OrderDetail = {
     id: number;
     order_id: number;
     product_id: number;
@@ -113,9 +113,9 @@ export interface OrderDetail {
     subtotal: number;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Transaction {
+export type Transaction = {
     id: number;
     order_id: number;
     transaction_status: string;
@@ -123,9 +123,9 @@ export interface Transaction {
     payment_gateway_reference: string | null;
     created_at: string;
     updated_at: string;
-}
+};
 
-export interface Review {
+export type Review = {
     id: number;
     user_id: number;
     product_id: number;
@@ -134,4 +134,4 @@ export interface Review {
     description: string;
     created_at: string;
     updated_at: string;
-}
+};

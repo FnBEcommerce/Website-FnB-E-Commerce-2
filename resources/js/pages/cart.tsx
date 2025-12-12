@@ -46,7 +46,7 @@ export default function CartPage() {
                 <h1 className="mb-8">Shopping Cart</h1>
 
                 {
-                    /* cartItems.length */ false === 0 ? (
+                    /* cartItems.length */ false ? (
                         <Card className="border-2 border-border p-12 text-center">
                             <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
                             <h3 className="mb-2">Your cart is empty</h3>
@@ -314,7 +314,7 @@ export default function CartPage() {
                                         </div>
                                     </div>
                                     <Button
-                                        onClick={onCheckout}
+                                        // onClick={onCheckout}
                                         className="w-full bg-primary hover:bg-accent"
                                         size="lg"
                                     >

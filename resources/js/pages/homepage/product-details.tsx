@@ -8,34 +8,33 @@ import { ProductImageGallery } from '@/components/product-customer/ProductImageG
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
 import { SuggestedProducts } from '@/components/product-customer/SuggestedProducts';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product } from '@/types/product';
-import { Review } from '@/types/review';
-import { User } from '@/types/user';
+import type { Product, Review, User } from '@/types';
 import { ReactNode } from 'react';
 
-export type SuggestedProduct = {
-    id: string;
-    name: string;
-    description: string;
-    priceDiscount: number;
-    priceOrigin: number;
-    rating: number;
-    image: string;
-    badge: string | null;
-};
+// export type SuggestedProduct = {
+//     id: string;
+//     name: string;
+//     description: string;
+//     priceDiscount: number;
+//     priceOrigin: number;
+//     rating: number;
+//     image: string;
+//     badge: string | null;
+// };
 
 type ProductDetailsProps = {
     user: User;
     productImages: string[];
     product: Product;
     reviews: Review[];
-    suggestedProducts: SuggestedProduct[];
+    suggestedProducts: Product[];
 };
 
 export default function ProductDetailsPage({
     user,
     productImages,
     product,
+    reviews,
     suggestedProducts,
 }: ProductDetailsProps) {
     const [currentPage, setCurrentPage] = useState<
@@ -81,6 +80,7 @@ export default function ProductDetailsPage({
                             <div>
                                 <ProductOverview
                                     product={product}
+                                    reviews={reviews}
                                     onNavigateToCheckout={() =>
                                         setCurrentPage('checkout')
                                     }
@@ -92,7 +92,7 @@ export default function ProductDetailsPage({
                         <ProductDetails />
 
                         {/* Customer Reviews */}
-                        <CustomerReviews />
+                        <CustomerReviews reviews={reviews} />
 
                         {/* Suggested Products */}
                         <SuggestedProducts products={suggestedProducts} />

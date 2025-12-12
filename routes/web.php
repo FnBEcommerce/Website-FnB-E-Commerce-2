@@ -35,7 +35,7 @@ Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('de
 
 Route::prefix('/')->group(function () {
    Route::get('/', [HomepageController::class, 'index'])->name('homepage');
-   Route::get('/products2/{id}', [HomepageController::class, 'productDetail'])->name('product.detail');
+   Route::get('/products2/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
    Route::get('/products2', [HomepageController::class, 'productListing'])->name('product.listing');
     // Route::get('/customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
     // Route::get('/cashflow-management', [AdminController::class, 'cashflowManagement'])->name('admin.cashflow_management');

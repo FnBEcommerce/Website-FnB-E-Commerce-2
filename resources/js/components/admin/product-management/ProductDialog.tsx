@@ -11,7 +11,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import type { Product } from '@/types';
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type ProductDialogProps = {
     isOpen: boolean;
@@ -28,7 +28,7 @@ export function ProductDialog({
 }: ProductDialogProps) {
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Makanan' as 'Makanan' | 'Minuman',
+        category: 'Makanan',
         price: '',
         stock: '',
         branch: '',
@@ -38,33 +38,33 @@ export function ProductDialog({
         status: 'Aktif' as 'Aktif' | 'Tidak Aktif',
     });
 
-    useEffect(() => {
-        if (product) {
-            setFormData({
-                name: product.name,
-                category: product.category,
-                price: product.price_origin?.toString(),
-                stock: product.stock.toString(),
-                branch: product.branch,
-                image: product.image,
-                description: product.description,
-                discount: product.discount?.toString() || '',
-                status: product.status,
-            });
-        } else {
-            setFormData({
-                name: '',
-                category: 'Makanan',
-                price: '',
-                stock: '',
-                branch: '',
-                image: '',
-                description: '',
-                discount: '',
-                status: 'Aktif',
-            });
-        }
-    }, [product, isOpen]);
+    // useEffect(() => {
+    //     if (product) {
+    //         setFormData({
+    //             name: product.name,
+    //             category: product.category,
+    //             price: product?.price_origin?.toString(),
+    //             stock: product.stock.toString(),
+    //             branch: product.branch,
+    //             image: product.image,
+    //             description: product.description,
+    //             discount: product.discount?.toString() || '',
+    //             status: product.status,
+    //         });
+    //     } else {
+    //         setFormData({
+    //             name: '',
+    //             category: 'Makanan',
+    //             price: '',
+    //             stock: '',
+    //             branch: '',
+    //             image: '',
+    //             description: '',
+    //             discount: '',
+    //             status: 'Aktif',
+    //         });
+    //     }
+    // }, [product, isOpen]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

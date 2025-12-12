@@ -4,7 +4,7 @@ import { Product } from '@/types';
 import { Edit2, Star, Trash2 } from 'lucide-react';
 
 type ProductTableProps = {
-    products: Product[];
+    products: any; //FIXME: Ganti any
     onEdit: (product: Product) => void;
     onDelete: (id: number) => void;
 };
@@ -21,6 +21,8 @@ export function ProductTable({
             minimumFractionDigits: 0,
         }).format(amount);
     };
+
+    console.log('products[0]', products[0]);
 
     return (
         <div className="overflow-x-auto">

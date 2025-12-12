@@ -33,4 +33,9 @@ class ShopBranch extends Model
     {
         return $this->belongsToMany(User::class, 'shop_branch_user');
     }
+
+    public function shopBranchProducts()
+    {
+        return $this->hasMany(ShopbranchProduct::class);
+    }
 }

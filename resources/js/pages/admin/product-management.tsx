@@ -87,6 +87,8 @@ export default function ProductManagement({
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [activeTab, setActiveTab] = useState('products');
 
+    // console.log('initialProducts', initialProducts);
+
     const handleAddProduct = (product: Omit<Product, 'id'>) => {
         const newProduct: Product = {
             ...product,

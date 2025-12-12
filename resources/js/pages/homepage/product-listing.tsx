@@ -1,7 +1,7 @@
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types';
 import { Heart, Search, SlidersHorizontal } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
@@ -140,7 +140,6 @@ type ProductListingProps = {
 };
 
 export default function ProductListingPage({ products }: ProductListingProps) {
-    console.log(products);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All Categories');
     const [sortBy, setSortBy] = useState('Featured');
@@ -262,7 +261,7 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                                 </button>
                                 <ImageWithFallback
                                     // src={`https://source.unsplash.com/400x400/?${product.image}`}
-                                    src={product.image}
+                                    src={product.image || ''}
                                     alt={product.name}
                                     className="h-full w-full object-cover"
                                 />
@@ -286,7 +285,10 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <span className="text-gray-900">
-                                        ${product.priceDiscount.toFixed(2)}
+                                        $
+                                        {Number(product.price_discount).toFixed(
+                                            2,
+                                        )}
                                     </span>
                                     <Button className="bg-primary text-white hover:bg-orange-600">
                                         Add

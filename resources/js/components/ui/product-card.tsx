@@ -13,8 +13,16 @@ import type { Product } from '@/types';
 //     image: string;
 // }
 
+type ProductCardProps = {
+    id: number;
+    category: string;
+    name:string; 
+    rating:number; 
+    price_discount: number;
+    image: string | null
+}
 
-function ProductCard({ id, category, name, rating, price_discount ,image }: Product) {
+function ProductCard({ id, category, name, rating, price_discount ,image }: ProductCardProps) {
   return (
    <div key={id} className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
         <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -50,7 +58,7 @@ function ProductCard({ id, category, name, rating, price_discount ,image }: Prod
             </div>
             <div className="flex items-center justify-between">
                 <span className="text-gray-900">
-                    ${price_discount.toFixed(2)}
+                    ${Number(price_discount).toFixed(2)}
                 </span>
                 <Button className="bg-primary text-white hover:bg-orange-600">
                     Add
