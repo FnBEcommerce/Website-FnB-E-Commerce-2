@@ -284,9 +284,9 @@ class AdminController extends Controller
     public function productManagement() {
         // Assuming 'shopBranchProducts' is the pivot table/relation for stock and branch
         // And 'shopBranch' is the relation from pivot to the branch details
-        $products = Product::with(['reviews', 'shopBranchProducts.shopBranch'])->get();
+        $productsData = Product::with(['reviews', 'shopBranchProducts.shopBranch'])->get();
 
-        /* $products = $productsData->map(function ($product) {
+        $products = $productsData->map(function ($product) {
             // TODO: Ubah menjadi tidak selalu mengambil branch pertama
             $shopBranchProduct = $product->shopBranchProducts->first(); // Get first branch for simplicity
             
@@ -294,16 +294,16 @@ class AdminController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'category' => $product->category,
-                'price' => $product->price_origin,
+                'price_origin' => $product->price_origin,
+                'price_discount' => $product->price_discount ?? null,
                 'stock' => $product->quantity ?? 0,
                 'branch' => $shopBranchProduct->shopBranch->name ?? 'N/A',
                 'image' => $product->image,
                 'description' => $product->description,
-                'discount' => $product->price_discount ?? 0,
                 'rating' => round($product->reviews->avg('rating'), 1) ?? 0,
-                'status' => ($shopBranchProduct && $shopBranchProduct->stock > 0) ? 'Aktif' : 'Tidak Aktif',
+                'status' => ($product->quantity > 0) ? 'Aktif' : 'Tidak Aktif',
             ];
-        }); */
+        });
 
         $props = [
             'products' => $products

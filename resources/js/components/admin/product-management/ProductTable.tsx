@@ -1,11 +1,12 @@
+import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Product } from '@/types';
+import { ProductRow } from '@/pages/admin/product-management';
 import { Edit2, Star, Trash2 } from 'lucide-react';
 
 type ProductTableProps = {
-    products: any; //FIXME: Ganti any
-    onEdit: (product: Product) => void;
+    products: ProductRow[];
+    onEdit: (product: ProductRow) => void;
     onDelete: (id: number) => void;
 };
 
@@ -36,7 +37,10 @@ export function ProductTable({
                             Kategori
                         </th>
                         <th className="px-4 py-3 text-left text-slate-700">
-                            Harga
+                            Harga Asli
+                        </th>
+                        <th className="px-4 py-3 text-left text-slate-700">
+                            Harga Setelah Diskon
                         </th>
                         <th className="px-4 py-3 text-left text-slate-700">
                             Stok
@@ -73,24 +77,32 @@ export function ProductTable({
                             >
                                 <td className="px-4 py-4">
                                     <div className="flex items-center gap-3">
-                                        <img
-                                            src={product.image || undefined}
+                                        <ImageWithFallback
+                                            // src={product.image || undefined}
+                                            src="https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                                             alt={product.name}
-                                            className="h-12 w-12 rounded-lg object-cover"
+                                            className="h-12 w-12 shrink-0 rounded-lg object-cover"
                                         />
                                         <div>
                                             <div className="text-slate-900">
                                                 {product.name}
                                             </div>
-                                            <div className="text-sm text-slate-500">
+                                            <div className="line-clamp-3 text-sm text-slate-500">
                                                 {product.description}
                                             </div>
-                                            {product.badge && (
+                                            {product.price_discount && (
                                                 <Badge
                                                     variant="default"
                                                     className="mt-1 bg-green-100 text-green-800"
                                                 >
-                                                    Diskon {product.badge}%
+                                                    Diskon{' '}
+                                                    {Number(
+                                                        (1 -
+                                                            product.price_discount /
+                                                                product.price_origin) *
+                                                            100,
+                                                    ).toFixed(0)}
+                                                    %
                                                 </Badge>
                                             )}
                                         </div>
@@ -108,21 +120,26 @@ export function ProductTable({
                                     </Badge>
                                 </td>
                                 <td className="px-4 py-4 text-slate-900">
-                                    {formatCurrency(product.price_discount)}
+                                    {formatCurrency(product.price_origin)}
+                                </td>
+                                <td className="px-4 py-4 text-slate-900">
+                                    {formatCurrency(
+                                        product.price_discount ?? 0,
+                                    )}
                                 </td>
                                 <td className="px-4 py-4">
                                     <span
                                         className={
-                                            product.quantity < 30
+                                            product.stock < 30
                                                 ? 'text-red-600'
                                                 : 'text-slate-900'
                                         }
                                     >
-                                        {product.quantity} unit
+                                        {product.stock} unit
                                     </span>
                                 </td>
                                 <td className="px-4 py-4 text-slate-600">
-                                    {/* {product.branch} */}
+                                    {product.branch}
                                 </td>
                                 <td className="px-4 py-4">
                                     {product.rating ? (
@@ -141,12 +158,12 @@ export function ProductTable({
                                 <td className="px-4 py-4">
                                     <Badge
                                         className={
-                                            product.popular
+                                            product.stock > 0
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-gray-100 text-gray-800'
                                         }
                                     >
-                                        {product.popular
+                                        {product.stock > 0
                                             ? 'Aktif'
                                             : 'Tidak Aktif'}
                                     </Badge>

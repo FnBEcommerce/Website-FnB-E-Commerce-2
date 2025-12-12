@@ -9,7 +9,8 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import type { Product } from '@/types';
+import { ProductRow } from '@/pages/admin/product-management';
+// import type { Product } from '@/types';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -17,7 +18,7 @@ type ProductDialogProps = {
     isOpen: boolean;
     onClose: () => void;
     onSave: (product: any) => void;
-    product: Product | null;
+    product: ProductRow | null;
 };
 
 export function ProductDialog({
@@ -26,17 +27,25 @@ export function ProductDialog({
     onSave,
     product,
 }: ProductDialogProps) {
-    const [formData, setFormData] = useState({
-        name: '',
-        category: 'Makanan',
-        price: '',
-        stock: '',
-        branch: '',
-        image: '',
-        description: '',
-        discount: '',
-        status: 'Aktif' as 'Aktif' | 'Tidak Aktif',
-    });
+    const initialFormData = product
+        ? product
+        : {
+              id: 0,
+              name: '',
+              category: 'Makanan',
+              price_origin: 0,
+              price_discount: 0,
+              stock: 0,
+              branch: '',
+              image: '',
+              description: '',
+              rating: 0,
+              status: 'Aktif',
+          };
+
+    console.log('initialFormData', initialFormData);
+
+    const [formData, setFormData] = useState<ProductRow>(initialFormData);
 
     // useEffect(() => {
     //     if (product) {
@@ -69,22 +78,22 @@ export function ProductDialog({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const productData = {
+        const productData /* : ProductRow */ = {
             ...(product ? { id: product.id } : {}),
             name: formData.name,
             category: formData.category,
-            price: parseFloat(formData.price),
-            stock: parseInt(formData.stock),
+            price_origin: formData.price_origin,
+            stock: formData.stock,
             branch: formData.branch,
             image:
                 formData.image ||
                 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
             description: formData.description,
-            discount: formData.discount
-                ? parseFloat(formData.discount)
-                : undefined,
+            price_discount: formData.price_discount
+                ? formData.price_discount
+                : null,
             status: formData.status,
-            rating: product?.rating,
+            rating: product?.rating ?? 0,
         };
 
         onSave(productData);
@@ -191,11 +200,13 @@ export function ProductDialog({
                             <Input
                                 id="price"
                                 type="number"
-                                value={formData.price}
+                                value={formData.price_origin}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        price: e.target.value,
+                                        price_origin: parseFloat(
+                                            e.target.value,
+                                        ),
                                     })
                                 }
                                 placeholder="35000"
@@ -213,7 +224,7 @@ export function ProductDialog({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        stock: e.target.value,
+                                        stock: parseFloat(e.target.value),
                                     })
                                 }
                                 placeholder="50"
@@ -223,20 +234,21 @@ export function ProductDialog({
                         </div>
 
                         <div>
-                            <Label htmlFor="discount">Diskon (%)</Label>
+                            <Label htmlFor="discount">Harga Diskon (Rp)</Label>
                             <Input
                                 id="discount"
                                 type="number"
-                                value={formData.discount}
+                                value={formData.price_discount ?? ''}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        discount: e.target.value,
+                                        price_discount: parseFloat(
+                                            e.target.value,
+                                        ),
                                     })
                                 }
-                                placeholder="10"
+                                placeholder="5000"
                                 min="0"
-                                max="100"
                             />
                         </div>
 
@@ -268,7 +280,7 @@ export function ProductDialog({
                             <Input
                                 id="image"
                                 type="url"
-                                value={formData.image}
+                                value={formData.image || ''}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,

@@ -26,7 +26,6 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
-import { Product } from '@/types';
 import { Download, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 
@@ -71,33 +70,49 @@ const topNav = [
     },
 ];
 
+export type ProductRow = {
+    id: number;
+    name: string;
+    category: string;
+    price_origin: number;
+    price_discount: number | null;
+    stock: number;
+    branch: string;
+    image: string | null;
+    description: string;
+    rating: number;
+    status: string;
+};
+
 type ProductManagementProps = {
-    products: Product[];
+    products: ProductRow[];
 };
 
 export default function ProductManagement({
     products: initialProducts,
 }: ProductManagementProps) {
-    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const [products, setProducts] = useState<ProductRow[]>(initialProducts);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [sortBy, setSortBy] = useState<string>('name');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [editingProduct, setEditingProduct] = useState<ProductRow | null>(
+        null,
+    );
     const [activeTab, setActiveTab] = useState('products');
 
-    // console.log('initialProducts', initialProducts);
+    console.log('initialProducts', initialProducts);
 
-    const handleAddProduct = (product: Omit<Product, 'id'>) => {
-        const newProduct: Product = {
+    const handleAddProduct = (product: Omit<ProductRow, 'id'>) => {
+        const newProduct: ProductRow = {
             ...product,
             id: Date.now(),
         };
         setProducts([...products, newProduct]);
     };
 
-    const handleEditProduct = (product: Product) => {
+    const handleEditProduct = (product: ProductRow) => {
         setProducts(products.map((p) => (p.id === product.id ? product : p)));
     };
 
@@ -105,7 +120,8 @@ export default function ProductManagement({
         setProducts(products.filter((p) => p.id !== id));
     };
 
-    const handleOpenDialog = (product?: Product) => {
+    const handleOpenDialog = (product?: ProductRow) => {
+        console.log('edit', product);
         setEditingProduct(product || null);
         setIsDialogOpen(true);
     };
@@ -126,20 +142,23 @@ export default function ProductManagement({
                     .includes(searchQuery.toLowerCase());
             const matchesCategory =
                 categoryFilter === 'all' || product.category === categoryFilter;
-            // const matchesStatus =
-            //     statusFilter === 'all' || product.status === statusFilter;
-            return matchesSearch && matchesCategory /* && matchesStatus */;
+            const matchesStatus =
+                statusFilter === 'all' || product.status === statusFilter;
+            return matchesSearch && matchesCategory && matchesStatus;
         })
         .sort((a, b) => {
+            const priceA = a.price_discount ? a.price_discount : a.price_origin;
+            const priceB = b.price_discount ? b.price_discount : b.price_origin;
+
             switch (sortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'price-asc':
-                    return a.price_discount - b.price_discount;
+                    return priceA - priceB;
                 case 'price-desc':
-                    return b.price_discount - a.price_discount;
+                    return priceB - priceA;
                 case 'stock':
-                    return (b.quantity ?? 0) - (a.quantity ?? 0);
+                    return (b.stock ?? 0) - (a.stock ?? 0);
                 case 'rating':
                     return b.rating - a.rating;
                 default:
@@ -310,6 +329,7 @@ export default function ProductManagement({
                 </Main>
             </SearchProvider>
             <ProductDialog
+                key={String(isDialogOpen)}
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
                 onSave={editingProduct ? handleEditProduct : handleAddProduct}
