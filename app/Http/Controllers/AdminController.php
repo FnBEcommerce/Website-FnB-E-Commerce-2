@@ -594,15 +594,47 @@ class AdminController extends Controller
         $totalOrders = $allOrders->count();
         $avgOrder = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
 
+        // --- Growth Calculation (Month-over-Month) ---
+        $now = Carbon::now();
+
+        // Current period (this month to date)
+        $currentPeriodStart = $now->copy()->startOfMonth();
+        $currentPeriodOrders = Order::where('confirmed_at', '>=', $currentPeriodStart)->get();
+        $currentRevenue = $currentPeriodOrders->sum('subtotal');
+        $currentOrdersCount = $currentPeriodOrders->count();
+        $currentAverageOrder = $currentOrdersCount > 0 ? $currentRevenue / $currentOrdersCount : 0;
+
+        // Previous period (full previous month)
+        $previousPeriodStart = $now->copy()->subMonth()->startOfMonth();
+        $previousPeriodEnd = $now->copy()->subMonth()->endOfMonth();
+        $previousPeriodOrders = Order::whereBetween('confirmed_at', [$previousPeriodStart, $previousPeriodEnd])->get();
+        $previousRevenue = $previousPeriodOrders->sum('subtotal');
+        $previousOrdersCount = $previousPeriodOrders->count();
+        $previousAverageOrder = $previousOrdersCount > 0 ? $previousRevenue / $previousOrdersCount : 0;
+
+        // Helper function for growth percentage
+        $calculateGrowth = function ($current, $previous) {
+            if ($previous == 0) {
+                return $current > 0 ? 100.0 : 0.0;
+            }
+            return (($current - $previous) / $previous) * 100;
+        };
+
+        $revenueGrowth = $calculateGrowth($currentRevenue, $previousRevenue);
+        $ordersGrowth = $calculateGrowth($currentOrdersCount, $previousOrdersCount);
+        $averageGrowth = $calculateGrowth($currentAverageOrder, $previousAverageOrder);
+
         $summaryData = [
             'totalRevenue' => $totalRevenue,
             'totalOrders' => $totalOrders,
             'averageOrder' => $avgOrder,
-            'growth' => 0, // Placeholder
-            'revenueGrowth' => 0, // Placeholder
-            'ordersGrowth' => 0, // Placeholder
-            'averageGrowth' => 0, // Placeholder
+            'growth' => $revenueGrowth, // Using revenue growth as the main 'growth' metric
+            'revenueGrowth' => $revenueGrowth,
+            'ordersGrowth' => $ordersGrowth,
+            'averageGrowth' => $averageGrowth,
         ];
+
+        // return response()->json($summaryData);
 
         $trendQuery = fn($format, $column) => Order::select(
                 DB::raw("$format as name"),
@@ -631,10 +663,38 @@ class AdminController extends Controller
             ->groupBy('products.category')
             ->get();
 
+        $transactionsData = Order::with(['user', 'shopBranch', 'orderDetails.product'])
+            ->latest('confirmed_at') // Order by the main date
+            ->take(50) // Limit to a reasonable number for the dashboard
+            ->get()
+            ->map(function($order) {
+                $firstDetail = $order->orderDetails->first();
+                $category = $firstDetail && $firstDetail->product ? $firstDetail->product->category : 'N/A';
+                $description = 'Pesanan #' . $order->id;
+                if ($firstDetail && $firstDetail->product) {
+                    $description .= ' - ' . $firstDetail->product->name;
+                    if ($order->orderDetails->count() > 1) {
+                        $description .= ' & lainnya';
+                    }
+                }
+
+                return [
+                    'id' => $order->id,
+                    'date' => $order->confirmed_at ? $order->confirmed_at->format('Y-m-d H:i') : null,
+                    'category' => $category,
+                    'description' => $description,
+                    'branch' => $order->shopBranch ? $order->shopBranch->name : 'N/A',
+                    'amount' => $order->total,
+                    'paymentMethod' => $order->payment_method,
+                    'customer' => $order->user ? $order->user->name : 'Guest',
+                ];
+            });
+
         $props = [
             'summaryData' => $summaryData,
             'trendDataPeriod' => $trendDataPeriod,
             'categoryData' => $categoryData,
+            'transactions' => $transactionsData,
         ];
 
         return Inertia::render('admin/cashflow-management', $props);

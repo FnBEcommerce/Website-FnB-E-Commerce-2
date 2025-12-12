@@ -24,6 +24,16 @@ import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
+export type TransactionRow = {
+    id: string;
+    date: string;
+    category: string;
+    description: string;
+    branch: string;
+    amount: number;
+    paymentMethod: string;
+    customer: string;
+};
 
 const topNav = [
     {
@@ -79,12 +89,14 @@ type CashflowManagementProps = {
     summaryData: SummaryData;
     trendDataPeriod: TrendDataPeriod;
     categoryData: TrendDataItem[];
+    transactions: TransactionRow[];
 };
 
 export default function CashflowManagement({
     summaryData,
     trendDataPeriod,
     categoryData,
+    transactions,
 }: CashflowManagementProps) {
     const [period, setPeriod] = useState<PeriodType>('monthly');
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -229,7 +241,9 @@ export default function CashflowManagement({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <TransactionTable />
+                                    <TransactionTable
+                                        transactions={transactions}
+                                    />
                                 </CardContent>
                             </Card>
                         </TabsContent>
