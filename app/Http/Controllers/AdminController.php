@@ -242,6 +242,61 @@ class AdminController extends Controller
             $monthlyAreaData = [];
         }
 
+        // --- 10. Recent Activities (Dynamic) ---
+        $recentOrders = Order::with(['user', 'orderDetails.product'])
+            ->whereNotNull('confirmed_at')
+            ->latest('confirmed_at')
+            ->take(5)
+            ->get();
+
+        $recentReviews = Review::with(['user', 'product'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $activities = collect();
+
+        foreach ($recentOrders as $order) {
+            if (!$order->user) continue; // Skip if no user is associated
+
+            $firstDetail = $order->orderDetails->first();
+            $itemDescription = 'N/A';
+            if ($firstDetail && $firstDetail->product) {
+                $itemDescription = $firstDetail->product->name;
+                if ($order->orderDetails->count() > 1) {
+                    $itemDescription .= ' & lainnya';
+                }
+            }
+
+            $activities->push([
+                'name'   => $order->user->name,
+                'action' => 'Melakukan pemesanan',
+                'item'   => $itemDescription,
+                'time'   => $order->confirmed_at->diffForHumans(),
+                'amount' => $order->total,
+                'timestamp' => $order->confirmed_at,
+            ]);
+        }
+
+        foreach ($recentReviews as $review) {
+            if (!$review->user || !$review->product) continue; // Skip if no user or product
+
+            $activities->push([
+                'name'   => $review->user->name,
+                'action' => "Memberikan rating {$review->rating}★",
+                'item'   => $review->product->name,
+                'time'   => $review->created_at->diffForHumans(),
+                'amount' => 0,
+                'timestamp' => $review->created_at,
+            ]);
+        }
+
+        // Sort by timestamp descending and take the top 5
+        $recentActivities = $activities->sortByDesc('timestamp')->take(5)->map(function ($activity) {
+            unset($activity['timestamp']); // Remove timestamp before sending to frontend
+            return $activity;
+        })->values()->toArray();
+
         $props = [
             'monthlyCustomers' => $monthlyCustomers,
             'customerSegmentation' => $customerSegmentation,
@@ -250,7 +305,8 @@ class AdminController extends Controller
             'productsData' => $productsData,
             'ratingDistribution' => $ratingDistribution,
             'areaData' => $areaData,
-            'monthlyAreaData' => $monthlyAreaData
+            'monthlyAreaData' => $monthlyAreaData,
+            'recentActivities' => $recentActivities,
         ];
 
         return Inertia::render('admin/customer-management', $props);
