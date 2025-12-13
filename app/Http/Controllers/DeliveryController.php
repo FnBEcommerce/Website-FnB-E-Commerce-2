@@ -13,63 +13,77 @@ use Laravel\Fortify\Features;
 class DeliveryController extends Controller
 {
     public function detail(Order $order) {
-        $user = User::find(2); // TODO: Ubah ketika sudah ada sistem login
-        $orderItems = OrderDetail::with('product')
-        ->where('id', $order->id)
-        ->get([
-            'id',
-            'quantity',
-            'subtotal',
-            'product_id'
-        ]);
+        // Eager load all necessary relationships for efficiency
+        $order->load('user', 'orderDetails.product', 'shopBranch', 'courier');
 
+        // Data for the 'user' prop
+        $user = $order->user;
+
+        // Data for the 'orderItems' prop
+        $orderItems = $order->orderDetails;
+
+        // Data for the 'nearestBranch' prop
         $nearestBranch = [
-            'name'     => "Cabang Jakarta Selatan (Pusat)",
-            'distance' => "2.3 km",
-            'address'  => "Jl. Senopati No. 10, Jakarta"
+            'name'     => $order->shopBranch->name ?? 'Cabang tidak ditemukan',
+            'distance' => "2 KM",
+            'address'  => $order->shopBranch->address ?? 'Alamat tidak tersedia',
         ];
 
+        // Data for the 'courierInfo' prop
         $courierInfo = [
-            'name'   => "Budi Santoso",
-            'plate'  => "B 1234 XYZ",
-            'status' => "Menuju lokasi restoran"
+            'name'   => $order->courier->name ?? 'Kurir belum ditugaskan',
+            'plate'  => $order->courier->license_plate ?? '-',
+            'status' => $order->status, // Assuming order status reflects courier status
         ];
 
-        $recommendations = [
-            [
-                'id'       => 101,
-                'name'     => "Ice Matcha Latte",
-                'discount' => 0.2,
-                'price'    => 24000
-            ],
-            [
-                'id'       => 102,
-                'name'     => "Choco Croissant",
-                'discount' => 0.15,
-                'price'    => 18000
-            ]
+        // Data for the 'recommendations' prop
+        $recommendations = \App\Models\Product::whereNotNull('price_discount')
+            ->where('price_discount', '>', 0)
+            ->inRandomOrder()
+            ->limit(2)
+            ->get()
+            ->map(function ($product) {
+                // Calculate discount percentage, avoid division by zero
+                $discountPercentage = $product->price_origin > 0
+                    ? ($product->price_origin - $product->price_discount) / $product->price_origin
+                    : 0;
+
+                return [
+                    'id'       => $product->id,
+                    'name'     => $product->name,
+                    'discount' => round($discountPercentage, 2),
+                    'price'    => $product->price_discount,
+                ];
+            });
+
+        // Data for the 'currentStepIndex' prop
+        $statusMap = [
+            'confirmed'   => 0,
+            'processing'  => 1,
+            'shipped'     => 2,
+            'delivered'   => 3,
+        ];
+        $currentStepIndex = $statusMap[$order->status] ?? 0;
+
+        // Data for the 'trackingDetails' prop
+        // Assumes 'confirmed_at', 'processing_at', 'shipped_at', 'delivered_at' timestamps exist on the Order model
+        $trackingSteps = [
+            ['date' => $order->confirmed_at, 'completed' => !is_null($order->confirmed_at)],
+            ['date' => $order->processing_at, 'completed' => !is_null($order->processing_at)],
+            ['date' => $order->shipped_at, 'completed' => !is_null($order->shipped_at)],
+            ['date' => $order->delivered_at, 'completed' => !is_null($order->delivered_at)],
         ];
 
-        $currentStepIndex = 2; // 0: Confirmed, 1: Processing, 2: Shipped, 3: Delivered
+        $trackingDetails = array_map(function ($step, $index) use ($currentStepIndex) {
+            $dateText = '...';
+            if ($step['completed']) {
+                $dateText = $step['date']->format('H:i A');
+            } elseif ($index === $currentStepIndex) {
+                $dateText = 'Sedang berlangsung';
+            }
+            return ['date' => $dateText, 'completed' => $step['completed']];
+        }, $trackingSteps, array_keys($trackingSteps));
 
-        $trackingDetails = [
-            [
-                'date'      => '12:00 PM',
-                'completed' => true,
-            ],
-            [
-                'date'      => '12:30 PM',
-                'completed' => true,
-            ],
-            [
-                'date'      => 'Sedang berlangsung',
-                'completed' => true,
-            ],
-            [
-                'date'      => 'Est. 30 min',
-                'completed' => false,
-            ],
-        ];
 
         $props = [
             'user' => $user,
