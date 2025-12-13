@@ -1,21 +1,35 @@
-import { useState } from "react";
-import { User, Mail, Lock, Facebook, Linkedin, Home } from "lucide-react";
+import axios from 'axios';
+import { Home, Lock, User } from 'lucide-react';
+import { useState } from 'react';
 
 export function SignUpForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [homeAddress, setHomeAddress] = useState("");
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [homeAddress, setHomeAddress] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Sign up:", { username, password, homeAddress });
-  };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
-  return (
-    <div className="w-full max-w-sm mx-auto">
-      <h1 className="text-orange-500 mb-8">Buat Akun Anda</h1>
+        try {
+            const data = { username, password, homeAddress };
+            console.log('Sign up:', data);
+            const response = await axios.post('/api/register', data);
+            console.log('Sign up response:', response);
+            window.location.href = '/';
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
-      {/* <div className="flex justify-center gap-4 mb-6">
+    return (
+        <div className="mx-auto w-full max-w-sm">
+            <h1 className="mb-8 text-orange-500">Buat Akun Anda</h1>
+
+            {/* <div className="flex justify-center gap-4 mb-6">
         <button className="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
           <Facebook className="w-5 h-5" />
         </button>
@@ -36,50 +50,50 @@ export function SignUpForm() {
         or use your email for registration:
       </p> */}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="relative">
-          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Nama Pengguna"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-            required
-          />
-        </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="relative">
+                    <User className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Nama Pengguna"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        required
+                    />
+                </div>
 
-        <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="password"
-            placeholder="Kata Sandi"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-            required
-          />
-        </div>
+                <div className="relative">
+                    <Lock className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="password"
+                        placeholder="Kata Sandi"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        required
+                    />
+                </div>
 
-        <div className="relative">
-          <Home className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Alamat Rumah"
-            value={homeAddress}
-            onChange={(e) => setHomeAddress(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-            required
-          />
-        </div>
+                <div className="relative">
+                    <Home className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Alamat Rumah"
+                        value={homeAddress}
+                        onChange={(e) => setHomeAddress(e.target.value)}
+                        className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                        required
+                    />
+                </div>
 
-        <button
-          type="submit"
-          className="w-full py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors mt-6"
-        >
-          DAFTAR
-        </button>
-      </form>
-    </div>
-  );
+                <button
+                    type="submit"
+                    className="mt-6 w-full rounded-full bg-orange-500 py-3 text-white transition-colors hover:bg-orange-600"
+                >
+                    DAFTAR
+                </button>
+            </form>
+        </div>
+    );
 }

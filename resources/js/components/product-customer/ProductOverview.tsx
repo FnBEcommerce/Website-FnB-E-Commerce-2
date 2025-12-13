@@ -5,6 +5,11 @@ import { formatPrice } from '@/utils/format-price';
 import { Minus, Plus, Star } from 'lucide-react';
 import { useState } from 'react';
 
+type ProductWithRating = Product & {
+    rating: Number;
+};
+
+//type intersect
 interface ProductOverviewProps {
     product: Product;
     reviews: Review[];

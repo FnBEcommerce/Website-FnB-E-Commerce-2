@@ -40,7 +40,7 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
                             )}
                             <div className="aspect-square overflow-hidden bg-gradient-to-br from-green-50 to-amber-50">
                                 <ImageWithFallback
-                                    src={product.image}
+                                    src={product.image ?? 'none'}
                                     alt={product.name}
                                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
                                 />
