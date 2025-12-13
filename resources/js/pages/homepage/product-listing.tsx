@@ -1,7 +1,7 @@
 import { useCart } from '@/components/homepage/CartContext';
 import { ProductCard } from '@/components/ui/product-card-homepage';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, ProductCardProps } from '@/types/product';
+import type { Product, ProductCardProps } from '@/types/index';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
@@ -9,16 +9,14 @@ type ProductListingProps = ProductCardProps & {
     products: Product[];
 };
 
-export default function ProductListingPage({
-    products,
-    isFavourite,
-}: ProductListingProps) {
+export default function ProductListingPage({ products }: ProductListingProps) {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All Categories');
     const [sortBy, setSortBy] = useState('Featured');
     const [favorites, setFavorites] = useState<(number | string)[]>([]);
     const { addToCart } = useCart();
 
+    console.log(products);
     const categories = [
         'All Categories',
         'Burgers',
@@ -39,8 +37,8 @@ export default function ProductListingPage({
         addToCart({
             id: product.id,
             name: product.name,
-            price: product.priceDiscount,
-            image: product.image,
+            price: product.price_discount,
+            image: product.image ?? 'none',
         });
     };
 
@@ -120,7 +118,7 @@ export default function ProductListingPage({
                             key={product.id}
                             id={product.id}
                             name={product.name}
-                            priceDiscount={product.priceDiscount}
+                            price_discount={product.price_discount}
                             image={product.image}
                             rating={product.rating ?? 0}
                             category={product.category}

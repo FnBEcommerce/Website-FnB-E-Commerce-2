@@ -1,17 +1,36 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+<<<<<<< Updated upstream
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import type { Product } from '@/pages/admin/product-management';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
+=======
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { ProductRow } from '@/pages/admin/product-management';
+// import type { Product } from '@/types';
+import { X } from 'lucide-react';
+import { useState } from 'react';
+>>>>>>> Stashed changes
 
 type ProductDialogProps = {
     isOpen: boolean;
     onClose: () => void;
     onSave: (product: any) => void;
+<<<<<<< Updated upstream
     product: Product | null;
+=======
+    product: ProductRow | null;
+>>>>>>> Stashed changes
 };
 
 export function ProductDialog({
@@ -20,6 +39,7 @@ export function ProductDialog({
     onSave,
     product,
 }: ProductDialogProps) {
+<<<<<<< Updated upstream
     const [formData, setFormData] = useState({
         name: '',
         category: 'Makanan' as 'Makanan' | 'Minuman',
@@ -59,26 +79,92 @@ export function ProductDialog({
             });
         }
     }, [product, isOpen]);
+=======
+    const initialFormData = product
+        ? product
+        : {
+              id: 0,
+              name: '',
+              category: 'Makanan',
+              price_origin: 0,
+              price_discount: 0,
+              stock: 0,
+              branch: '',
+              image: '',
+              description: '',
+              rating: 0,
+              status: 'Aktif',
+          };
+
+    console.log('initialFormData', initialFormData);
+
+    const [formData, setFormData] = useState<ProductRow>(initialFormData);
+
+    // useEffect(() => {
+    //     if (product) {
+    //         setFormData({
+    //             name: product.name,
+    //             category: product.category,
+    //             price: product?.price_origin?.toString(),
+    //             stock: product.stock.toString(),
+    //             branch: product.branch,
+    //             image: product.image,
+    //             description: product.description,
+    //             discount: product.discount?.toString() || '',
+    //             status: product.status,
+    //         });
+    //     } else {
+    //         setFormData({
+    //             name: '',
+    //             category: 'Makanan',
+    //             price: '',
+    //             stock: '',
+    //             branch: '',
+    //             image: '',
+    //             description: '',
+    //             discount: '',
+    //             status: 'Aktif',
+    //         });
+    //     }
+    // }, [product, isOpen]);
+>>>>>>> Stashed changes
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+<<<<<<< Updated upstream
         const productData = {
             ...(product ? { id: product.id } : {}),
             name: formData.name,
             category: formData.category,
             price: parseFloat(formData.price),
             stock: parseInt(formData.stock),
+=======
+        const productData /* : ProductRow */ = {
+            ...(product ? { id: product.id } : {}),
+            name: formData.name,
+            category: formData.category,
+            price_origin: formData.price_origin,
+            stock: formData.stock,
+>>>>>>> Stashed changes
             branch: formData.branch,
             image:
                 formData.image ||
                 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
             description: formData.description,
+<<<<<<< Updated upstream
             discount: formData.discount
                 ? parseFloat(formData.discount)
                 : undefined,
             status: formData.status,
             rating: product?.rating,
+=======
+            price_discount: formData.price_discount
+                ? formData.price_discount
+                : null,
+            status: formData.status,
+            rating: product?.rating ?? 0,
+>>>>>>> Stashed changes
         };
 
         onSave(productData);
@@ -124,6 +210,7 @@ export function ProductDialog({
                         <div>
                             <Label htmlFor="category">Kategori *</Label>
                             <Select
+<<<<<<< Updated upstream
                                 id="category"
                                 value={formData.category}
                                 onChange={(e) =>
@@ -136,12 +223,34 @@ export function ProductDialog({
                             >
                                 <option value="Makanan">Makanan</option>
                                 <option value="Minuman">Minuman</option>
+=======
+                                value={formData.category}
+                                onValueChange={(value) =>
+                                    setFormData({
+                                        ...formData,
+                                        category: value as any,
+                                    })
+                                }
+                            >
+                                <SelectTrigger id="category">
+                                    <SelectValue placeholder="Pilih Kategori" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Makanan">
+                                        Makanan
+                                    </SelectItem>
+                                    <SelectItem value="Minuman">
+                                        Minuman
+                                    </SelectItem>
+                                </SelectContent>
+>>>>>>> Stashed changes
                             </Select>
                         </div>
 
                         <div>
                             <Label htmlFor="branch">Cabang *</Label>
                             <Select
+<<<<<<< Updated upstream
                                 id="branch"
                                 value={formData.branch}
                                 onChange={(e) =>
@@ -168,6 +277,36 @@ export function ProductDialog({
                                 <option value="Jakarta Utara">
                                     Jakarta Utara
                                 </option>
+=======
+                                value={formData.branch}
+                                onValueChange={(value) =>
+                                    setFormData({
+                                        ...formData,
+                                        branch: value,
+                                    })
+                                }
+                            >
+                                <SelectTrigger id="branch">
+                                    <SelectValue placeholder="Pilih Cabang" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Jakarta Pusat">
+                                        Jakarta Pusat
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Selatan">
+                                        Jakarta Selatan
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Barat">
+                                        Jakarta Barat
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Timur">
+                                        Jakarta Timur
+                                    </SelectItem>
+                                    <SelectItem value="Jakarta Utara">
+                                        Jakarta Utara
+                                    </SelectItem>
+                                </SelectContent>
+>>>>>>> Stashed changes
                             </Select>
                         </div>
 
@@ -176,11 +315,21 @@ export function ProductDialog({
                             <Input
                                 id="price"
                                 type="number"
+<<<<<<< Updated upstream
                                 value={formData.price}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
                                         price: e.target.value,
+=======
+                                value={formData.price_origin}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        price_origin: parseFloat(
+                                            e.target.value,
+                                        ),
+>>>>>>> Stashed changes
                                     })
                                 }
                                 placeholder="35000"
@@ -198,7 +347,11 @@ export function ProductDialog({
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
+<<<<<<< Updated upstream
                                         stock: e.target.value,
+=======
+                                        stock: parseFloat(e.target.value),
+>>>>>>> Stashed changes
                                     })
                                 }
                                 placeholder="50"
@@ -208,6 +361,7 @@ export function ProductDialog({
                         </div>
 
                         <div>
+<<<<<<< Updated upstream
                             <Label htmlFor="discount">Diskon (%)</Label>
                             <Input
                                 id="discount"
@@ -222,12 +376,30 @@ export function ProductDialog({
                                 placeholder="10"
                                 min="0"
                                 max="100"
+=======
+                            <Label htmlFor="discount">Harga Diskon (Rp)</Label>
+                            <Input
+                                id="discount"
+                                type="number"
+                                value={formData.price_discount ?? ''}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        price_discount: parseFloat(
+                                            e.target.value,
+                                        ),
+                                    })
+                                }
+                                placeholder="5000"
+                                min="0"
+>>>>>>> Stashed changes
                             />
                         </div>
 
                         <div>
                             <Label htmlFor="status">Status *</Label>
                             <Select
+<<<<<<< Updated upstream
                                 id="status"
                                 value={formData.status}
                                 onChange={(e) =>
@@ -240,6 +412,25 @@ export function ProductDialog({
                             >
                                 <option value="Aktif">Aktif</option>
                                 <option value="Tidak Aktif">Tidak Aktif</option>
+=======
+                                value={formData.status}
+                                onValueChange={(value) =>
+                                    setFormData({
+                                        ...formData,
+                                        status: value as any,
+                                    })
+                                }
+                            >
+                                <SelectTrigger id="status">
+                                    <SelectValue placeholder="Pilih Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Aktif">Aktif</SelectItem>
+                                    <SelectItem value="Tidak Aktif">
+                                        Tidak Aktif
+                                    </SelectItem>
+                                </SelectContent>
+>>>>>>> Stashed changes
                             </Select>
                         </div>
 
@@ -248,7 +439,11 @@ export function ProductDialog({
                             <Input
                                 id="image"
                                 type="url"
+<<<<<<< Updated upstream
                                 value={formData.image}
+=======
+                                value={formData.image || ''}
+>>>>>>> Stashed changes
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,

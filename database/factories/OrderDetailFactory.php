@@ -18,13 +18,22 @@ class OrderDetailFactory extends Factory
      */
     public function definition(): array
     {
+        // Note: This factory assumes the associated product's price is set.
+        // The subtotal is calculated based on a random quantity.
+        $quantity = $this->faker->numberBetween(1, 3);
+
+        // You would typically fetch a product and use its price,
+        // but for a simple factory, we'll use a random value.
+        $price = $this->faker->randomFloat(2, 10000, 50000);
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+
         return [
             'order_id' => Order::factory(),
             'product_id' => Product::factory(),
-            'orderdetail_quantity' => fake()->numberBetween(1, 4),
-            'orderdetail_subtotal' => fake()->numberBetween(10000, 100000),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'quantity' => $quantity,
+            'subtotal' => $quantity * $price,
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

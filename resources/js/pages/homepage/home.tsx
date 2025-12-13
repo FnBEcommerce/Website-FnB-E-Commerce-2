@@ -6,7 +6,7 @@ import RootLayout from '@/components/layout/root-layout';
 import { ProductCard } from '@/components/ui/product-card-homepage';
 import { useCart } from '@/context/CartContext';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types';
 import type { ReactNode } from 'react';
 
 // interface Product {
@@ -168,12 +168,13 @@ function Products({ products }: HomePageProps) {
     //         payload: {
     //             id: product.id,
     //             name: product.name,
-    //             price: product.priceOrigin,
+    //             price: product.price,
     //             restaurant: 'Make your Bites',
     //             image: product.image,
     //         },
     //     });
     // };
+    // console.log(products[0]);
     return (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
@@ -181,8 +182,8 @@ function Products({ products }: HomePageProps) {
                     key={product.id}
                     id={product.id}
                     name={product.name}
-                    priceDiscount={product.priceDiscount}
-                    image={product.image}
+                    price_discount={product.price_discount}
+                    image={product.image ?? 'none'}
                     rating={product.rating ?? 0}
                     category={product.category}
                     // isFavourite={isFavourite}

@@ -153,6 +153,11 @@ import {
 //     { rating: '1 Bintang', count: 19, color: '#ef4444' },
 // ];
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 interface ProductData {
     id: string;
     name: string;
@@ -172,6 +177,10 @@ interface RatingDistribution {
     rating: string;
     count: number;
     color: string;
+<<<<<<< Updated upstream
+=======
+    [key: string]: any;
+>>>>>>> Stashed changes
 }
 
 interface ProductEvaluationProps {
@@ -181,6 +190,10 @@ interface ProductEvaluationProps {
     };
 }
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 export function ProductEvaluation({
     data: { productsData, ratingDistribution },
 }: ProductEvaluationProps) {

@@ -3,39 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ShopbranchProduct extends Model
+class ShopbranchProduct extends Pivot
 {
     use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'shopbranch_product'; 
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'shopbranch_product_id';
+    protected $table = 'product_shop_branch';
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
-
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    public function shopBranch()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
+        return $this->belongsTo(ShopBranch::class);
     }
 
-    public function shopBranch() {
-        return $this->belongsTo(ShopBranch::class, "shop_id", "shop_id");
-    } 
-    public function product() {
-        return $this->belongsTo(Product::class, "product_id", "product_id");
-    } 
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

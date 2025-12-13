@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shop_branch', function (Blueprint $table) {
-            $table->integer('shop_id')->autoIncrement();
-            $table->string('shop_name', 100)->nullable();
-            $table->string('shop_address', 255)->nullable();
-            $table->string('shop_phonenumber', 20)->nullable();
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
+        Schema::create('shop_branches', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('address');
+            $table->string('phone_number');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shop_branch');
+        Schema::dropIfExists('shop_branches');
     }
 };

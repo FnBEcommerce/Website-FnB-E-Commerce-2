@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -16,14 +17,37 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+        $birthDate = $this->faker->dateTimeBetween('-65 years', '-18 years');
+
         return [
-            'username' => $this->faker->userName(),
-            'password' => bcrypt('password'), // default password
-            'address_1' => $this->faker->address(),
-            'address_2' => $this->faker->address(),
-            'role' => $this->faker->randomElement(['admin', 'customer']),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_verified_at' => $createdAt,
+            'password' => bcrypt('password'), // password
+            'remember_token' => Str::random(10),
+            'phone_number' => $this->faker->phoneNumber(),
+            'birth_date' => $birthDate->format('Y-m-d'),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'street' => $this->faker->streetAddress(),
+            'city' => $this->faker->city(),
+            'state' => $this->faker->state(),
+            'label' => 'home',
+            'role' => 'user',
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
+    }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     *
+     * @return $this
+     */
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
     }
 }

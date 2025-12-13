@@ -3,41 +3,75 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Order;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'user'; 
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'user_id';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone_number',
+        'birth_date',
+        'gender',
+        'street',
+        'city',
+        'state',
+        'label',
+        'alt_street',
+        'alt_city',
+        'alt_state',
+        'alt_label',
+    ];
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'birth_date' => 'date',
+        'password' => 'hashed',
+    ];
+
+    public function orders()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
+        return $this->hasMany(Order::class);
     }
 
-    public function orders() {
-        return $this->hasMany(Order::class, "user_id", "user_id");
-    }
 
     public function reviews() {
         return $this->hasMany(Review::class, "user_id", "user_id");
     }
+
+
+    /**
+     * The shop branches that the user belongs to.
+     */
+    public function shopBranches(): BelongsToMany
+    {
+        return $this->belongsToMany(ShopBranch::class, 'shop_branch_user');
+    }
+
 }

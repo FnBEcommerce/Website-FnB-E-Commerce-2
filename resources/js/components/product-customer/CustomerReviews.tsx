@@ -1,13 +1,21 @@
 import { Button } from '@/components/ui/button';
+import { Review } from '@/types';
 import { MessageSquare, Star, ThumbsUp } from 'lucide-react';
 
-export function CustomerReviews() {
+type CustomerReviewsProps = {
+    reviews: Review[];
+};
+
+export function CustomerReviews({ reviews }: CustomerReviewsProps) {
     const reviewHighlights = [
         { text: 'Quick & easy', count: 45 },
         { text: 'Tastes incredible!', count: 38 },
         { text: 'Healthy option', count: 32 },
         { text: 'Perfect for lunch', count: 28 },
     ];
+
+    const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
+    const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
 
     return (
         <div className="mt-12 rounded-lg border border-primary bg-gradient-to-br from-amber-50 to-orange-50 p-6">
@@ -19,7 +27,7 @@ export function CustomerReviews() {
                             className="text-[#1B263B ] text-[48px]"
                             style={{ fontWeight: 700 }}
                         >
-                            4.5
+                            {averageRating}
                         </div>
                         <div>
                             <div className="mb-1 flex items-center gap-1">
@@ -27,7 +35,7 @@ export function CustomerReviews() {
                                     <Star
                                         key={star}
                                         className={`h-6 w-6 ${
-                                            star <= 4
+                                            star <= averageRating
                                                 ? 'fill-yellow-400 text-yellow-400'
                                                 : 'text-gray-300'
                                         }`}
@@ -35,7 +43,7 @@ export function CustomerReviews() {
                                 ))}
                             </div>
                             <p className="text-gray-700">
-                                Based on 100+ reviews
+                                Based on {reviews.length} reviews
                             </p>
                         </div>
                     </div>

@@ -1,24 +1,26 @@
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
-import { ProductCardProps } from '@/types/product';
+import { ProductCardProps } from '@/types/index';
 import {  useState } from 'react';
 import { useCart } from '@/components/homepage/CartContext';
-import type { Product } from '@/types/product';
+import type { Product } from '@/types/index';
 
 
 
-export  function ProductCard(props: Product) {
+export  function ProductCard(props: ProductCardProps) {
 
     const {
     id,
     category,
     image,
-    priceDiscount,
+    price_discount,
     name,
     rating,
 
   } = props;
+
+  console.log(name)
 
     const [searchQuery, setSearchQuery] = useState('');
         const [selectedCategory, setSelectedCategory] = useState('All Categories');
@@ -44,10 +46,17 @@ export  function ProductCard(props: Product) {
                 
                 id: id,
                 name: name,
-                price: priceDiscount,
-                image: image,
+                price: price_discount,
+                image: image ?? "none",
             });
         };
+
+        const formatRupiah = (value: number) =>
+        new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+        }).format(value);
     
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
@@ -73,7 +82,7 @@ export  function ProductCard(props: Product) {
                 </button>
 
                 <ImageWithFallback
-                    src={image}
+                    src={image ?? "none"}
                     alt={"product image"}
                     className="h-full w-full object-cover"
                 />
@@ -96,7 +105,7 @@ export  function ProductCard(props: Product) {
 
                 <div className="flex items-center justify-between">
                     <span className="text-gray-900">
-                        ${priceDiscount.toFixed(2)}
+                        {formatRupiah(price_discount)}   
                     </span>
 
                     <Button

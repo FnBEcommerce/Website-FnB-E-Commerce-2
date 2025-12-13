@@ -49,6 +49,7 @@ const topNav = [
     },
 ];
 
+<<<<<<< Updated upstream
 interface CustomerManagementProps {
     monthlyCustomers: {
         month: string;
@@ -117,6 +118,105 @@ interface CustomerManagementProps {
     }[];
 }
 
+=======
+<<<<<<< Updated upstream
+=======
+export type MonthlyCustomer = {
+    month: string;
+    pelanggan: number;
+    pesanan: number;
+};
+
+export type CustomerSegmentation = {
+    name: string;
+    value: number;
+    color: string;
+    [key: string]: any;
+};
+
+export type StatsData = {
+    title: string;
+    value: string;
+    change: string;
+    icon: React.ElementType;
+    color: string;
+    bgColor: string;
+};
+
+export type RecentActivity = {
+    name: string;
+    action: string;
+    item: string;
+    time: string;
+    amount: number;
+};
+
+export type CustomerData = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    area: string;
+    totalOrders: number;
+    totalSpent: number;
+    lastOrder: string;
+    status: string;
+    avgRating: number;
+};
+
+export type ProductData = {
+    id: string;
+    name: string;
+    category: string;
+    totalReviews: number;
+    avgRating: number;
+    rating5: number;
+    rating4: number;
+    rating3: number;
+    rating2: number;
+    rating1: number;
+    totalSold: number;
+    trend: string;
+};
+
+export type RatingDistribution = {
+    rating: string;
+    count: number;
+    color: string;
+};
+
+export type AreaData = {
+    area: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalRevenue: number;
+    avgOrderValue: number;
+    topProduct: string;
+    growth: number;
+};
+
+export type MonthlyAreaData = {
+    month: string;
+    jaksel: number;
+    jakpus: number;
+    jakbar: number;
+    jaktim: number;
+};
+
+type CustomerManagementProps = {
+    monthlyCustomers: MonthlyCustomer[];
+    customerSegmentation: CustomerSegmentation[];
+    statsData: StatsData[];
+    customersData: CustomerData[];
+    productsData: ProductData[];
+    ratingDistribution: RatingDistribution[];
+    areaData: AreaData[];
+    monthlyAreaData: MonthlyAreaData[];
+    recentActivities: RecentActivity[];
+};
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 export default function CustomerManagement({
     monthlyCustomers,
     customerSegmentation,
@@ -126,7 +226,16 @@ export default function CustomerManagement({
     ratingDistribution,
     areaData,
     monthlyAreaData,
+<<<<<<< Updated upstream
 }: CustomerManagementProps) {
+=======
+<<<<<<< Updated upstream
+}: any) {
+=======
+    recentActivities,
+}: CustomerManagementProps) {
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     const [activeTab, setActiveTab] = useState('overview');
 
     // console.log(users);
@@ -200,6 +309,7 @@ export default function CustomerManagement({
                                     monthlyCustomers,
                                     customerSegmentation,
                                     statsData,
+                                    recentActivities,
                                 }}
                             />
                         </TabsContent>
@@ -250,7 +360,10 @@ export default function CustomerManagement({
                                 </CardHeader>
                                 <CardContent>
                                     <AreaSalesReport
-                                        data={{ areaData, monthlyAreaData }}
+                                        data={{
+                                            areaData,
+                                            monthlyAreaData,
+                                        }}
                                     />
                                 </CardContent>
                             </Card>

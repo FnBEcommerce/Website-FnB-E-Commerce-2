@@ -20,10 +20,29 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
+<<<<<<< Updated upstream
+=======
+export type TransactionRow = {
+    id: string;
+    date: string;
+    category: string;
+    description: string;
+    branch: string;
+    amount: number;
+    paymentMethod: string;
+    customer: string;
+};
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 const topNav = [
     {
@@ -52,6 +71,12 @@ const topNav = [
     },
 ];
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+export default function CashflowManagement() {
+=======
+>>>>>>> Stashed changes
 export type TrendDataItem = {
     name: string;
     pendapatan: number;
@@ -79,17 +104,31 @@ type CashflowManagementProps = {
     summaryData: SummaryData;
     trendDataPeriod: TrendDataPeriod;
     categoryData: TrendDataItem[];
+<<<<<<< Updated upstream
+=======
+    transactions: TransactionRow[];
+>>>>>>> Stashed changes
 };
 
 export default function CashflowManagement({
     summaryData,
     trendDataPeriod,
     categoryData,
+<<<<<<< Updated upstream
+=======
+    transactions,
+>>>>>>> Stashed changes
 }: CashflowManagementProps) {
     const [period, setPeriod] = useState<PeriodType>('monthly');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [activeTab, setActiveTab] = useState('overview');
 
+<<<<<<< Updated upstream
+=======
+    console.log(summaryData, trendDataPeriod, categoryData);
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     return (
         <AuthenticatedLayout>
             <SearchProvider>
@@ -106,6 +145,12 @@ export default function CashflowManagement({
 
                 {/* ===== Main ===== */}
                 <Main>
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+                    <div className=""></div>
+=======
+>>>>>>> Stashed changes
                     <div className="mb-2 flex items-center justify-between space-y-2">
                         <h1 className="text-2xl font-bold tracking-tight">
                             Manajemen Cash Flow
@@ -227,11 +272,21 @@ export default function CashflowManagement({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
+<<<<<<< Updated upstream
                                     <TransactionTable />
+=======
+                                    <TransactionTable
+                                        transactions={transactions}
+                                    />
+>>>>>>> Stashed changes
                                 </CardContent>
                             </Card>
                         </TabsContent>
                     </Tabs>
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                 </Main>
             </SearchProvider>
         </AuthenticatedLayout>

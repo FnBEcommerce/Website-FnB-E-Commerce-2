@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Product } from '@/types/product';
+import { Product, Review } from '@/types';
 import { formatPrice } from '@/utils/format-price';
 import { Minus, Plus, Star } from 'lucide-react';
 import { useState } from 'react';
@@ -11,15 +11,20 @@ type ProductWithRating = Product & {
 
 //type intersect
 interface ProductOverviewProps {
-    product: ProductWithRating;
+    product: Product;
+    reviews: Review[];
     onNavigateToCheckout?: () => void;
 }
 
 export function ProductOverview({
     product,
+    reviews,
     onNavigateToCheckout,
 }: ProductOverviewProps) {
     const [quantity, setQuantity] = useState(1);
+    const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
+    const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
+    // console.log(reviews);
 
     // const features = [
     //     { icon: Clock, text: '7-Minute Prep', color: 'text-green-600' },
@@ -48,16 +53,18 @@ export function ProductOverview({
                         <Star
                             key={star}
                             className={`h-5 w-5 ${
-                                star <= product.rating
+                                star <= averageRating
                                     ? 'fill-yellow-400 text-yellow-400'
                                     : 'text-gray-300'
                             }`}
                         />
                     ))}
                 </div>
-                <span className="text-gray-700">{product.rating}/5</span>
+                <span className="text-gray-700">
+                    {Number(averageRating).toFixed(1)}/5
+                </span>
                 <span className="text-gray-500">
-                    ({product.reviews ? product.reviews.length : 0} ratings)
+                    ({reviews.length} ratings)
                 </span>
             </div>
 
@@ -68,21 +75,23 @@ export function ProductOverview({
                         className="text-[36px] text-primary"
                         style={{ fontWeight: 700 }}
                     >
-                        {formatPrice(product.priceDiscount)}
+                        {formatPrice(product.price_discount)}
                     </span>
                     <span className="text-[20px] text-gray-400 line-through">
-                        {formatPrice(product.priceOrigin)}
+                        {formatPrice(product.price_origin)}
                     </span>
                 </div>
-                <Badge className="bg-red-500 px-3 py-1 text-white hover:bg-red-600">
-                    0% OFF
-                </Badge>
+                {product.badge && (
+                    <Badge className="bg-red-500 px-3 py-1 text-white hover:bg-red-600">
+                        {product.badge}
+                    </Badge>
+                )}
             </div>
 
             {/* Key Features */}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {product.foodType &&
-                    product.foodType.map((text, index) => {
+                {product.food_type &&
+                    product.food_type.map((text: string, index: number) => {
                         return (
                             <div
                                 key={index}

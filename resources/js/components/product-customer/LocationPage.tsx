@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { User } from '@/types/user';
 import {
     Briefcase,
     Check,
@@ -17,16 +16,16 @@ import {
 import { useState } from 'react';
 
 interface LocationPageProps {
-    user: User;
+    // user: User;
     onNavigateToCheckout: () => void;
     onNavigateToHome: () => void;
 }
 
 interface SavedAddress {
     id: number;
-    type: 'home' | 'work' | 'other';
+    type: string;
     name: string;
-    address: string; // Menampung data Street
+    address: string;
     city: string;
     state: string;
     phone: string;
@@ -34,7 +33,7 @@ interface SavedAddress {
 }
 
 export function LocationPage({
-    user,
+    // user,
     onNavigateToCheckout,
     onNavigateToHome,
 }: LocationPageProps) {
@@ -52,50 +51,31 @@ export function LocationPage({
         street: '',
         city: '',
         state: '',
-        addressType: 'home' as 'home' | 'work' | 'other',
+        addressType: 'home',
     });
 
-    const initialAddresses: SavedAddress[] = !user.altAddressInfo
-        ? [
-              {
-                  id: 1,
-                  type: user.addressInfo.label
-                      ? user.addressInfo.label
-                      : 'home',
-                  name: user.fullName,
-                  address: user.addressInfo.street,
-                  city: user.addressInfo.city,
-                  state: user.addressInfo.state,
-                  phone: user.fullNumber,
-                  isDefault: true,
-              },
-          ]
-        : [
-              {
-                  id: 1,
-                  type: user.addressInfo.label
-                      ? user.addressInfo.label
-                      : 'home',
-                  name: user.fullName,
-                  address: user.addressInfo.street,
-                  city: user.addressInfo.city,
-                  state: user.addressInfo.state,
-                  phone: user.fullNumber,
-                  isDefault: true,
-              },
-              {
-                  id: 2,
-                  type: user.altAddressInfo.label
-                      ? user.altAddressInfo.label
-                      : 'home',
-                  name: user.fullName,
-                  address: user.altAddressInfo.street,
-                  city: user.altAddressInfo.city,
-                  state: user.altAddressInfo.state,
-                  phone: user.fullNumber,
-                  isDefault: false,
-              },
-          ];
+    const initialAddresses: SavedAddress[] = [
+        {
+            id: 1,
+            type: 'Rumah',
+            name: 'Amalia Wahyuni',
+            address: 'Jalan Ahmad Yani, no. 4',
+            city: 'Jakarta',
+            state: 'Jakarta',
+            phone: '(+62) 941 1200 821',
+            isDefault: true,
+        },
+        {
+            id: 2,
+            type: 'Kantor',
+            name: 'Usyi Syahrini Maryati',
+            address: 'Jalan Ketintang Selatan, no. 2',
+            city: 'Jakarta',
+            state: 'Jakarta',
+            phone: '(+62) 941 1344 821',
+            isDefault: false,
+        },
+    ];
 
     const [savedAddresses, setSavedAddresses] =
         useState<SavedAddress[]>(initialAddresses);

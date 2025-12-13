@@ -8,27 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'transaction'; 
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'transaction_id';
+    protected $fillable = [
+        'order_id',
+        'transaction_status',
+        'amount',
+        'payment_gateway_reference',
+    ];
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
-
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    public function order()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
+        return $this->belongsTo(Order::class);
     }
 }

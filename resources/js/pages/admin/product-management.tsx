@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
+<<<<<<< Updated upstream
 import { Download, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 
@@ -42,6 +43,27 @@ export type Product = {
     rating?: number;
     status: 'Aktif' | 'Tidak Aktif';
 };
+=======
+<<<<<<< Updated upstream
+=======
+import { Download, Filter, Plus } from 'lucide-react';
+import { useState } from 'react';
+
+// export type Product = {
+//     id: string;
+//     name: string;
+//     category: 'Makanan' | 'Minuman';
+//     price: number;
+//     stock: number;
+//     branch: string;
+//     image: string;
+//     description: string;
+//     discount?: number;
+//     rating?: number;
+//     status: 'Aktif' | 'Tidak Aktif';
+// };
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 const topNav = [
     {
@@ -70,19 +92,46 @@ const topNav = [
     },
 ];
 
+<<<<<<< Updated upstream
 type ProductManagementProps = {
     products: Product[];
+=======
+<<<<<<< Updated upstream
+export default function ProductManagement() {
+=======
+export type ProductRow = {
+    id: number;
+    name: string;
+    category: string;
+    price_origin: number;
+    price_discount: number | null;
+    stock: number;
+    branch: string;
+    image: string | null;
+    description: string;
+    rating: number;
+    status: string;
+};
+
+type ProductManagementProps = {
+    products: ProductRow[];
+>>>>>>> Stashed changes
 };
 
 export default function ProductManagement({
     products: initialProducts,
 }: ProductManagementProps) {
+<<<<<<< Updated upstream
     const [products, setProducts] = useState<Product[]>(initialProducts);
+=======
+    const [products, setProducts] = useState<ProductRow[]>(initialProducts);
+>>>>>>> Stashed changes
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [sortBy, setSortBy] = useState<string>('name');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+<<<<<<< Updated upstream
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [activeTab, setActiveTab] = useState('products');
 
@@ -90,10 +139,24 @@ export default function ProductManagement({
         const newProduct = {
             ...product,
             id: Date.now().toString(),
+=======
+    const [editingProduct, setEditingProduct] = useState<ProductRow | null>(
+        null,
+    );
+    const [activeTab, setActiveTab] = useState('products');
+
+    console.log('initialProducts', initialProducts);
+
+    const handleAddProduct = (product: Omit<ProductRow, 'id'>) => {
+        const newProduct: ProductRow = {
+            ...product,
+            id: Date.now(),
+>>>>>>> Stashed changes
         };
         setProducts([...products, newProduct]);
     };
 
+<<<<<<< Updated upstream
     const handleEditProduct = (product: Product) => {
         setProducts(products.map((p) => (p.id === product.id ? product : p)));
     };
@@ -103,6 +166,18 @@ export default function ProductManagement({
     };
 
     const handleOpenDialog = (product?: Product) => {
+=======
+    const handleEditProduct = (product: ProductRow) => {
+        setProducts(products.map((p) => (p.id === product.id ? product : p)));
+    };
+
+    const handleDeleteProduct = (id: number) => {
+        setProducts(products.filter((p) => p.id !== id));
+    };
+
+    const handleOpenDialog = (product?: ProductRow) => {
+        console.log('edit', product);
+>>>>>>> Stashed changes
         setEditingProduct(product || null);
         setIsDialogOpen(true);
     };
@@ -118,7 +193,11 @@ export default function ProductManagement({
                 product.name
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase()) ||
+<<<<<<< Updated upstream
                 product.description
+=======
+                (product.description || '')
+>>>>>>> Stashed changes
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
             const matchesCategory =
@@ -128,10 +207,17 @@ export default function ProductManagement({
             return matchesSearch && matchesCategory && matchesStatus;
         })
         .sort((a, b) => {
+<<<<<<< Updated upstream
+=======
+            const priceA = a.price_discount ? a.price_discount : a.price_origin;
+            const priceB = b.price_discount ? b.price_discount : b.price_origin;
+
+>>>>>>> Stashed changes
             switch (sortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'price-asc':
+<<<<<<< Updated upstream
                     return a.price - b.price;
                 case 'price-desc':
                     return b.price - a.price;
@@ -139,11 +225,24 @@ export default function ProductManagement({
                     return b.stock - a.stock;
                 case 'rating':
                     return (b.rating || 0) - (a.rating || 0);
+=======
+                    return priceA - priceB;
+                case 'price-desc':
+                    return priceB - priceA;
+                case 'stock':
+                    return (b.stock ?? 0) - (a.stock ?? 0);
+                case 'rating':
+                    return b.rating - a.rating;
+>>>>>>> Stashed changes
                 default:
                     return 0;
             }
         });
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     return (
         <AuthenticatedLayout>
             <SearchProvider>
@@ -306,12 +405,23 @@ export default function ProductManagement({
                     </Tabs>
                 </Main>
             </SearchProvider>
+<<<<<<< Updated upstream
             <ProductDialog
+=======
+<<<<<<< Updated upstream
+=======
+            <ProductDialog
+                key={String(isDialogOpen)}
+>>>>>>> Stashed changes
                 isOpen={isDialogOpen}
                 onClose={handleCloseDialog}
                 onSave={editingProduct ? handleEditProduct : handleAddProduct}
                 product={editingProduct}
             />
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
         </AuthenticatedLayout>
     );
 }

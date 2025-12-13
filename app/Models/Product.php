@@ -4,41 +4,60 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
     use HasFactory;
-    // 1. Definisi nama tabel (jika singular)
-    protected $table = 'product'; 
 
-    // 2. Definisi Primary Key custom
-    protected $primaryKey = 'product_id';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'category',
+        'price_origin',
+        'price_discount',
+        'quantity',
+        'image',
+        'popular',
+        'rating',
+        'preparation_time',
+        'badge',
+        'food_type',
+    ];
 
-    // 3. Matikan timestamp default Laravel (created_at, updated_at)
-    public $timestamps = false;
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'popular' => 'boolean',
+        'rating' => 'decimal:1',
+        'food_type' => 'array',
+    ];
 
-    // 4. Handle timestamp manual
-    // Opsional: gunakan boot function atau observer untuk mengisi last_updated otomatis
-    protected static function boot()
+    public function reviews()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->date_created = now();
-        });
-
-        static::updating(function ($model) {
-            $model->last_updated = now();
-        });
+        return $this->hasMany(Review::class);
     }
 
-    public function reviews() {
-        return $this->hasMany(Review::class, "product_id", "product_id");
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
     }
-    public function orderDetails() {
-        return $this->hasMany(OrderDetail::class, "product_id", "product_id");
+
+    public function shopBranches(): BelongsToMany
+    {
+        return $this->belongsToMany(ShopBranch::class, 'product_shop_branch');
     }
-    public function shopbranchProducts() {
-        return $this->hasMany(ShopbranchProduct::class, "product_id", "product_id");
+
+    public function shopBranchProducts()
+    {
+        return $this->hasMany(ShopbranchProduct::class);
     }
 }

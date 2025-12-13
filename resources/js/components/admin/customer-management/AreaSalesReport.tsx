@@ -114,7 +114,7 @@ import {
 //     },
 // ];
 
-// const monthlyAreaData = [
+// const monthlyAreaDataDummy = [
 //     { month: 'Jan', jaksel: 3.2, jakpus: 2.8, jakbar: 2.4, jaktim: 2.0 },
 //     { month: 'Feb', jaksel: 3.5, jakpus: 3.0, jakbar: 2.6, jaktim: 2.2 },
 //     { month: 'Mar', jaksel: 3.8, jakpus: 3.3, jakbar: 2.8, jaktim: 2.4 },
@@ -177,6 +177,8 @@ export function AreaSalesReport({
         if (sortBy === 'growth') return b.growth - a.growth;
         return 0;
     });
+
+    const monthlyAreaDataKeys = Object.keys(monthlyAreaData[0]).slice(1);
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('id-ID', {
@@ -288,7 +290,23 @@ export function AreaSalesReport({
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar
+                                {monthlyAreaDataKeys.map((dataKey, i) => {
+                                    const colors = [
+                                        '#f97316',
+                                        '#3b82f6',
+                                        '#10b981',
+                                        '#f59e0b',
+                                    ];
+                                    return (
+                                        <Bar
+                                            key={i}
+                                            dataKey={dataKey}
+                                            fill={colors[i]}
+                                            name={dataKey}
+                                        />
+                                    );
+                                })}
+                                {/* <Bar
                                     dataKey="jaksel"
                                     fill="#f97316"
                                     name="Jakarta Selatan"
@@ -307,7 +325,7 @@ export function AreaSalesReport({
                                     dataKey="jaktim"
                                     fill="#f59e0b"
                                     name="Jakarta Timur"
-                                />
+                                /> */}
                             </BarChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -326,7 +344,11 @@ export function AreaSalesReport({
                                     cy="50%"
                                     labelLine={false}
                                     label={({ name, percent }) =>
-                                        `${name.split(' ')[0]}: ${(percent * 100).toFixed(0)}%`
+                                        name && percent
+                                            ? `${name.split(' ')[0]}: ${(
+                                                  percent * 100
+                                              ).toFixed(0)}%`
+                                            : ''
                                     }
                                     outerRadius={100}
                                     fill="#8884d8"
