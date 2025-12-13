@@ -209,9 +209,12 @@ class AdminController extends Controller
             DB::raw('MIN(orders.confirmed_at) as month_order_key') // For sorting
         ];
 
+        // return response()->json($topCities);
+
         foreach ($topCities as $city) {
             // Use predefined abbreviation or generate one
             $alias = $cityAbbreviations[$city] ?? strtolower(substr(str_replace(' ', '', $city), 0, 6));
+
             // The value is divided by 1,000,000 to match the scale of the original static data (e.g., 3.2 for 3,200,000)
             $selects[] = DB::raw("SUM(CASE WHEN users.city = '{$city}' THEN orders.subtotal / 1000000 ELSE 0 END) as {$alias}");
         }
@@ -237,6 +240,7 @@ class AdminController extends Controller
                     return (array)$row;
                 })
                 ->toArray();
+                // return response()->json($monthlyAreaData);
         } else {
             // Provide an empty array or a default structure if no data
             $monthlyAreaData = [];
