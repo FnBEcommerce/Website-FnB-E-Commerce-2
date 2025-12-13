@@ -43,7 +43,8 @@ Route::middleware(['role:user,admin'])->group(function() {
     Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
 });
 
-Route::middleware(['role:admin'])->prefix('/admin')->group(function () {
+// TODO: change to role:admin after finish
+Route::middleware(['role:admin,user'])->prefix('/admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
     Route::get('/cashflow-management', [AdminController::class, 'cashflowManagement'])->name('admin.cashflow_management');
