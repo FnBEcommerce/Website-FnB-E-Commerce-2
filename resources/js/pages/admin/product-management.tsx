@@ -29,19 +29,23 @@ import { SearchProvider } from '@/context/search-provider';
 import { Download, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 
-// export type Product = {
-//     id: string;
-//     name: string;
-//     category: 'Makanan' | 'Minuman';
-//     price: number;
-//     stock: number;
-//     branch: string;
-//     image: string;
-//     description: string;
-//     discount?: number;
-//     rating?: number;
-//     status: 'Aktif' | 'Tidak Aktif';
-// };
+export type ProductRow = {
+    id: number;
+    name: string;
+    category: string;
+    price_origin: number;
+    price_discount: number | null;
+    stock: number;
+    branch: string;
+    image: string | null;
+    description: string;
+    rating: number;
+    status: string;
+};
+
+type ProductManagementProps = {
+    products: ProductRow[];
+};
 
 const topNav = [
     {
@@ -70,24 +74,6 @@ const topNav = [
     },
 ];
 
-export type ProductRow = {
-    id: number;
-    name: string;
-    category: string;
-    price_origin: number;
-    price_discount: number | null;
-    stock: number;
-    branch: string;
-    image: string | null;
-    description: string;
-    rating: number;
-    status: string;
-};
-
-type ProductManagementProps = {
-    products: ProductRow[];
-};
-
 export default function ProductManagement({
     products: initialProducts,
 }: ProductManagementProps) {
@@ -101,8 +87,6 @@ export default function ProductManagement({
         null,
     );
     const [activeTab, setActiveTab] = useState('products');
-
-    console.log('initialProducts', initialProducts);
 
     const handleAddProduct = (product: Omit<ProductRow, 'id'>) => {
         const newProduct: ProductRow = {
@@ -121,7 +105,6 @@ export default function ProductManagement({
     };
 
     const handleOpenDialog = (product?: ProductRow) => {
-        console.log('edit', product);
         setEditingProduct(product || null);
         setIsDialogOpen(true);
     };
@@ -140,15 +123,18 @@ export default function ProductManagement({
                 (product.description || '')
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase());
+
             const matchesCategory =
                 categoryFilter === 'all' || product.category === categoryFilter;
+
             const matchesStatus =
                 statusFilter === 'all' || product.status === statusFilter;
+
             return matchesSearch && matchesCategory && matchesStatus;
         })
         .sort((a, b) => {
-            const priceA = a.price_discount ? a.price_discount : a.price_origin;
-            const priceB = b.price_discount ? b.price_discount : b.price_origin;
+            const priceA = a.price_discount ?? a.price_origin;
+            const priceB = b.price_discount ?? b.price_origin;
 
             switch (sortBy) {
                 case 'name':
@@ -169,7 +155,6 @@ export default function ProductManagement({
     return (
         <AuthenticatedLayout>
             <SearchProvider>
-                {/* ===== Top Heading ===== */}
                 <Header>
                     <TopNav links={topNav} />
                     <div className="ms-auto flex items-center space-x-4">
@@ -180,9 +165,8 @@ export default function ProductManagement({
                     </div>
                 </Header>
 
-                {/* ===== Main ===== */}
                 <Main>
-                    <div className="mb-2 flex items-center justify-between space-y-2">
+                    <div className="mb-2 flex items-center justify-between">
                         <h1 className="text-2xl font-bold tracking-tight">
                             Manajemen Produk
                         </h1>
@@ -197,20 +181,18 @@ export default function ProductManagement({
                             </Button>
                         </div>
                     </div>
+
                     <Tabs
                         orientation="vertical"
                         value={activeTab}
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <div className="w-full overflow-x-auto pb-2">
-                            <TabsList>
-                                <TabsTrigger value="products">
-                                    Daftar Produk
-                                </TabsTrigger>
-                                {/* Add other tabs here if needed in the future */}
-                            </TabsList>
-                        </div>
+                        <TabsList>
+                            <TabsTrigger value="products">
+                                Daftar Produk
+                            </TabsTrigger>
+                        </TabsList>
 
                         <TabsContent value="products">
                             <Card>
@@ -220,114 +202,106 @@ export default function ProductManagement({
                                         Kelola produk makanan dan minuman Anda.
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                                            <div className="md:col-span-2">
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Cari produk..."
-                                                    value={searchQuery}
-                                                    onChange={(e) =>
-                                                        setSearchQuery(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-                                            <Select
-                                                value={categoryFilter}
-                                                onValueChange={
-                                                    setCategoryFilter
-                                                }
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Semua Kategori" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="all">
-                                                        Semua Kategori
-                                                    </SelectItem>
-                                                    <SelectItem value="Makanan">
-                                                        Makanan
-                                                    </SelectItem>
-                                                    <SelectItem value="Minuman">
-                                                        Minuman
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <Select
-                                                value={statusFilter}
-                                                onValueChange={setStatusFilter}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Semua Status" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="all">
-                                                        Semua Status
-                                                    </SelectItem>
-                                                    <SelectItem value="Aktif">
-                                                        Aktif
-                                                    </SelectItem>
-                                                    <SelectItem value="Tidak Aktif">
-                                                        Tidak Aktif
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <Filter className="h-4 w-4 text-muted-foreground" />
-                                                <span className="text-muted-foreground">
-                                                    Urutkan:
-                                                </span>
-                                                <Select
-                                                    value={sortBy}
-                                                    onValueChange={setSortBy}
-                                                >
-                                                    <SelectTrigger className="w-auto">
-                                                        <SelectValue placeholder="Urutkan" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="name">
-                                                            Nama (A-Z)
-                                                        </SelectItem>
-                                                        <SelectItem value="price-asc">
-                                                            Harga (Terendah)
-                                                        </SelectItem>
-                                                        <SelectItem value="price-desc">
-                                                            Harga (Tertinggi)
-                                                        </SelectItem>
-                                                        <SelectItem value="stock">
-                                                            Stok (Terbanyak)
-                                                        </SelectItem>
-                                                        <SelectItem value="rating">
-                                                            Rating (Tertinggi)
-                                                        </SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="text-sm text-muted-foreground">
-                                                Menampilkan{' '}
-                                                {
-                                                    filteredAndSortedProducts.length
-                                                }{' '}
-                                                dari {products.length} produk
-                                            </div>
-                                        </div>
-                                        <ProductTable
-                                            products={filteredAndSortedProducts}
-                                            onEdit={handleOpenDialog}
-                                            onDelete={handleDeleteProduct}
+                                <CardContent className="space-y-4">
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                                        <Input
+                                            placeholder="Cari produk..."
+                                            value={searchQuery}
+                                            onChange={(e) =>
+                                                setSearchQuery(e.target.value)
+                                            }
+                                            className="md:col-span-2"
                                         />
+
+                                        <Select
+                                            value={categoryFilter}
+                                            onValueChange={setCategoryFilter}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Kategori" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">
+                                                    Semua
+                                                </SelectItem>
+                                                <SelectItem value="Makanan">
+                                                    Makanan
+                                                </SelectItem>
+                                                <SelectItem value="Minuman">
+                                                    Minuman
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
+                                        <Select
+                                            value={statusFilter}
+                                            onValueChange={setStatusFilter}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Status" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">
+                                                    Semua
+                                                </SelectItem>
+                                                <SelectItem value="Aktif">
+                                                    Aktif
+                                                </SelectItem>
+                                                <SelectItem value="Tidak Aktif">
+                                                    Tidak Aktif
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </div>
+
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Filter className="h-4 w-4" />
+                                            <Select
+                                                value={sortBy}
+                                                onValueChange={setSortBy}
+                                            >
+                                                <SelectTrigger className="w-auto">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="name">
+                                                        Nama
+                                                    </SelectItem>
+                                                    <SelectItem value="price-asc">
+                                                        Harga ↑
+                                                    </SelectItem>
+                                                    <SelectItem value="price-desc">
+                                                        Harga ↓
+                                                    </SelectItem>
+                                                    <SelectItem value="stock">
+                                                        Stok
+                                                    </SelectItem>
+                                                    <SelectItem value="rating">
+                                                        Rating
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <span className="text-sm text-muted-foreground">
+                                            {filteredAndSortedProducts.length}{' '}
+                                            dari {products.length} produk
+                                        </span>
+                                    </div>
+
+                                    <ProductTable
+                                        products={filteredAndSortedProducts}
+                                        onEdit={handleOpenDialog}
+                                        onDelete={handleDeleteProduct}
+                                    />
                                 </CardContent>
                             </Card>
                         </TabsContent>
                     </Tabs>
                 </Main>
             </SearchProvider>
+
             <ProductDialog
                 key={String(isDialogOpen)}
                 isOpen={isDialogOpen}

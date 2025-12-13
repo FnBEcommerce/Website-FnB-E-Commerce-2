@@ -1,32 +1,34 @@
-import { Menu, User } from 'lucide-react';
-// import img from '/logo-pbp.png';
-
+import { useCart } from '@/components/homepage/CartContext';
+import { Link } from '@inertiajs/react';
+import { Menu, ShoppingCart, User } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 
 interface HeaderProps {
-    cartItemCount: number;
-    onCartClick: () => void;
+    onNavigateToHome?: () => void;
+    onNavigateToProfile?: () => void;
+    onNavigateToCart?: () => void;
 }
 
-export function Header() {
+export function Header({
+    onNavigateToHome,
+    onNavigateToCart,
+    onNavigateToProfile,
+}: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const { t } = useLanguage();
+    const { cartCount } = useCart();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
-                    {/* Logo */}
                     <div className="flex items-center">
                         <img
                             src="/images/logo-pbp.png"
-                            // alt="TAGIDA Naturals Logo"
                             className="h-16 w-auto object-contain"
                         />
                     </div>
 
-                    {/* Desktop Navigation */}
                     <nav className="hidden items-center space-x-8 md:flex">
                         <a
                             href="/"
@@ -46,14 +48,12 @@ export function Header() {
                         >
                             {'tentang'}
                         </a>
-
                         <a
                             href="#sustainability"
                             className="text-xl font-medium transition-colors hover:text-orange-600"
                         >
                             {'keberlanjutan'}
                         </a>
-
                         <a
                             href="#contact"
                             className="text-xl font-medium transition-colors hover:text-orange-600"
@@ -62,38 +62,27 @@ export function Header() {
                         </a>
                     </nav>
 
-                    {/* Right Side Actions */}
                     <div className="flex items-center space-x-4">
-                        {/* <LanguageSwitcher /> */}
-                        {/* <Button
-                            variant="ghost"
-                            size="sm"
-                            className="hidden sm:flex"
+                        <Link
+                            className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
+                            aria-label="Cart"
+                            href="/product/cart"
                         >
-                            <Search className="h-4 w-4" />
-                        </Button> */}
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="hidden sm:flex"
-                        >
-                            <User className="h-4 w-4" />
-                        </Button>
-                        {/* <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={onCartClick}
-                            className="relative"
-                        >
-                            <ShoppingCart className="h-4 w-4" />
-                            {cartItemCount > 0 && (
-                                <Badge className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 p-0">
-                                    {cartItemCount}
-                                </Badge>
+                            <ShoppingCart className="h-5 w-5 text-gray-700" />
+                            {cartCount > 0 && (
+                                <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#D97706] text-[11px] text-white">
+                                    {cartCount}
+                                </span>
                             )}
-                        </Button> */}
+                        </Link>
+                        <Link
+                            className="rounded-full p-2 transition-colors hover:bg-gray-100"
+                            aria-label="Profile"
+                            href="/profile/1"
+                        >
+                            <User className="h-5 w-5 text-gray-700" />
+                        </Link>
 
-                        {/* Mobile Menu Button */}
                         <Button
                             variant="ghost"
                             size="sm"
@@ -105,7 +94,6 @@ export function Header() {
                     </div>
                 </div>
 
-                {/* Mobile Navigation */}
                 {isMenuOpen && (
                     <nav className="mt-4 border-t pt-4 pb-4 md:hidden">
                         <div className="flex flex-col space-y-4">

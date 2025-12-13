@@ -8,30 +8,23 @@ import { ProductImageGallery } from '@/components/product-customer/ProductImageG
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
 import { SuggestedProducts } from '@/components/product-customer/SuggestedProducts';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, Review, User } from '@/types';
+import type { Product, Review } from '@/types/index';
 import { ReactNode } from 'react';
 
-// export type SuggestedProduct = {
-//     id: string;
-//     name: string;
-//     description: string;
-//     priceDiscount: number;
-//     priceOrigin: number;
-//     rating: number;
-//     image: string;
-//     badge: string | null;
-// };
+type ProductWithRating = Product & {
+    rating: Number;
+};
 
-type ProductDetailsProps = {
-    user: User;
+type ProductDetailsProps = Product & {
+    // user: UserInfo;
     productImages: string[];
-    product: Product;
+    product: ProductWithRating;
     reviews: Review[];
     suggestedProducts: Product[];
 };
 
 export default function ProductDetailsPage({
-    user,
+    // user,
     productImages,
     product,
     reviews,
@@ -103,7 +96,7 @@ export default function ProductDetailsPage({
             {currentPage === 'checkout' && (
                 <main className="flex-1">
                     <CheckoutPage
-                        user={user}
+                        // user={user}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />
@@ -113,7 +106,7 @@ export default function ProductDetailsPage({
             {currentPage === 'location' && (
                 <main className="flex-1">
                     <LocationPage
-                        user={user}
+                        // user={user}
                         onNavigateToCheckout={() => setCurrentPage('checkout')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />

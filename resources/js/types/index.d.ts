@@ -78,6 +78,39 @@ export type Product = {
     updated_at: string;
 };
 
+//custom type for components
+export type ProductCardProps = Pick<
+    Product,
+    'id' | 'name' | 'image' | 'price_discount' | 'rating' | 'category'
+>;
+
+type ProductDetailsProps = Pick<
+    Product,
+    | 'id'
+    | 'name'
+    | 'description'
+    | 'category'
+    | 'price_origin'
+    | 'price_discount'
+    | 'rating'
+    | 'quantity'
+    | 'image'
+    | 'preparation_time'
+    | 'badge'
+    | 'food_type'
+> & {
+    user: Pick<User, 'id' | 'name' | 'email'>;
+    productImages: string[];
+    product: Pick<
+        Product,
+        'id' | 'name' | 'image' | 'price_discount' | 'rating' | 'category'
+    > & {
+        isFavourite: boolean;
+    };
+    reviews: Review[];
+    suggestedProducts: ProductCardProps[];
+};
+
 export type ShopBranch = {
     id: number;
     name: string;

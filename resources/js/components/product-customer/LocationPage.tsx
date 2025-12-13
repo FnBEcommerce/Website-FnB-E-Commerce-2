@@ -4,7 +4,10 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+<<<<<<< HEAD
+=======
 import { User } from '@/types';
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 import {
     Briefcase,
     Check,
@@ -17,7 +20,7 @@ import {
 import { useState } from 'react';
 
 interface LocationPageProps {
-    user: User;
+    // user: User;
     onNavigateToCheckout: () => void;
     onNavigateToHome: () => void;
 }
@@ -34,7 +37,7 @@ interface SavedAddress {
 }
 
 export function LocationPage({
-    user,
+    // user,
     onNavigateToCheckout,
     onNavigateToHome,
 }: LocationPageProps) {

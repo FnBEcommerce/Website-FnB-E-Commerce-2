@@ -57,4 +57,12 @@ class HomepageController extends Controller
     public function auth() {
         return Inertia::render('auth');
     }
+
+    public function userProfile() {
+        return Inertia::render('homepage/user-profile');
+    }
+
+    public function productCart() {
+        return Inertia::render('homepage/product-cart');
+    }
 }
