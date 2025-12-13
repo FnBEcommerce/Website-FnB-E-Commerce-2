@@ -433,7 +433,6 @@ class AdminController extends Controller
         $productsData = Product::with(['reviews', 'shopBranchProducts.shopBranch'])->get();
 
         $products = $productsData->map(function ($product) {
-            // TODO: Ubah menjadi tidak selalu mengambil branch pertama
             $shopBranchProduct = $product->shopBranchProducts->first(); // Get first branch for simplicity
             
             return [
