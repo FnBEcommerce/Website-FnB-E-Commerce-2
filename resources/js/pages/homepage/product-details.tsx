@@ -10,7 +10,7 @@ import { SuggestedProducts } from '@/components/product-customer/SuggestedProduc
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import type { Product } from '@/types/product';
 import { Review } from '@/types/review';
-import { User } from '@/types/user';
+import { UserInfo } from '@/types/user';
 import { ReactNode } from 'react';
 
 export type SuggestedProduct = {
@@ -24,10 +24,14 @@ export type SuggestedProduct = {
     badge: string | null;
 };
 
-type ProductDetailsProps = {
-    user: User;
+type ProductWithRating = Product & {
+    rating: Number;
+};
+
+type ProductDetailsProps = Product & {
+    user: UserInfo;
     productImages: string[];
-    product: Product;
+    product: ProductWithRating;
     reviews: Review[];
     suggestedProducts: SuggestedProduct[];
 };

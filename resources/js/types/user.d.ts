@@ -5,7 +5,7 @@ type AddressInfo = {
     label?: 'home' | 'work' | 'other';
 };
 
-export type User = {
+export type UserInfo = {
     fullName: string;
     email: string;
     password: string;

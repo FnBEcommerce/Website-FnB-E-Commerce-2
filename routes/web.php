@@ -37,7 +37,8 @@ Route::prefix('/')->group(function () {
    Route::get('/', [HomepageController::class, 'index'])->name('homepage');
    Route::get('/products2/{id}', [HomepageController::class, 'productDetail'])->name('product.detail');
    Route::get('/products2', [HomepageController::class, 'productListing'])->name('product.listing');
-    // Route::get('/customer-management', [AdminController::class, 'customerManagement'])->name('admin.customer_management');
+   Route::get('/profile/{id}', [HomepageController::class, 'userProfile']);
+   Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
     // Route::get('/cashflow-management', [AdminController::class, 'cashflowManagement'])->name('admin.cashflow_management');
     // Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.product_management');
 });

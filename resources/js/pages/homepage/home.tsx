@@ -2,7 +2,8 @@ import { Features } from '@/components/homepage/Features';
 import { Hero } from '@/components/homepage/Hero';
 import { Steps } from '@/components/homepage/Steps';
 import RootLayout from '@/components/layout/root-layout';
-import { ProductCard } from '@/components/ui/product-card';
+// import { ProductCard } from '@/components/ui/product-card-homepage';
+import { ProductCard } from '@/components/ui/product-card-homepage';
 import { useCart } from '@/context/CartContext';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import type { Product } from '@/types/product';
@@ -114,48 +115,19 @@ import type { ReactNode } from 'react';
 //     },
 // ];
 
+type ProductWithRating = Product & { rating: Number };
+//type intersect
 interface HomePageProps {
-    products: Product[];
+    products: ProductWithRating[];
 }
-
 export default function HomePage({ products }: HomePageProps) {
     return (
         <RootLayout>
             {/* <LanguageProvider> */}
-            {/* <Header /> */}
 
             <div className="min-h-screen">
                 {/* Hero Section */}
                 <Hero />
-                {/* <section className="bg-gradient-to-r from-orange-500 to-red-500 py-16 text-white">
-                                    <div className="container mx-auto px-4 text-center">
-                                        <h1 className="mb-4 text-4xl font-bold md:text-6xl">
-                                            Make your Bites, Delivered Fresh
-                                        </h1>
-                                        <p className="mx-auto mb-8 max-w-2xl text-xl">
-                                            Choose from our delicious selection of fresh,
-                                            quality ingredients and get your perfect bites
-                                            delivered in minutes.
-                                        </p>
-                                        <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                                            <Button
-                                                size="lg"
-                                                className="bg-white text-orange-500 hover:bg-gray-100"
-                                            >
-                                                <Plus className="mr-2 h-5 w-5" />
-                                                Order Now
-                                            </Button>
-                                            <Button
-                                                size="lg"
-                                                variant="outline"
-                                                className="border-white text-white hover:bg-white hover:text-orange-500"
-                                            >
-                                                Browse Menu
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </section> */}
-
                 {/* All Products */}
                 <section className="bg-gray-50 py-20">
                     <div className="container mx-auto px-4">
@@ -183,35 +155,37 @@ export default function HomePage({ products }: HomePageProps) {
     );
 }
 
-interface ProductsProps {
-    products: Product[];
-}
+// interface ProductsProps {
+//     products: Product[];
+// }
 
-function Products({ products }: ProductsProps) {
+function Products({ products }: HomePageProps) {
     const { dispatch } = useCart();
 
-    const handleAddToCart = (product: Product) => {
-        dispatch({
-            type: 'ADD_ITEM',
-            payload: {
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                restaurant: 'Make your Bites',
-                image: product.image,
-            },
-        });
-    };
+    // const handleAddToCart = (product: Product) => {
+    //     dispatch({
+    //         type: 'ADD_ITEM',
+    //         payload: {
+    //             id: product.id,
+    //             name: product.name,
+    //             price: product.priceOrigin,
+    //             restaurant: 'Make your Bites',
+    //             image: product.image,
+    //         },
+    //     });
+    // };
     return (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
                 <ProductCard
+                    key={product.id}
                     id={product.id}
                     name={product.name}
                     priceDiscount={product.priceDiscount}
                     image={product.image}
-                    rating={product.rating}
+                    rating={product.rating ?? 0}
                     category={product.category}
+                    // isFavourite={isFavourite}
                 />
             ))}
         </div>
@@ -222,54 +196,5 @@ interface ProductCardProps {
     product: Product;
     onAddToCart: () => void;
 }
-
-// const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-//     return (
-//         <Card className="overflow-hidden transition-all hover:shadow-lg">
-//             <div className="relative">
-//                 <ImageWithFallback
-//                     src={product.image}
-//                     alt={product.name}
-//                     className="h-48 w-full object-cover"
-//                 />
-//                 {product.popular && (
-//                     <Badge className="absolute top-2 left-2 bg-orange-500">
-//                         Popular
-//                     </Badge>
-//                 )}
-//             </div>
-//             <CardContent className="p-4">
-//                 <div className="mb-2 flex items-start justify-between">
-//                     <h3 className="text-lg font-bold">{product.name}</h3>
-//                     <div className="flex items-center gap-1">
-//                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-//                         <span className="text-sm font-medium">
-//                             {product.rating}
-//                         </span>
-//                     </div>
-//                 </div>
-//                 <p className="mb-3 line-clamp-2 text-sm text-gray-600">
-//                     {product.description}
-//                 </p>
-//                 <div className="mb-3 flex items-center justify-between">
-//                     <div className="flex items-center gap-1 text-sm text-gray-500">
-//                         <Clock className="h-4 w-4" />
-//                         <span>{product.preparationTime}</span>
-//                     </div>
-//                     <span className="font-bold text-orange-600">
-//                         ${product.price}
-//                     </span>
-//                 </div>
-//                 <Button
-//                     className="w-full bg-orange-500 hover:bg-orange-600"
-//                     onClick={onAddToCart}
-//                 >
-//                     <Plus className="mr-2 h-4 w-4" />
-//                     Add to Cart
-//                 </Button>
-//             </CardContent>
-//         </Card>
-//     );
-// };
 
 HomePage.layout = (page: ReactNode) => <HomepageLayout>{page}</HomepageLayout>;

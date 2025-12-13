@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { User } from '@/types/user';
+import { UserInfo } from '@/types/user';
 import {
     Banknote,
     CreditCard,
@@ -20,7 +20,7 @@ import {
 import { useState } from 'react';
 
 interface CheckoutPageProps {
-    user: User;
+    user: UserInfo;
     onNavigateToLocation: () => void;
     onNavigateToHome: () => void;
 }

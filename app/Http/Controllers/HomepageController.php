@@ -403,4 +403,12 @@ class HomepageController extends Controller
 
         return Inertia::render('homepage/product-listing', $props);
     }
+
+    public function userProfile() {
+        return Inertia::render('homepage/user-profile');
+    }
+
+    public function productCart() {
+        return Inertia::render('homepage/product-cart');
+    }
 }
