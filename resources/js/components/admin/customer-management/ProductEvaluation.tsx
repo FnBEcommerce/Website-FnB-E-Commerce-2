@@ -152,12 +152,6 @@ import {
 //     { rating: '2 Bintang', count: 40, color: '#f97316' },
 //     { rating: '1 Bintang', count: 19, color: '#ef4444' },
 // ];
-
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
 interface ProductData {
     id: string;
     name: string;
