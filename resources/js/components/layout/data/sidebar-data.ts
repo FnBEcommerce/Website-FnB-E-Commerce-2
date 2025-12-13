@@ -24,20 +24,20 @@ export const sidebarData: SidebarData = {
     },
     teams: [
         {
-            name: 'Shadcn Admin',
-            logo: Command,
-            plan: 'Vite + ShadcnUI',
+            name: 'FNB E-Commerce',
+            logo: '/images/logo-pbp.png',
+            plan: 'Admin',
         },
-        {
-            name: 'Acme Inc',
-            logo: GalleryVerticalEnd,
-            plan: 'Enterprise',
-        },
-        {
-            name: 'Acme Corp.',
-            logo: AudioWaveform,
-            plan: 'Startup',
-        },
+        // {
+        //     name: 'Acme Inc',
+        //     logo: GalleryVerticalEnd,
+        //     plan: 'Enterprise',
+        // },
+        // {
+        //     name: 'Acme Corp.',
+        //     logo: AudioWaveform,
+        //     plan: 'Startup',
+        // },
     ],
     navGroups: [
         {
