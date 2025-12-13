@@ -28,7 +28,6 @@ export default function ProductDetailsPage({
     productImages,
     product,
     reviews,
-
     suggestedProducts,
 }: ProductDetailsProps) {
     const [currentPage, setCurrentPage] = useState<

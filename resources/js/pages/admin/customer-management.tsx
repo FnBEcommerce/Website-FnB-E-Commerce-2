@@ -49,6 +49,7 @@ const topNav = [
     },
 ];
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 interface CustomerManagementProps {
     monthlyCustomers: {
@@ -117,6 +118,101 @@ interface CustomerManagementProps {
         jaktim: number;
     }[];
 }
+=======
+export type MonthlyCustomer = {
+    month: string;
+    pelanggan: number;
+    pesanan: number;
+};
+
+export type CustomerSegmentation = {
+    name: string;
+    value: number;
+    color: string;
+    [key: string]: any;
+};
+
+export type StatsData = {
+    title: string;
+    value: string;
+    change: string;
+    icon: React.ElementType;
+    color: string;
+    bgColor: string;
+};
+
+export type RecentActivity = {
+    name: string;
+    action: string;
+    item: string;
+    time: string;
+    amount: number;
+};
+
+export type CustomerData = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    area: string;
+    totalOrders: number;
+    totalSpent: number;
+    lastOrder: string;
+    status: string;
+    avgRating: number;
+};
+
+export type ProductData = {
+    id: string;
+    name: string;
+    category: string;
+    totalReviews: number;
+    avgRating: number;
+    rating5: number;
+    rating4: number;
+    rating3: number;
+    rating2: number;
+    rating1: number;
+    totalSold: number;
+    trend: string;
+};
+
+export type RatingDistribution = {
+    rating: string;
+    count: number;
+    color: string;
+};
+
+export type AreaData = {
+    area: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalRevenue: number;
+    avgOrderValue: number;
+    topProduct: string;
+    growth: number;
+};
+
+export type MonthlyAreaData = {
+    month: string;
+    jaksel: number;
+    jakpus: number;
+    jakbar: number;
+    jaktim: number;
+};
+
+type CustomerManagementProps = {
+    monthlyCustomers: MonthlyCustomer[];
+    customerSegmentation: CustomerSegmentation[];
+    statsData: StatsData[];
+    customersData: CustomerData[];
+    productsData: ProductData[];
+    ratingDistribution: RatingDistribution[];
+    areaData: AreaData[];
+    monthlyAreaData: MonthlyAreaData[];
+    recentActivities: RecentActivity[];
+};
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 
 =======
 <<<<<<< Updated upstream
@@ -226,7 +322,11 @@ export default function CustomerManagement({
     ratingDistribution,
     areaData,
     monthlyAreaData,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+    recentActivities,
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 }: CustomerManagementProps) {
 =======
 <<<<<<< Updated upstream

@@ -177,10 +177,7 @@ interface RatingDistribution {
     rating: string;
     count: number;
     color: string;
-<<<<<<< Updated upstream
-=======
     [key: string]: any;
->>>>>>> Stashed changes
 }
 
 interface ProductEvaluationProps {
@@ -190,10 +187,6 @@ interface ProductEvaluationProps {
     };
 }
 
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 export function ProductEvaluation({
     data: { productsData, ratingDistribution },
 }: ProductEvaluationProps) {

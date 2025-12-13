@@ -71,34 +71,14 @@ import {
 //     },
 // ];
 
-interface MonthlyCustomer {
-    month: string;
-    pelanggan: number;
-    pesanan: number;
-}
-
-interface CustomerSegmentation {
-    name: string;
-    value: number;
-    color: string;
-}
-
-interface StatsData {
-    title: string;
-    value: string;
-    change: string;
-    icon: React.ElementType;
-    color: string;
-    bgColor: string;
-}
-
-interface CustomerStatsProps {
+type CustomerStatsProps = {
     data: {
         monthlyCustomers: MonthlyCustomer[];
         customerSegmentation: CustomerSegmentation[];
         statsData: StatsData[];
+        recentActivities: RecentActivity[];
     };
-}
+};
 
 export function CustomerStats({
     data: { monthlyCustomers, customerSegmentation, statsData },

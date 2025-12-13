@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Edit2, Star, Trash2 } from 'lucide-react';
-import { Product } from './ProductManagement';
-
-type ProductTableProps = {
-    products: Product[];
-    onEdit: (product: Product) => void;
-    onDelete: (id: string) => void;
-=======
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,7 +8,6 @@ type ProductTableProps = {
     products: ProductRow[];
     onEdit: (product: ProductRow) => void;
     onDelete: (id: number) => void;
->>>>>>> Stashed changes
 };
 
 export function ProductTable({
@@ -35,11 +23,8 @@ export function ProductTable({
         }).format(amount);
     };
 
-<<<<<<< Updated upstream
-=======
     console.log('products[0]', products[0]);
 
->>>>>>> Stashed changes
     return (
         <div className="overflow-x-auto">
             <table className="w-full">
@@ -52,14 +37,10 @@ export function ProductTable({
                             Kategori
                         </th>
                         <th className="px-4 py-3 text-left text-slate-700">
-<<<<<<< Updated upstream
-                            Harga
-=======
                             Harga Asli
                         </th>
                         <th className="px-4 py-3 text-left text-slate-700">
                             Harga Setelah Diskon
->>>>>>> Stashed changes
                         </th>
                         <th className="px-4 py-3 text-left text-slate-700">
                             Stok
@@ -96,34 +77,16 @@ export function ProductTable({
                             >
                                 <td className="px-4 py-4">
                                     <div className="flex items-center gap-3">
-<<<<<<< Updated upstream
-                                        <img
-                                            src={product.image}
-                                            alt={product.name}
-                                            className="h-12 w-12 rounded-lg object-cover"
-=======
                                         <ImageWithFallback
                                             // src={product.image || undefined}
                                             src="https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                                             alt={product.name}
                                             className="h-12 w-12 shrink-0 rounded-lg object-cover"
->>>>>>> Stashed changes
                                         />
                                         <div>
                                             <div className="text-slate-900">
                                                 {product.name}
                                             </div>
-<<<<<<< Updated upstream
-                                            <div className="text-sm text-slate-500">
-                                                {product.description}
-                                            </div>
-                                            {product.discount && (
-                                                <Badge
-                                                    variant="success"
-                                                    className="mt-1"
-                                                >
-                                                    Diskon {product.discount}%
-=======
                                             <div className="line-clamp-3 text-sm text-slate-500">
                                                 {product.description}
                                             </div>
@@ -140,7 +103,6 @@ export function ProductTable({
                                                             100,
                                                     ).toFixed(0)}
                                                     %
->>>>>>> Stashed changes
                                                 </Badge>
                                             )}
                                         </div>
@@ -158,16 +120,12 @@ export function ProductTable({
                                     </Badge>
                                 </td>
                                 <td className="px-4 py-4 text-slate-900">
-<<<<<<< Updated upstream
-                                    {formatCurrency(product.price)}
-=======
                                     {formatCurrency(product.price_origin)}
                                 </td>
                                 <td className="px-4 py-4 text-slate-900">
                                     {formatCurrency(
                                         product.price_discount ?? 0,
                                     )}
->>>>>>> Stashed changes
                                 </td>
                                 <td className="px-4 py-4">
                                     <span
@@ -199,15 +157,6 @@ export function ProductTable({
                                 </td>
                                 <td className="px-4 py-4">
                                     <Badge
-<<<<<<< Updated upstream
-                                        variant={
-                                            product.status === 'Aktif'
-                                                ? 'success'
-                                                : 'secondary'
-                                        }
-                                    >
-                                        {product.status}
-=======
                                         className={
                                             product.stock > 0
                                                 ? 'bg-green-100 text-green-800'
@@ -217,7 +166,6 @@ export function ProductTable({
                                         {product.stock > 0
                                             ? 'Aktif'
                                             : 'Tidak Aktif'}
->>>>>>> Stashed changes
                                     </Badge>
                                 </td>
                                 <td className="px-4 py-4">

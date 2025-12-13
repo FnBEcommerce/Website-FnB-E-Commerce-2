@@ -54,6 +54,46 @@ export function LocationPage({
         addressType: 'home',
     });
 
+    // const initialAddresses: SavedAddress[] = !(
+    //     user.alt_street &&
+    //     user.alt_city &&
+    //     user.alt_label &&
+    //     user.alt_state
+    // )
+    //     ? [
+    //           {
+    //   id: 1,
+    //   type: user.label,
+    //   name: user.name,
+    //   address: user.street,
+    //   city: user.city,
+    //   state: user.state,
+    //   phone: user.phone_number,
+    //   isDefault: true,
+    //           },
+    //       ]
+    //     : [
+    //           {
+    //               id: 1,
+    //               type: user.label,
+    //               name: user.name,
+    //               address: user.street,
+    //               city: user.city,
+    //               state: user.state,
+    //               phone: user.phone_number,
+    //               isDefault: true,
+    //           },
+    //             {
+    //                 id: 2,
+    //                 type: user.alt_label,
+    //                 name: user.name,
+    //                 address: user.alt_street,
+    //                 city: user.alt_city,
+    //                 state: user.alt_state,
+    //                 phone: user.phone_number,
+    //                 isDefault: false,
+    //             },
+    //       ];
     const initialAddresses: SavedAddress[] = [
         {
             id: 1,

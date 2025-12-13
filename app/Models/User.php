@@ -61,10 +61,10 @@ class User extends Authenticatable
     }
 
 
-    public function reviews() {
-        return $this->hasMany(Review::class, "user_id", "user_id");
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
-
 
     /**
      * The shop branches that the user belongs to.
@@ -73,5 +73,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(ShopBranch::class, 'shop_branch_user');
     }
-
 }

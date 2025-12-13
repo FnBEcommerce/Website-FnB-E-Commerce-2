@@ -92,7 +92,7 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
 <<<<<<< Updated upstream
                                     Rp {product.priceDiscount}
                                 </span>
-                                {product.priceOrigin && (
+                                {product.price_origin && (
                                     <span className="text-[14px] text-gray-400 line-through">
                                         Rp {product.priceOrigin}
 =======
