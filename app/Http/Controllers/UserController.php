@@ -14,14 +14,11 @@ class UserController extends Controller
      * Handle user registration.
      */
     public function register(Request $request) {
-        // TODO: Tambahkan validation
-        // $request->validate([
-        //     'username' => 'required|string|max:255|unique:users,name',
-        //     'password' => 'required|string|min:8|confirmed',
-        //     'homeAddress' => 'required|string|max:255',
-        // ]);
-
-        // return response()->json(['status' => 'ok']);
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users,name',
+            'password' => 'required|string|min:8',
+            'homeAddress' => 'required|string|max:255',
+        ]);
 
         // The 'email' field is required and unique. We'll generate a dummy one.
         // The 'name' field will be used as the username.
@@ -45,11 +42,10 @@ class UserController extends Controller
      * Handle user login.
      */
     public function login(Request $request) {
-        // TODO: Tambahkan validation
-        // $request->validate([
-        //     'username' => 'required|string',
-        //     'password' => 'required|string',
-        // ]);
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
         // Attempt login using 'name' as the username field
         $credentials = [

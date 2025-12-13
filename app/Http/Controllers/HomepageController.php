@@ -20,7 +20,7 @@ class HomepageController extends Controller
     }
 
     public function productDetail(Product $product) {
-        $user = User::first(); // TODO: Ganti setelah ada sistem login
+        $user = Auth::user();
         $reviews = $product->reviews()->get();
 
         // Product Images (Indexed Array)
@@ -59,6 +59,7 @@ class HomepageController extends Controller
     }
 
     public function userProfile() {
+        $user = Auth::user();
         return Inertia::render('homepage/user-profile');
     }
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Home, Lock, User } from 'lucide-react';
 import { useState } from 'react';
 
@@ -6,11 +6,20 @@ export function SignUpForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [homeAddress, setHomeAddress] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setter(e.target.value);
+        if (error) {
+            setError(null);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setError(null);
 
         try {
             const data = { username, password, homeAddress };
@@ -19,7 +28,12 @@ export function SignUpForm() {
             console.log('Sign up response:', response);
             window.location.href = '/';
         } catch (error) {
-            console.error(error);
+            if (error instanceof AxiosError && error.response) {
+                setError(error.response.data.message || 'Gagal mendaftar. Silakan coba lagi.');
+            } else {
+                setError('Terjadi kesalahan. Silakan coba lagi.');
+                console.log(error);
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -27,6 +41,20 @@ export function SignUpForm() {
 
     return (
         <div className="mx-auto w-full max-w-sm">
+             {error && (
+                <div className="mb-4 rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                        <div className="flex-shrink-0">
+                            <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="ml-3">
+                            <h3 className="text-sm font-medium text-red-800">{error}</h3>
+                        </div>
+                    </div>
+                </div>
+            )}
             <h1 className="mb-8 text-orange-500">Buat Akun Anda</h1>
 
             {/* <div className="flex justify-center gap-4 mb-6">
@@ -57,7 +85,7 @@ export function SignUpForm() {
                         type="text"
                         placeholder="Nama Pengguna"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        onChange={handleInputChange(setUsername)}
                         className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                         required
                     />
@@ -69,7 +97,7 @@ export function SignUpForm() {
                         type="password"
                         placeholder="Kata Sandi"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handleInputChange(setPassword)}
                         className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                         required
                     />
@@ -81,7 +109,7 @@ export function SignUpForm() {
                         type="text"
                         placeholder="Alamat Rumah"
                         value={homeAddress}
-                        onChange={(e) => setHomeAddress(e.target.value)}
+                        onChange={handleInputChange(setHomeAddress)}
                         className="w-full rounded-lg border-none bg-gray-100 py-3 pr-4 pl-12 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                         required
                     />
@@ -89,9 +117,10 @@ export function SignUpForm() {
 
                 <button
                     type="submit"
-                    className="mt-6 w-full rounded-full bg-orange-500 py-3 text-white transition-colors hover:bg-orange-600"
+                    disabled={isSubmitting}
+                    className="mt-6 w-full rounded-full bg-orange-500 py-3 text-white transition-colors hover:bg-orange-600 disabled:bg-orange-300"
                 >
-                    DAFTAR
+                    {isSubmitting ? 'MEMPROSES...' : 'DAFTAR'}
                 </button>
             </form>
         </div>

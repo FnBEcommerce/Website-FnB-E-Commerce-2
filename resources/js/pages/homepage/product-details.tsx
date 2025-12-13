@@ -8,7 +8,7 @@ import { ProductImageGallery } from '@/components/product-customer/ProductImageG
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
 import { SuggestedProducts } from '@/components/product-customer/SuggestedProducts';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, Review } from '@/types/index';
+import type { Product, Review, User } from '@/types/index';
 import { ReactNode } from 'react';
 
 type ProductWithRating = Product & {
@@ -16,7 +16,7 @@ type ProductWithRating = Product & {
 };
 
 type ProductDetailsProps = Product & {
-    // user: UserInfo;
+    user: User;
     productImages: string[];
     product: ProductWithRating;
     reviews: Review[];
@@ -24,7 +24,7 @@ type ProductDetailsProps = Product & {
 };
 
 export default function ProductDetailsPage({
-    // user,
+    user,
     productImages,
     product,
     reviews,
@@ -96,7 +96,7 @@ export default function ProductDetailsPage({
             {currentPage === 'checkout' && (
                 <main className="flex-1">
                     <CheckoutPage
-                        // user={user}
+                        user={user}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />
