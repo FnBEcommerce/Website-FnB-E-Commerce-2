@@ -60,7 +60,10 @@ class HomepageController extends Controller
 
     public function userProfile() {
         $user = Auth::user();
-        return Inertia::render('homepage/user-profile');
+        $props = [
+            'user' => $user,
+        ];
+        return Inertia::render('homepage/user-profile', $props);
     }
 
     public function productCart() {
