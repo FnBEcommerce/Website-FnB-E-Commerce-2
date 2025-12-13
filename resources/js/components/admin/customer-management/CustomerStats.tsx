@@ -229,7 +229,6 @@ export function CustomerStats({
                         <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/* TODO: Ubah menjadi data dinamis */}
                         <div className="space-y-4">
                             {recentActivities.map((activity, index) => (
                                 <div
@@ -277,7 +276,6 @@ export function CustomerStats({
                 <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
             </CardHeader>
             <CardContent>
-                {/* TODO: Ubah menjadi data dinamis */}
                 <div className="space-y-4">
                     {recentActivities.map((activity, index) => (
                         <div
