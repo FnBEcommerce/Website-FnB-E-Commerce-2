@@ -780,6 +780,7 @@ class AdminController extends Controller
     }
 
     public function cashflowManagement() {
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
@@ -791,6 +792,8 @@ class AdminController extends Controller
     }
 }
 =======
+=======
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
         $allOrders = Order::all();
         $totalRevenue = $allOrders->sum('subtotal');
         $totalOrders = $allOrders->count();
@@ -934,5 +937,9 @@ class AdminController extends Controller
 
         return Inertia::render('admin/product-management', $props);
     }
+<<<<<<< HEAD
 }
 >>>>>>> Stashed changes
+=======
+}
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0

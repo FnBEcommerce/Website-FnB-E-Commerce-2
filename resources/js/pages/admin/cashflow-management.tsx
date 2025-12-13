@@ -30,8 +30,11 @@ import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 export type TransactionRow = {
@@ -45,8 +48,11 @@ export type TransactionRow = {
     customer: string;
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 
@@ -111,10 +117,14 @@ type CashflowManagementProps = {
     trendDataPeriod: TrendDataPeriod;
     categoryData: TrendDataItem[];
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     transactions: TransactionRow[];
 >>>>>>> Stashed changes
+=======
+    transactions: TransactionRow[];
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     transactions: TransactionRow[];
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -125,10 +135,14 @@ export default function CashflowManagement({
     trendDataPeriod,
     categoryData,
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     transactions,
 >>>>>>> Stashed changes
+=======
+    transactions,
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     transactions,
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -138,12 +152,17 @@ export default function CashflowManagement({
     const [activeTab, setActiveTab] = useState('overview');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     console.log(summaryData, trendDataPeriod, categoryData);
 
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+    console.log(summaryData, trendDataPeriod, categoryData);
+
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     console.log(summaryData, trendDataPeriod, categoryData);
 
@@ -292,6 +311,7 @@ export default function CashflowManagement({
                                 </CardHeader>
                                 <CardContent>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                                     <TransactionTable />
 =======
@@ -299,6 +319,11 @@ export default function CashflowManagement({
                                         transactions={transactions}
                                     />
 >>>>>>> Stashed changes
+=======
+                                    <TransactionTable
+                                        transactions={transactions}
+                                    />
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
                                     <TransactionTable
                                         transactions={transactions}

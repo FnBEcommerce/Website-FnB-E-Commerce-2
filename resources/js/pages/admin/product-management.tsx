@@ -31,6 +31,7 @@ import { Download, Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type Product = {
     id: string;
     name: string;
@@ -52,6 +53,8 @@ import { useState } from 'react';
 
 =======
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+=======
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 // export type Product = {
 //     id: string;
 //     name: string;
@@ -66,8 +69,11 @@ import { useState } from 'react';
 //     status: 'Aktif' | 'Tidak Aktif';
 // };
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 
@@ -98,6 +104,7 @@ const topNav = [
     },
 ];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 type ProductManagementProps = {
@@ -141,11 +148,30 @@ export type ProductRow = {
 type ProductManagementProps = {
     products: ProductRow[];
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+=======
+export type ProductRow = {
+    id: number;
+    name: string;
+    category: string;
+    price_origin: number;
+    price_discount: number | null;
+    stock: number;
+    branch: string;
+    image: string | null;
+    description: string;
+    rating: number;
+    status: string;
+};
+
+type ProductManagementProps = {
+    products: ProductRow[];
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 };
 
 export default function ProductManagement({
     products: initialProducts,
 }: ProductManagementProps) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
     const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -155,14 +181,23 @@ export default function ProductManagement({
 =======
     const [products, setProducts] = useState<ProductRow[]>(initialProducts);
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+=======
+    const [products, setProducts] = useState<ProductRow[]>(initialProducts);
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [sortBy, setSortBy] = useState<string>('name');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+=======
+    const [editingProduct, setEditingProduct] = useState<ProductRow | null>(
+        null,
+    );
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     const [editingProduct, setEditingProduct] = useState<ProductRow | null>(
         null,
@@ -175,6 +210,7 @@ export default function ProductManagement({
     const handleAddProduct = (product: Omit<ProductRow, 'id'>) => {
         const newProduct: ProductRow = {
             ...product,
+<<<<<<< HEAD
 <<<<<<< HEAD
             id: Date.now().toString(),
 =======
@@ -193,13 +229,20 @@ export default function ProductManagement({
 =======
             id: Date.now(),
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+=======
+            id: Date.now(),
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
         };
         setProducts([...products, newProduct]);
     };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     const handleEditProduct = (product: Product) => {
+=======
+    const handleEditProduct = (product: ProductRow) => {
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     const handleEditProduct = (product: ProductRow) => {
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -210,6 +253,7 @@ export default function ProductManagement({
         setProducts(products.filter((p) => p.id !== id));
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     const handleOpenDialog = (product?: Product) => {
 =======
@@ -224,6 +268,10 @@ export default function ProductManagement({
     const handleOpenDialog = (product?: ProductRow) => {
         console.log('edit', product);
 >>>>>>> Stashed changes
+=======
+    const handleOpenDialog = (product?: ProductRow) => {
+        console.log('edit', product);
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
     const handleOpenDialog = (product?: ProductRow) => {
         console.log('edit', product);
@@ -244,11 +292,15 @@ export default function ProductManagement({
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase()) ||
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                 product.description
 =======
                 (product.description || '')
 >>>>>>> Stashed changes
+=======
+                (product.description || '')
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
                 (product.description || '')
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -262,6 +314,7 @@ export default function ProductManagement({
         })
         .sort((a, b) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
             const priceA = a.price_discount ? a.price_discount : a.price_origin;
@@ -273,13 +326,22 @@ export default function ProductManagement({
             const priceB = b.price_discount ? b.price_discount : b.price_origin;
 
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+=======
+            const priceA = a.price_discount ? a.price_discount : a.price_origin;
+            const priceB = b.price_discount ? b.price_discount : b.price_origin;
+
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
             switch (sortBy) {
                 case 'name':
                     return a.name.localeCompare(b.name);
                 case 'price-asc':
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
                     return a.price - b.price;
+=======
+                    return priceA - priceB;
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
                     return priceA - priceB;
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -288,6 +350,7 @@ export default function ProductManagement({
                 case 'stock':
                     return (b.stock ?? 0) - (a.stock ?? 0);
                 case 'rating':
+<<<<<<< HEAD
 <<<<<<< HEAD
                     return (b.rating || 0) - (a.rating || 0);
 =======
@@ -299,6 +362,9 @@ export default function ProductManagement({
                 case 'rating':
                     return b.rating - a.rating;
 >>>>>>> Stashed changes
+=======
+                    return b.rating - a.rating;
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
                     return b.rating - a.rating;
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
@@ -476,12 +542,16 @@ export default function ProductManagement({
 <<<<<<< Updated upstream
             <ProductDialog
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 =======
             <ProductDialog
                 key={String(isDialogOpen)}
 >>>>>>> Stashed changes
+=======
+                key={String(isDialogOpen)}
+>>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 =======
                 key={String(isDialogOpen)}
 >>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0

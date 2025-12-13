@@ -2,20 +2,12 @@ import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-<<<<<<< Updated upstream
-import { SuggestedProduct } from '@/pages/homepage/product-details';
-import { Star } from 'lucide-react';
-
-interface SuggestedProductsProps {
-    products: SuggestedProduct[];
-=======
 import { Product } from '@/types';
 // import { SuggestedProduct } from '@/pages/homepage/product-details';
 import { Star } from 'lucide-react';
 
 interface SuggestedProductsProps {
     products: Product[];
->>>>>>> Stashed changes
 }
 
 export function SuggestedProducts({ products }: SuggestedProductsProps) {
@@ -48,7 +40,7 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
                             )}
                             <div className="aspect-square overflow-hidden bg-gradient-to-br from-green-50 to-amber-50">
                                 <ImageWithFallback
-                                    src={product.image}
+                                    src={product.image ?? 'none'}
                                     alt={product.name}
                                     className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
                                 />
@@ -89,19 +81,11 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
                                     className="text-[20px] text-primary"
                                     style={{ fontWeight: 700 }}
                                 >
-<<<<<<< Updated upstream
-                                    Rp {product.priceDiscount}
-                                </span>
-                                {product.price_origin && (
-                                    <span className="text-[14px] text-gray-400 line-through">
-                                        Rp {product.priceOrigin}
-=======
                                     Rp {product.price_discount}
                                 </span>
                                 {product.price_origin && (
                                     <span className="text-[14px] text-gray-400 line-through">
                                         Rp {product.price_origin}
->>>>>>> Stashed changes
                                     </span>
                                 )}
                             </div>

@@ -81,7 +81,12 @@ type CustomerStatsProps = {
 };
 
 export function CustomerStats({
-    data: { monthlyCustomers, customerSegmentation, statsData },
+    data: {
+        monthlyCustomers,
+        customerSegmentation,
+        statsData,
+        recentActivities,
+    },
 }: CustomerStatsProps) {
     type CustomerStatsProps = {
         data: {
@@ -92,7 +97,7 @@ export function CustomerStats({
         };
     };
 
-    export function CustomerStats({
+    function CustomerStats({
         data: {
             monthlyCustomers,
             customerSegmentation,
@@ -265,4 +270,49 @@ export function CustomerStats({
             </div>
         );
     }
+    <div>
+        {/* Recent Activity */}
+        <Card>
+            <CardHeader>
+                <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
+            </CardHeader>
+            <CardContent>
+                {/* TODO: Ubah menjadi data dinamis */}
+                <div className="space-y-4">
+                    {recentActivities.map((activity, index) => (
+                        <div
+                            key={index}
+                            className="flex items-center justify-between border-b py-3 last:border-b-0"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white">
+                                    {activity.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <p className="text-slate-900">
+                                        {activity.name}
+                                    </p>
+                                    <p className="text-slate-600">
+                                        {activity.action} - {activity.item}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                {!activity.amount ? (
+                                    ''
+                                ) : (
+                                    <p className="text-slate-900">
+                                        {formatPrice(activity.amount)}
+                                    </p>
+                                )}
+                                <p className="text-slate-500">
+                                    {activity.time}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
+    </div>;
 }
