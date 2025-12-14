@@ -21,14 +21,15 @@ class OrderFactory extends Factory
     {
         $subtotal = $this->faker->randomFloat(2, 15000, 200000);
         $delivery_fee = $this->faker->randomFloat(2, 5000, 25000);
-        $status = $this->faker->randomElement(['pending', 'processing', 'completed', 'cancelled']);
+        // $status = $this->faker->randomElement(['pending', 'processing', 'completed', 'cancelled']);
 
         // Generate a base time
         $confirmed_at = $this->faker->dateTimeBetween('-2 years', 'now');
         $processed_at = (clone $confirmed_at)->add(new \DateInterval('PT' . $this->faker->numberBetween(5, 20) . 'M'));
         $estimated_delivery_at = (clone $processed_at)->add(new \DateInterval('PT' . $this->faker->numberBetween(20, 60) . 'M'));
         $deliveryOffset = $this->faker->numberBetween(-10, 20);
-        $delivered_at = $status === 'completed' ? (clone $estimated_delivery_at)->modify("{$deliveryOffset} minutes") : null;
+        // $delivered_at = $status === 'completed' ? (clone $estimated_delivery_at)->modify("{$deliveryOffset} minutes") : null;
+        $delivered_at = null;
 
         $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
@@ -36,8 +37,12 @@ class OrderFactory extends Factory
             'user_id' => User::factory(),
             'shop_branch_id' => ShopBranch::factory(),
             'courier_id' => Courier::factory(),
+            'order_id' => fake()->unique()->randomNumber(4),
+            'total_amount' => fake()->numberBetween(10000, 100000),
+            'payment_type' => fake()->word(),
+            'paid_at' => fake()->dateTime(),
             'payment_method' => $this->faker->randomElement(['Cash', 'Transfer', 'E-Wallet']),
-            'status' => $status,
+            'status' => 'created',
             'subtotal' => $subtotal,
             'delivery_fee' => $delivery_fee,
             'total' => $subtotal + $delivery_fee,
