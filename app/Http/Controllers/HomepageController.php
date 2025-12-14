@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; 
 
 use App\Models\Product;
 use App\Models\User;
@@ -10,7 +10,8 @@ use Inertia\Inertia;
 class HomepageController extends Controller
 {
     public function index() {
-        $products = Product::all();
+       
+    $products = Product::take(8)->get();
         $props = [
             'products' => $products
         ];
@@ -59,5 +60,9 @@ class HomepageController extends Controller
 
     public function productCart() {
         return Inertia::render('homepage/product-cart');
+    }
+
+    public function productStatus(){
+        return Inertia::render('homepage/product-status'); 
     }
 }

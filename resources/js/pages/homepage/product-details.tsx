@@ -1,14 +1,14 @@
 import { useState } from 'react';
 // import { CheckoutPage } from './components/CheckoutPage';
 import { CheckoutPage } from '@/components/product-customer/CheckoutPage';
-import { CustomerReviews } from '@/components/product-customer/CustomerReviews';
+import { CustomerReviews } from '@/components/product-customer/CustomerReview';
 import { LocationPage } from '@/components/product-customer/LocationPage';
 import { ProductDetails } from '@/components/product-customer/ProductDetails';
 import { ProductImageGallery } from '@/components/product-customer/ProductImageGallery';
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
 import { SuggestedProducts } from '@/components/product-customer/SuggestedProducts';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, Review } from '@/types/index';
+import type { Product, ReviewProps } from '@/types/index';
 import { ReactNode } from 'react';
 
 type ProductWithRating = Product & {
@@ -19,7 +19,7 @@ type ProductDetailsProps = Product & {
     // user: UserInfo;
     productImages: string[];
     product: ProductWithRating;
-    reviews: Review[];
+    reviews: ReviewProps;
     suggestedProducts: Product[];
 };
 

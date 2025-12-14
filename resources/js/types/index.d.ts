@@ -138,6 +138,32 @@ export type Order = {
     updated_at: string;
 };
 
+//new type for status
+export type OrderNew = {
+    id: number;
+    user_id: number;
+    order_items: Pick<
+        Product,
+        'name' | 'quantity' | 'price_discount' | 'image'
+    >[];
+    status: OrderStatus;
+    estimated_delivery_at: number;
+    street: string;
+    created_at: Order['created_at'];
+    total: number;
+    driver_name: Courier['name'];
+    driver_number: Courier['phone_number'];
+    tracking_updates: TrackingUpdate[];
+};
+
+export type TrackingUpdate = {
+    status: OrderStatus;
+    time: string;
+    message: string;
+};
+
+// =========
+
 export type OrderDetail = {
     id: number;
     order_id: number;
@@ -168,3 +194,8 @@ export type Review = {
     created_at: string;
     updated_at: string;
 };
+
+export type ReviewProps = Array<
+    Pick<User, 'name'> &
+        Pick<Review, 'user_id' | 'rating' | 'created_at' | 'description'>
+>;

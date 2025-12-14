@@ -47,19 +47,21 @@ export function ProductDetails() {
     return (
         <div className="mt-12">
             <Tabs defaultValue="description" className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 lg:grid-cols-4">
+                <TabsList className="grid h-auto w-full grid-cols-2 lg:grid-cols-2">
                     <TabsTrigger value="description" className="py-3">
-                        Description
-                    </TabsTrigger>
-                    <TabsTrigger value="nutrition" className="py-3">
-                        Nutrition
+                        Deskripsi Makanan
                     </TabsTrigger>
                     <TabsTrigger value="ingredients" className="py-3">
-                        Ingredients
+                        Bahan Makanan
                     </TabsTrigger>
+                    {/* <TabsTrigger value="nutrition" className="py-3">
+                        Isi Makanan
+                    </TabsTrigger> */}
+
+                    {/*
                     <TabsTrigger value="preparation" className="py-3">
                         Preparation
-                    </TabsTrigger>
+                    </TabsTrigger> */}
                 </TabsList>
 
                 <TabsContent value="description" className="mt-6 space-y-6">
@@ -97,14 +99,6 @@ export function ProductDetails() {
                                 </div>
                             ))}
                         </div>
-                    </div>
-
-                    <div className="rounded-lg border border-primary bg-amber-50 p-4">
-                        <p className="text-[#1B263B ] italic">
-                            "Khichdi is not just a dish, it's a warm hug in a
-                            bowl - perfect for those days when you need comfort
-                            food that's both nourishing and delicious."
-                        </p>
                     </div>
                 </TabsContent>
 
@@ -156,7 +150,7 @@ export function ProductDetails() {
                 </TabsContent>
 
                 <TabsContent value="ingredients" className="mt-6">
-                    <h3 className="mb-4 text-gray-900">Ingredients</h3>
+                    <h3 className="mb-4 text-gray-900">Bahan Makanan</h3>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {ingredients.map((ingredient, index) => (
                             <div

@@ -23,24 +23,24 @@ Route::get("/checkout", function() {
     return Inertia::render('checkout');
 })->name('checkout');
 
-Route::get("/products", function() {
-    return Inertia::render('product-listing');
-})->name('products');
+// Route::get("/products", function() {
+//     return Inertia::render('product-listing');
+// })->name('products');
 
- Route::get("/products/{id}", function() {
-     return Inertia::render('product-detail');
-})->name('products.detail');
+//  Route::get("/products/{id}", function() {
+//      return Inertia::render('product-detail');
+// })->name('products.detail');
 
 Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
 
 Route::prefix('/')->group(function () {
    Route::get('/', [HomepageController::class, 'index'])->name('homepage');
-   Route::get('/products2/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
-   Route::get('/products2', [HomepageController::class, 'productListing'])->name('product.listing');
+   Route::get('/products/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
+   Route::get('/products', [HomepageController::class, 'productListing'])->name('product.listing');
    Route::get('/profile/{id}', [HomepageController::class, 'userProfile']);
    Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
-    // Route::get('/cashflow-management', [AdminController::class, 'cashflowManagement'])->name('admin.cashflow_management');
-    // Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.product_management');
+   Route::get('/product/status', [HomepageController::class, 'productStatus'])->name('product.status');
+   
 });
 
 

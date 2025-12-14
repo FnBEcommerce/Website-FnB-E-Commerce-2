@@ -2,7 +2,7 @@ import { useCart } from '@/components/homepage/CartContext';
 import { ProductCard } from '@/components/ui/product-card-homepage';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import type { Product, ProductCardProps } from '@/types/index';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
 type ProductListingProps = ProductCardProps & {
@@ -11,19 +11,13 @@ type ProductListingProps = ProductCardProps & {
 
 export default function ProductListingPage({ products }: ProductListingProps) {
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('All Categories');
+    const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
     const [sortBy, setSortBy] = useState('Featured');
     const [favorites, setFavorites] = useState<(number | string)[]>([]);
     const { addToCart } = useCart();
 
     console.log(products);
-    const categories = [
-        'All Categories',
-        'Burgers',
-        'Chicken',
-        'Pizza',
-        'Sides',
-    ];
+    const categories = ['Semua Kategori', 'Makanan', 'Minuman'];
 
     const toggleFavorite = (productId: number | string) => {
         setFavorites((prev) =>
@@ -42,26 +36,43 @@ export default function ProductListingPage({ products }: ProductListingProps) {
         });
     };
 
-    const filteredProducts = products.filter((product) => {
-        const matchesSearch = product.name
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase());
-        const matchesCategory =
-            selectedCategory === 'All Categories' ||
-            product.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-    });
+    const filteredProducts = products
+        .filter((product) => {
+            const matchesSearch = product.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+
+            const matchesCategory =
+                selectedCategory === 'Semua Kategori' ||
+                product.category === selectedCategory;
+
+            return matchesSearch && matchesCategory;
+        })
+        .sort((a, b) => {
+            switch (sortBy) {
+                case 'Harga: Rendah ke Tinggi':
+                    return a.price_discount - b.price_discount;
+
+                case 'Harga: Tinggi ke Rendah':
+                    return b.price_discount - a.price_discount;
+
+                case 'Rating Terbanyak':
+                    return (b.rating ?? 0) - (a.rating ?? 0);
+
+                default:
+                    return 0;
+            }
+        });
 
     return (
         <div className="min-h-screen bg-gray-50">
             <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mb-12">
                     <h2 className="mb-4 text-[30px] font-semibold text-gray-900">
-                        All Products
+                        Produk Kami
                     </h2>
                     <p className="mb-8 text-xl text-gray-600">
-                        Discover our complete collection of delicious fast food
-                        favorites
+                        Temukan makanan cepat saji favorit anda!
                     </p>
 
                     <div className="mb-6 flex flex-col gap-4 md:flex-row">
@@ -89,25 +100,21 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                                     </option>
                                 ))}
                             </select>
-                            <button className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-gray-700 transition-colors hover:bg-gray-100">
-                                <SlidersHorizontal className="h-5 w-5" />
-                            </button>
+
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
                                 className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-6 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none"
                             >
-                                <option>Featured</option>
-                                <option>Price: Low to High</option>
-                                <option>Price: High to Low</option>
-                                <option>Highest Rated</option>
+                                <option>Harga: Rendah ke Tinggi</option>
+                                <option>Harga: Tinggi ke Rendah</option>
+                                <option>Rating Terbanyak</option>
                             </select>
                         </div>
                     </div>
 
                     <p className="text-gray-500">
-                        Showing {filteredProducts.length} of {products.length}{' '}
-                        products
+                        {filteredProducts.length} dari {products.length} produk
                     </p>
                 </div>
 
