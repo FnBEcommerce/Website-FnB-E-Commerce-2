@@ -227,7 +227,7 @@ export function Header({
                         <Link
                             className="rounded-full p-2 transition-colors hover:bg-gray-100"
                             aria-label="Profile"
-                            href="/profile/1"
+                            href="/profile"
                         >
                             <User className="h-5 w-5 text-gray-700" />
                         </Link>

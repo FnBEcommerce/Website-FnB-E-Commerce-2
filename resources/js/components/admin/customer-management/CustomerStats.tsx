@@ -88,231 +88,164 @@ export function CustomerStats({
         recentActivities,
     },
 }: CustomerStatsProps) {
-    type CustomerStatsProps = {
-        data: {
-            monthlyCustomers: MonthlyCustomer[];
-            customerSegmentation: CustomerSegmentation[];
-            statsData: StatsData[];
-            recentActivities: RecentActivity[];
-        };
-    };
-
-    function CustomerStats({
-        data: {
-            monthlyCustomers,
-            customerSegmentation,
-            statsData,
-            recentActivities,
+    const statCards = [
+        {
+            title: 'Total Pelanggan',
+            icon: Users,
         },
-    }: CustomerStatsProps) {
-        const statCards = [
-            {
-                title: 'Total Pelanggan',
-                icon: Users,
-            },
-            {
-                title: 'Pesanan Bulan Ini',
-                icon: ShoppingCart,
-            },
-            {
-                title: 'Pelanggan Aktif',
-                icon: TrendingUp,
-            },
-            {
-                title: 'Rata-rata Transaksi',
-                icon: DollarSign,
-            },
-        ];
+        {
+            title: 'Pesanan Bulan Ini',
+            icon: ShoppingCart,
+        },
+        {
+            title: 'Pelanggan Aktif',
+            icon: TrendingUp,
+        },
+        {
+            title: 'Rata-rata Transaksi',
+            icon: DollarSign,
+        },
+    ];
 
-        return (
-            <div className="space-y-6">
-                {/* Stats Cards */}
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {statsData.map((stat, index) => {
-                        const Icon = statCards[index].icon;
-                        return (
-                            <Card key={index}>
-                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                    <CardTitle className="text-sm font-medium">
-                                        {statCards[index].title}
-                                    </CardTitle>
-                                    <Icon />
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold">
-                                        {stat.value}
-                                    </div>
-                                    <p className="text-xs text-muted-foreground">
-                                        {stat.change} dari bulan lalu
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        );
-                    })}
-                </div>
+    return (
+        <div className="space-y-6">
+            {/* Stats Cards */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {statsData.map((stat, index) => {
+                    const Icon = statCards[index].icon;
+                    return (
+                        <Card key={index}>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">
+                                    {statCards[index].title}
+                                </CardTitle>
+                                <Icon />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold">
+                                    {stat.value}
+                                </div>
+                                <p className="text-xs text-muted-foreground">
+                                    {stat.change} dari bulan lalu
+                                </p>
+                            </CardContent>
+                        </Card>
+                    );
+                })}
+            </div>
 
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                    {/* Customer Growth Chart */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>
-                                Pertumbuhan Pelanggan & Pesanan
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <LineChart data={monthlyCustomers}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="month" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="pelanggan"
-                                        stroke="#3b82f6"
-                                        strokeWidth={2}
-                                        name="Pelanggan Baru"
-                                    />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="pesanan"
-                                        stroke="#10b981"
-                                        strokeWidth={2}
-                                        name="Total Pesanan"
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-
-                    {/* Customer Segmentation */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Segmentasi Pelanggan</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-center justify-center">
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <PieChart>
-                                        <Pie
-                                            data={customerSegmentation}
-                                            cx="50%"
-                                            cy="50%"
-                                            labelLine={false}
-                                            label={({ name, value }) =>
-                                                `${name}: ${value}%`
-                                            }
-                                            outerRadius={100}
-                                            fill="#8884d8"
-                                            dataKey="value"
-                                        >
-                                            {customerSegmentation.map(
-                                                (entry, index) => (
-                                                    <Cell
-                                                        key={`cell-${index}`}
-                                                        fill={entry.color}
-                                                    />
-                                                ),
-                                            )}
-                                        </Pie>
-                                        <Tooltip />
-                                    </PieChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Recent Activity */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                {/* Customer Growth Chart */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
+                        <CardTitle>Pertumbuhan Pelanggan & Pesanan</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/* TODO: Ubah menjadi data dinamis */}
-                        <div className="space-y-4">
-                            {recentActivities.map((activity, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-center justify-between border-b py-3 last:border-b-0"
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white">
-                                            {activity.name.charAt(0)}
-                                        </div>
-                                        <div>
-                                            <p className="text-slate-900">
-                                                {activity.name}
-                                            </p>
-                                            <p className="text-slate-600">
-                                                {activity.action} -{' '}
-                                                {activity.item}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        {!activity.amount ? (
-                                            ''
-                                        ) : (
-                                            <p className="text-slate-900">
-                                                {formatPrice(activity.amount)}
-                                            </p>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={monthlyCustomers}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="month" />
+                                <YAxis />
+                                <Tooltip />
+                                <Line
+                                    type="monotone"
+                                    dataKey="pelanggan"
+                                    stroke="#3b82f6"
+                                    strokeWidth={2}
+                                    name="Pelanggan Baru"
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="pesanan"
+                                    stroke="#10b981"
+                                    strokeWidth={2}
+                                    name="Total Pesanan"
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
+
+                {/* Customer Segmentation */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Segmentasi Pelanggan</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-center">
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={customerSegmentation}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={({ name, value }) =>
+                                            `${name}: ${value}%`
+                                        }
+                                        outerRadius={100}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                    >
+                                        {customerSegmentation.map(
+                                            (entry, index) => (
+                                                <Cell
+                                                    key={`cell-${index}`}
+                                                    fill={entry.color}
+                                                />
+                                            ),
                                         )}
-                                        <p className="text-slate-500">
-                                            {activity.time}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                                    </Pie>
+                                    <Tooltip />
+                                </PieChart>
+                            </ResponsiveContainer>
                         </div>
                     </CardContent>
                 </Card>
             </div>
-        );
-    }
-    <div>
-        {/* Recent Activity */}
-        <Card>
-            <CardHeader>
-                <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
-            </CardHeader>
-            <CardContent>
-                {/* TODO: Ubah menjadi data dinamis */}
-                <div className="space-y-4">
-                    {recentActivities.map((activity, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center justify-between border-b py-3 last:border-b-0"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white">
-                                    {activity.name.charAt(0)}
+
+            {/* Recent Activity */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Aktivitas Pelanggan Terbaru</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        {recentActivities.map((activity, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center justify-between border-b py-3 last:border-b-0"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white">
+                                        {activity.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <p className="text-slate-900">
+                                            {activity.name}
+                                        </p>
+                                        <p className="text-slate-600">
+                                            {activity.action} - {activity.item}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-slate-900">
-                                        {activity.name}
-                                    </p>
-                                    <p className="text-slate-600">
-                                        {activity.action} - {activity.item}
+                                <div className="text-right">
+                                    {!activity.amount ? (
+                                        ''
+                                    ) : (
+                                        <p className="text-slate-900">
+                                            {formatPrice(activity.amount)}
+                                        </p>
+                                    )}
+                                    <p className="text-slate-500">
+                                        {activity.time}
                                     </p>
                                 </div>
                             </div>
-                            <div className="text-right">
-                                {!activity.amount ? (
-                                    ''
-                                ) : (
-                                    <p className="text-slate-900">
-                                        {formatPrice(activity.amount)}
-                                    </p>
-                                )}
-                                <p className="text-slate-500">
-                                    {activity.time}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
-    </div>;
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    );
 }

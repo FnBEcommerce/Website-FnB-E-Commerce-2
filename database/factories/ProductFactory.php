@@ -27,11 +27,7 @@ class ProductFactory extends Factory
             "Es Teh Manis", "Es Jeruk", "Lemon Tea", "Milkshake Coklat", "Milkshake Strawberry", "Thai Tea",
             "Green Tea Latte", "Cappuccino", "Americano", "Es Kopi Susu Gula Aren"
         ];
-        $product_categories = [
-            "Makanan Berat", "Makanan Ringan", "Minuman", "Dessert", "Snack", "Fast Food", "Rice Bowl", "Noodles",
-            "Seafood", "Ayam & Daging", "Sayuran", "Sate & Grill", "Soup", "Bakery", "Coffee", "Tea", "Juice",
-            "Milkshake", "Traditional Food", "Western Food", "Asian Food"
-        ];
+        $product_categories = ["Makanan", "Minuman"];
         $food_types = ['Spicy', 'Sweet', 'Sour', 'Salty', 'Vegetarian'];
         $badges = ['New', 'Best Seller', 'Recommended'];
 

@@ -317,140 +317,138 @@ class AdminController extends Controller
     }
 
     public function cashflowManagement() {
+        $allOrders = Order::all();
+        $totalRevenue = $allOrders->sum('subtotal');
+        $totalOrders = $allOrders->count();
+        $avgOrder = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
+
+        // --- Growth Calculation (Month-over-Month) ---
+        $now = Carbon::now();
+
+        // Current period (this month to date)
+        $currentPeriodStart = $now->copy()->startOfMonth();
+        $currentPeriodOrders = Order::where('confirmed_at', '>=', $currentPeriodStart)->get();
+        $currentRevenue = $currentPeriodOrders->sum('subtotal');
+        $currentOrdersCount = $currentPeriodOrders->count();
+        $currentAverageOrder = $currentOrdersCount > 0 ? $currentRevenue / $currentOrdersCount : 0;
+
+        // Previous period (full previous month)
+        $previousPeriodStart = $now->copy()->subMonth()->startOfMonth();
+        $previousPeriodEnd = $now->copy()->subMonth()->endOfMonth();
+        $previousPeriodOrders = Order::whereBetween('confirmed_at', [$previousPeriodStart, $previousPeriodEnd])->get();
+        $previousRevenue = $previousPeriodOrders->sum('subtotal');
+        $previousOrdersCount = $previousPeriodOrders->count();
+        $previousAverageOrder = $previousOrdersCount > 0 ? $previousRevenue / $previousOrdersCount : 0;
+
+        // Helper function for growth percentage
+        $calculateGrowth = function ($current, $previous) {
+            if ($previous == 0) {
+                return $current > 0 ? 100.0 : 0.0;
+            }
+            return (($current - $previous) / $previous) * 100;
+        };
+
+        $revenueGrowth = $calculateGrowth($currentRevenue, $previousRevenue);
+        $ordersGrowth = $calculateGrowth($currentOrdersCount, $previousOrdersCount);
+        $averageGrowth = $calculateGrowth($currentAverageOrder, $previousAverageOrder);
 
         $summaryData = [
-            'totalRevenue' => 125750000,
-            'totalOrders' => 1247,
-            'averageOrder' => 100843,
-            'growth' => 12.5,
-            'revenueGrowth' => 15.2,
-            'ordersGrowth' => 8.3,
-            'averageGrowth' => 6.4,
+            'totalRevenue' => $totalRevenue,
+            'totalOrders' => $totalOrders,
+            'averageOrder' => $avgOrder,
+            'growth' => $revenueGrowth, // Using revenue growth as the main 'growth' metric
+            'revenueGrowth' => $revenueGrowth,
+            'ordersGrowth' => $ordersGrowth,
+            'averageGrowth' => $averageGrowth,
         ];
 
-        $dailyTrendData = [
-            ['name' => 'Sen', 'pendapatan' => 95000000, 'pesanan' => 890],
-            ['name' => 'Sel', 'pendapatan' => 88000000, 'pesanan' => 825],
-            ['name' => 'Rab', 'pendapatan' => 102000000, 'pesanan' => 950],
-            ['name' => 'Kam', 'pendapatan' => 118000000, 'pesanan' => 1100],
-            ['name' => 'Jum', 'pendapatan' => 125000000, 'pesanan' => 1180],
-            ['name' => 'Sab', 'pendapatan' => 135000000, 'pesanan' => 1280],
-        ];
+        // return response()->json($summaryData);
 
-        $weeklyTrendData = [
-            ['name' => '1-7 Jan', 'pendapatan' => 650000000, 'pesanan' => 6200],
-            ['name' => '8-14 Jan', 'pendapatan' => 680000000, 'pesanan' => 6450],
-            ['name' => '15-21 Jan', 'pendapatan' => 750000000, 'pesanan' => 7100],
-            ['name' => '22-28 Jan', 'pendapatan' => 820000000, 'pesanan' => 7800],
-            ['name' => '29-4 Feb', 'pendapatan' => 890000000, 'pesanan' => 8500],
-            ['name' => '5-12 Feb', 'pendapatan' => 910000000, 'pesanan' => 8700],
-        ];
-
-        $monthlyTrendData = [
-            ['name' => 'Jan', 'pendapatan' => 2850000000, 'pesanan' => 26700],
-            ['name' => 'Feb', 'pendapatan' => 2640000000, 'pesanan' => 24500], // Feb hari lebih sedikit
-            ['name' => 'Mar', 'pendapatan' => 3060000000, 'pesanan' => 28900],
-            ['name' => 'Apr', 'pendapatan' => 3250000000, 'pesanan' => 30500],
-            ['name' => 'Mei', 'pendapatan' => 3450000000, 'pesanan' => 32100],
-            ['name' => 'Jun', 'pendapatan' => 3600000000, 'pesanan' => 34000],
-        ];
-
-        $yearlyTrendData = [
-            ['name' => '2019', 'pendapatan' => 28500000000, 'pesanan' => 270000],
-            ['name' => '2020', 'pendapatan' => 24000000000, 'pesanan' => 220000], // Dip pandemi
-            ['name' => '2021', 'pendapatan' => 32000000000, 'pesanan' => 295000],
-            ['name' => '2022', 'pendapatan' => 38000000000, 'pesanan' => 350000],
-            ['name' => '2023', 'pendapatan' => 42500000000, 'pesanan' => 390000],
-            ['name' => '2024', 'pendapatan' => 46000000000, 'pesanan' => 425000],
-        ];
+        $trendQuery = fn($format, $column) => Order::select(
+                DB::raw("$format as name"),
+                DB::raw('SUM(subtotal) as pendapatan'),
+                DB::raw('COUNT(id) as pesanan')
+            )
+            ->where('created_at', '>=', Carbon::now()->subYear())
+            ->groupBy('name', DB::raw($column))
+            ->orderBy(DB::raw($column), 'asc')
+            ->get();
 
         $trendDataPeriod = [
-            'dailyTrendData' => $dailyTrendData,
-            'weeklyTrendData' => $weeklyTrendData,
-            'monthlyTrendData' => $monthlyTrendData,
-            'yearlyTrendData' => $yearlyTrendData,
+            'dailyTrendData' => $trendQuery('DATE_FORMAT(created_at, "%a")', 'DAYOFWEEK(created_at)'),
+            'weeklyTrendData' => $trendQuery('DATE_FORMAT(created_at, "Week %v")', 'WEEK(created_at)'),
+            'monthlyTrendData' => $trendQuery('DATE_FORMAT(created_at, "%b")', 'MONTH(created_at)'),
+            'yearlyTrendData' => $trendQuery('YEAR(created_at)', 'YEAR(created_at)'),
         ];
 
-        $categoryData = [
-            ['name' => 'Makanan', 'pendapatan' => 78000000, 'pesanan' => 650],
-            ['name' => 'Minuman', 'pendapatan' => 32000000, 'pesanan' => 420],
-            ['name' => 'Snack', 'pendapatan' => 15750000, 'pesanan' => 180],
-        ];
+        $categoryData = DB::table('order_details')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->select(
+                'products.category as name',
+                DB::raw('SUM(order_details.subtotal * order_details.quantity) as pendapatan'),
+                DB::raw('COUNT(DISTINCT order_details.order_id) as pesanan')
+            )
+            ->groupBy('products.category')
+            ->get();
+
+        $transactionsData = Order::with(['user', 'shopBranch', 'orderDetails.product'])
+            ->latest('confirmed_at') // Order by the main date
+            ->take(50) // Limit to a reasonable number for the dashboard
+            ->get()
+            ->map(function($order) {
+                $firstDetail = $order->orderDetails->first();
+                $category = $firstDetail && $firstDetail->product ? $firstDetail->product->category : 'N/A';
+                $description = 'Pesanan #' . $order->id;
+                if ($firstDetail && $firstDetail->product) {
+                    $description .= ' - ' . $firstDetail->product->name;
+                    if ($order->orderDetails->count() > 1) {
+                        $description .= ' & lainnya';
+                    }
+                }
+
+                return [
+                    'id' => $order->id,
+                    'date' => $order->confirmed_at ? $order->confirmed_at->format('Y-m-d H:i') : null,
+                    'category' => $category,
+                    'description' => $description,
+                    'branch' => $order->shopBranch ? $order->shopBranch->name : 'N/A',
+                    'amount' => $order->total,
+                    'paymentMethod' => $order->payment_method,
+                    'customer' => $order->user ? $order->user->name : 'Guest',
+                ];
+            });
 
         $props = [
             'summaryData' => $summaryData,
             'trendDataPeriod' => $trendDataPeriod,
             'categoryData' => $categoryData,
+            'transactions' => $transactionsData,
         ];
 
         return Inertia::render('admin/cashflow-management', $props);
     }
     public function productManagement() {
-        $products = [
-            [
-                'id' => '1',
-                'name' => 'Nasi Goreng Spesial',
-                'category' => 'Makanan',
-                'price' => 35000,
-                'stock' => 50,
-                'branch' => 'Jakarta Pusat',
-                'image' => 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400',
-                'description' => 'Nasi goreng dengan telur, ayam, dan sayuran segar',
-                'discount' => 10,
-                'rating' => 4.5,
-                'status' => 'Aktif',
-            ],
-            [
-                'id' => '2',
-                'name' => 'Es Teh Manis',
-                'category' => 'Minuman',
-                'price' => 8000,
-                'stock' => 100,
-                'branch' => 'Jakarta Selatan',
-                'image' => 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400',
-                'description' => 'Teh manis dingin yang menyegarkan',
-                'rating' => 4.2,
-                'status' => 'Aktif',
-            ],
-            [
-                'id' => '3',
-                'name' => 'Ayam Geprek',
-                'category' => 'Makanan',
-                'price' => 25000,
-                'stock' => 30,
-                'branch' => 'Jakarta Barat',
-                'image' => 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400',
-                'description' => 'Ayam goreng crispy dengan sambal pedas',
-                'discount' => 15,
-                'rating' => 4.7,
-                'status' => 'Aktif',
-            ],
-            [
-                'id' => '4',
-                'name' => 'Kopi Susu Gula Aren',
-                'category' => 'Minuman',
-                'price' => 18000,
-                'stock' => 75,
-                'branch' => 'Jakarta Timur',
-                'image' => 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400',
-                'description' => 'Kopi susu dengan gula aren original',
-                'discount' => 5,
-                'rating' => 4.8,
-                'status' => 'Aktif',
-            ],
-            [
-                'id' => '5',
-                'name' => 'Mie Goreng Seafood',
-                'category' => 'Makanan',
-                'price' => 32000,
-                'stock' => 20,
-                'branch' => 'Jakarta Pusat',
-                'image' => 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400',
-                'description' => 'Mie goreng dengan seafood premium',
-                'rating' => 4.3,
-                'status' => 'Tidak Aktif',
-            ],
-        ];
+        // Assuming 'shopBranchProducts' is the pivot table/relation for stock and branch
+        // And 'shopBranch' is the relation from pivot to the branch details
+        $productsData = Product::with(['reviews', 'shopBranchProducts.shopBranch'])->get();
+
+        $products = $productsData->map(function ($product) {
+            $shopBranchProduct = $product->shopBranchProducts->first(); // Get first branch for simplicity
+            
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'category' => $product->category,
+                'price_origin' => $product->price_origin,
+                'price_discount' => $product->price_discount ?? null,
+                'stock' => $product->quantity ?? 0,
+                'branch' => $shopBranchProduct->shopBranch->name ?? 'N/A',
+                'image' => $product->image,
+                'description' => $product->description,
+                'rating' => round($product->reviews->avg('rating'), 1) ?? 0,
+                'status' => ($product->quantity > 0) ? 'Aktif' : 'Tidak Aktif',
+            ];
+        });
 
         $props = [
             'products' => $products

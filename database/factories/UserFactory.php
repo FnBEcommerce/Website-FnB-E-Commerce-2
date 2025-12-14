@@ -21,7 +21,7 @@ class UserFactory extends Factory
         $birthDate = $this->faker->dateTimeBetween('-65 years', '-18 years');
 
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->userName(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => $createdAt,
             'password' => bcrypt('password'), // password

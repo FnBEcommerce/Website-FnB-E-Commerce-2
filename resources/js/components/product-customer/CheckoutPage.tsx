@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
+import { User } from '@/types';
 import {
     Banknote,
     CreditCard,
@@ -19,13 +20,13 @@ import {
 import { useState } from 'react';
 
 interface CheckoutPageProps {
-    // user: UserInfo;
+    user: User;
     onNavigateToLocation: () => void;
     onNavigateToHome: () => void;
 }
 
 export function CheckoutPage({
-    // user,
+    user,
     onNavigateToLocation,
     onNavigateToHome,
 }: CheckoutPageProps) {
@@ -56,11 +57,11 @@ export function CheckoutPage({
     ]);
 
     const [deliveryAddress, setDeliveryAddress] = useState({
-        name: 'Rajesh Kumar',
-        phone: '+91 98765 43210',
-        street: 'Green Park Colony, Sector 12', // Updated from address
-        city: 'Mumbai',
-        state: 'Maharashtra',
+        name: user.name,
+        phone: user.phone_number,
+        street: user.street, // Updated from address
+        city: user.city,
+        state: user.state,
     });
 
     const updateQuantity = (id: number, newQuantity: number) => {

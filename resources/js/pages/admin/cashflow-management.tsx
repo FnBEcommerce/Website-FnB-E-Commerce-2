@@ -20,23 +20,11 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
 import { CreditCard, DollarSign, ShoppingCart, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
+
 export type TransactionRow = {
     id: string;
     date: string;
@@ -47,14 +35,6 @@ export type TransactionRow = {
     paymentMethod: string;
     customer: string;
 };
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-=======
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 
 const topNav = [
     {
@@ -83,12 +63,6 @@ const topNav = [
     },
 ];
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-export default function CashflowManagement() {
-=======
->>>>>>> Stashed changes
 export type TrendDataItem = {
     name: string;
     pendapatan: number;
@@ -116,57 +90,20 @@ type CashflowManagementProps = {
     summaryData: SummaryData;
     trendDataPeriod: TrendDataPeriod;
     categoryData: TrendDataItem[];
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
     transactions: TransactionRow[];
->>>>>>> Stashed changes
-=======
-    transactions: TransactionRow[];
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
-    transactions: TransactionRow[];
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 };
 
 export default function CashflowManagement({
     summaryData,
     trendDataPeriod,
     categoryData,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
     transactions,
->>>>>>> Stashed changes
-=======
-    transactions,
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
-    transactions,
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
 }: CashflowManagementProps) {
     const [period, setPeriod] = useState<PeriodType>('monthly');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [activeTab, setActiveTab] = useState('overview');
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
     console.log(summaryData, trendDataPeriod, categoryData);
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-=======
-    console.log(summaryData, trendDataPeriod, categoryData);
-
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
-    console.log(summaryData, trendDataPeriod, categoryData);
-
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
     return (
         <AuthenticatedLayout>
             <SearchProvider>
@@ -183,12 +120,6 @@ export default function CashflowManagement({
 
                 {/* ===== Main ===== */}
                 <Main>
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-                    <div className=""></div>
-=======
->>>>>>> Stashed changes
                     <div className="mb-2 flex items-center justify-between space-y-2">
                         <h1 className="text-2xl font-bold tracking-tight">
                             Manajemen Cash Flow
@@ -310,33 +241,13 @@ export default function CashflowManagement({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-                                    <TransactionTable />
-=======
                                     <TransactionTable
                                         transactions={transactions}
                                     />
->>>>>>> Stashed changes
-=======
-                                    <TransactionTable
-                                        transactions={transactions}
-                                    />
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
-=======
-                                    <TransactionTable
-                                        transactions={transactions}
-                                    />
->>>>>>> 9215853eeca0b7224ed41c33b5fe2914f2dfa8a0
                                 </CardContent>
                             </Card>
                         </TabsContent>
                     </Tabs>
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
                 </Main>
             </SearchProvider>
         </AuthenticatedLayout>

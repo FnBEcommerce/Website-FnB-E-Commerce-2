@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class HomepageController extends Controller
@@ -20,7 +21,7 @@ class HomepageController extends Controller
     }
 
     public function productDetail(Product $product) {
-        $user = User::first(); // TODO: Ganti setelah ada sistem login
+        $user = Auth::user();
         $reviews = $product->reviews()->get();
 
         // Product Images (Indexed Array)
@@ -54,8 +55,16 @@ class HomepageController extends Controller
         return Inertia::render('homepage/product-listing', $props);
     }
 
+    public function auth() {
+        return Inertia::render('auth');
+    }
+
     public function userProfile() {
-        return Inertia::render('homepage/user-profile');
+        $user = Auth::user();
+        $props = [
+            'user' => $user,
+        ];
+        return Inertia::render('homepage/user-profile', $props);
     }
 
     public function productCart() {

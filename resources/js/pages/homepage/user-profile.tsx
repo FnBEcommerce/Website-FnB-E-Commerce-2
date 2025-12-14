@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { User } from '@/types';
 import { UserInfo } from '@/types/user';
 import { Link } from '@inertiajs/react';
 import {
@@ -12,11 +13,15 @@ import {
     MapPin,
     Plus,
     Save,
-    User,
+    User as UserIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 
-export default function UserProfilePage() {
+type UserProfilePageProps = {
+    user: User;
+};
+
+export default function UserProfilePage({ user }: UserProfilePageProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingAddress, setIsEditingAddress] = useState(false);
     const [isEditingPayment, setIsEditingPayment] = useState(false);
@@ -35,15 +40,15 @@ export default function UserProfilePage() {
     // });
 
     const [profileData, setProfileData] = useState<UserInfo>({
-        fullName: '',
-        email: '',
-        password: '',
-        fullNumber: '',
+        fullName: user.name,
+        email: user.email,
+        password: user.password,
+        fullNumber: user.phone_number ?? '',
         birthDate: new Date(),
-        gender: '',
+        gender: user.gender ?? '',
         addressInfo: {
-            street: '',
-            city: '',
+            street: user.street ?? '',
+            city: user.city ?? '',
             state: '',
             label: 'home',
         },
@@ -153,7 +158,7 @@ export default function UserProfilePage() {
                                 {/* Profile Picture */}
                                 <div className="relative mb-4">
                                     <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border-4 border-[#FF6900] bg-gradient-to-br from-orange-100 to-yellow-100">
-                                        <User className="h-16 w-16 text-[#FF6900]" />
+                                        <UserIcon className="h-16 w-16 text-[#FF6900]" />
                                     </div>
                                     <button className="absolute right-0 bottom-0 flex h-10 w-10 items-center justify-center rounded-full bg-[#FF6900] text-white shadow-lg transition-colors hover:bg-[#E55D00]">
                                         <Camera className="h-5 w-5" />
@@ -212,7 +217,7 @@ export default function UserProfilePage() {
                             <div className="mb-5 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
-                                        <User className="h-5 w-5 text-[#FF6900]" />
+                                        <UserIcon className="h-5 w-5 text-[#FF6900]" />
                                     </div>
                                     <div>
                                         <h2
@@ -517,7 +522,7 @@ export default function UserProfilePage() {
                                     </Label>
                                     <Input
                                         id="city"
-                                        value={addressData.city}
+                                        value={profileData.addressInfo.city}
                                         onChange={(e) =>
                                             handleAddressChange(
                                                 'city',
@@ -538,7 +543,7 @@ export default function UserProfilePage() {
                                     </Label>
                                     <Input
                                         id="state"
-                                        value={addressData.state}
+                                        value={profileData.addressInfo.state}
                                         onChange={(e) =>
                                             handleAddressChange(
                                                 'state',
