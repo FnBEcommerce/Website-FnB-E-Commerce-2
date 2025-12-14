@@ -37,9 +37,12 @@ Route::get('/products2', [HomepageController::class, 'productListing'])->name('p
 
 Route::middleware(['role:user,admin'])->group(function() {
     Route::get('/products2/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
-    Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
     Route::get('/profile', [HomepageController::class, 'userProfile']);
     Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
+
+    Route::middleware('order.owner')->group(function() {
+        Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
+    });
 });
 
 Route::middleware(['role:admin'])->prefix('/admin')->group(function () {
