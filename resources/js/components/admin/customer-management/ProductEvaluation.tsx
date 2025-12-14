@@ -152,10 +152,38 @@ import {
 //     { rating: '2 Bintang', count: 40, color: '#f97316' },
 //     { rating: '1 Bintang', count: 19, color: '#ef4444' },
 // ];
+interface ProductData {
+    id: string;
+    name: string;
+    category: string;
+    totalReviews: number;
+    avgRating: number;
+    rating5: number;
+    rating4: number;
+    rating3: number;
+    rating2: number;
+    rating1: number;
+    totalSold: number;
+    trend: string;
+}
+
+interface RatingDistribution {
+    rating: string;
+    count: number;
+    color: string;
+    [key: string]: any;
+}
+
+interface ProductEvaluationProps {
+    data: {
+        productsData: ProductData[];
+        ratingDistribution: RatingDistribution[];
+    };
+}
 
 export function ProductEvaluation({
     data: { productsData, ratingDistribution },
-}: any) {
+}: ProductEvaluationProps) {
     const [categoryFilter, setCategoryFilter] = useState('all');
     const [sortBy, setSortBy] = useState('rating');
 

@@ -25,29 +25,123 @@ import { useState } from 'react';
 const topNav = [
     {
         title: 'Overview',
-        href: 'dashboard/overview',
+        href: 'admin',
         isActive: false,
         disabled: false,
     },
     {
         title: 'Customers',
-        href: 'dashboard/customers',
+        href: 'admin/customer-management',
         isActive: true,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Products',
-        href: 'dashboard/products',
+        href: 'admin/product-management',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Settings',
-        href: 'dashboard/settings',
+        href: 'admin/settings',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
 ];
+
+export type MonthlyCustomer = {
+    month: string;
+    pelanggan: number;
+    pesanan: number;
+};
+
+export type CustomerSegmentation = {
+    name: string;
+    value: number;
+    color: string;
+    [key: string]: any;
+};
+
+export type StatsData = {
+    title: string;
+    value: string;
+    change: string;
+    icon: React.ElementType;
+    color: string;
+    bgColor: string;
+};
+
+export type RecentActivity = {
+    name: string;
+    action: string;
+    item: string;
+    time: string;
+    amount: number;
+};
+
+export type CustomerData = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    area: string;
+    totalOrders: number;
+    totalSpent: number;
+    lastOrder: string;
+    status: string;
+    avgRating: number;
+};
+
+export type ProductData = {
+    id: string;
+    name: string;
+    category: string;
+    totalReviews: number;
+    avgRating: number;
+    rating5: number;
+    rating4: number;
+    rating3: number;
+    rating2: number;
+    rating1: number;
+    totalSold: number;
+    trend: string;
+};
+
+export type RatingDistribution = {
+    rating: string;
+    count: number;
+    color: string;
+};
+
+export type AreaData = {
+    area: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalRevenue: number;
+    avgOrderValue: number;
+    topProduct: string;
+    growth: number;
+};
+
+export type MonthlyAreaData = {
+    month: string;
+    jaksel: number;
+    jakpus: number;
+    jakbar: number;
+    jaktim: number;
+};
+
+type CustomerManagementProps = {
+    monthlyCustomers: MonthlyCustomer[];
+    customerSegmentation: CustomerSegmentation[];
+    statsData: StatsData[];
+    customersData: CustomerData[];
+    productsData: ProductData[];
+    ratingDistribution: RatingDistribution[];
+    areaData: AreaData[];
+    monthlyAreaData: MonthlyAreaData[];
+    recentActivities: RecentActivity[];
+};
 
 export default function CustomerManagement({
     monthlyCustomers,
@@ -58,7 +152,8 @@ export default function CustomerManagement({
     ratingDistribution,
     areaData,
     monthlyAreaData,
-}: any) {
+    recentActivities,
+}: CustomerManagementProps) {
     const [activeTab, setActiveTab] = useState('overview');
 
     // console.log(users);
@@ -132,6 +227,7 @@ export default function CustomerManagement({
                                     monthlyCustomers,
                                     customerSegmentation,
                                     statsData,
+                                    recentActivities,
                                 }}
                             />
                         </TabsContent>
@@ -182,7 +278,10 @@ export default function CustomerManagement({
                                 </CardHeader>
                                 <CardContent>
                                     <AreaSalesReport
-                                        data={{ areaData, monthlyAreaData }}
+                                        data={{
+                                            areaData,
+                                            monthlyAreaData,
+                                        }}
                                     />
                                 </CardContent>
                             </Card>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,17 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaction', function (Blueprint $table) {
-            $table->integer('transaction_id')->autoIncrement();
-            $table->integer('order_id');
-            
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
-
-            // Foreign Key
-            $table->foreign('order_id')
-                ->references('order_id')->on('order')
-                ->onDelete('restrict')->onUpdate('restrict');
+        Schema::create('transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
+            $table->string('transaction_status')->default('pending');
+            $table->decimal('amount', 10, 2);
+            $table->string('payment_gateway_reference')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaction');
+        Schema::dropIfExists('transactions');
     }
 };

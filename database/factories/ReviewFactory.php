@@ -18,13 +18,15 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
         return [
             'user_id' => User::factory(),
             'product_id' => Product::factory(),
-            'rating' => fake()->numberBetween(1, 5),
-            'review_comment' => fake()->paragraph(5),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'rating' => $this->faker->numberBetween(1, 5),
+            'type' => $this->faker->randomElement(['food', 'service', 'ambience']),
+            'description' => $this->faker->paragraph(3),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

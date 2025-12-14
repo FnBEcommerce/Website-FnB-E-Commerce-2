@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Courier;
+use App\Models\ShopBranch;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,24 +14,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order', function (Blueprint $table) {
-            $table->integer('order_id')->autoIncrement();
-            $table->integer('shop_id');
-            $table->integer('courier_id');
-            $table->integer('user_id');
-            $table->string('payment_method', 50);
-            $table->string('order_status', 50)->nullable();
-            $table->decimal('order_total', 10, 2);
-            $table->dateTime('order_confirmed_time')->nullable();
-            $table->dateTime('order_processed_time')->nullable();
-            $table->dateTime('delivered_time_estimation')->nullable();
-            $table->dateTime('delivered_time')->nullable();
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ShopBranch::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Courier::class)->nullable()->constrained()->nullOnDelete();
 
-            $table->foreign('shop_id')->references('shop_id')->on('shop_branch')->onDelete('restrict');
-            $table->foreign('courier_id')->references('courier_id')->on('courier')->onDelete('restrict');
-            $table->foreign('user_id')->references('user_id')->on('user')->onDelete('restrict');
+            $table->string('payment_method', 50);
+            $table->string('status', 50)->default('pending');
+            
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('delivery_fee', 10, 2);
+            $table->decimal('total', 10, 2);
+
+            $table->timestamp('confirmed_at')->nullable();
+            $table->timestamp('processed_at')->nullable();
+            $table->timestamp('estimated_delivery_at')->nullable();
+            $table->timestamp('delivered_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -37,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('orders');
     }
 };

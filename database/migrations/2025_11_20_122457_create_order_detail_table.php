@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,17 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_detail', function (Blueprint $table) {
-            $table->integer('orderdetail_id')->autoIncrement();
-            $table->integer('order_id');
-            $table->integer('product_id');
-            $table->integer('orderdetail_quantity');
-            $table->decimal('orderdetail_subtotal', 10, 2);
-            $table->timestamp('date_created')->useCurrent();
-            $table->dateTime('last_updated')->nullable();
-
-            $table->foreign('order_id')->references('order_id')->on('order')->onDelete('restrict');
-            $table->foreign('product_id')->references('product_id')->on('product')->onDelete('restrict');
+        Schema::create('order_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Order::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->integer('quantity');
+            $table->decimal('subtotal', 10, 2);
+            $table->timestamps();
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_detail');
+        Schema::dropIfExists('order_details');
     }
 };

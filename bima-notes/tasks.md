@@ -1,0 +1,4 @@
+- Add username column in users table (index.d.ts will be also updated)
+- Add loading indicator on submitting in auth page
+- FIX TODOs
+- Change /profile/{id} into /profile

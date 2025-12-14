@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\ShopBranch;
 use App\Models\Courier;
+use App\Models\ShopBranch;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
@@ -19,19 +19,34 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $subtotal = $this->faker->randomFloat(2, 15000, 200000);
+        $delivery_fee = $this->faker->randomFloat(2, 5000, 25000);
+        $status = $this->faker->randomElement(['pending', 'processing', 'completed', 'cancelled']);
+
+        // Generate a base time
+        $confirmed_at = $this->faker->dateTimeBetween('-2 years', 'now');
+        $processed_at = (clone $confirmed_at)->add(new \DateInterval('PT' . $this->faker->numberBetween(5, 20) . 'M'));
+        $estimated_delivery_at = (clone $processed_at)->add(new \DateInterval('PT' . $this->faker->numberBetween(20, 60) . 'M'));
+        $deliveryOffset = $this->faker->numberBetween(-10, 20);
+        $delivered_at = $status === 'completed' ? (clone $estimated_delivery_at)->modify("{$deliveryOffset} minutes") : null;
+
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+
         return [
-            'shop_id' => ShopBranch::factory(),
-            'courier_id' => Courier::factory(),
             'user_id' => User::factory(),
-            'payment_method' => fake()->randomElement(['Cash', 'Transfer', 'E-Wallet']),
-            'order_status' => fake()->randomElement(['Pending', 'Processing', 'Completed', 'Cancelled']),
-            'order_total' => 0, // Nanti dihitung ulang berdasarkan detail
-            'order_confirmed_time' => now(),
-            'order_processed_time' => now(),
-            'delivered_time_estimation' => fake()->dateTime(),
-            'delivered_time' => fake()->optional()->dateTime(),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'shop_branch_id' => ShopBranch::factory(),
+            'courier_id' => Courier::factory(),
+            'payment_method' => $this->faker->randomElement(['Cash', 'Transfer', 'E-Wallet']),
+            'status' => $status,
+            'subtotal' => $subtotal,
+            'delivery_fee' => $delivery_fee,
+            'total' => $subtotal + $delivery_fee,
+            'confirmed_at' => $confirmed_at,
+            'processed_at' => $processed_at,
+            'estimated_delivery_at' => $estimated_delivery_at,
+            'delivered_at' => $delivered_at,
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

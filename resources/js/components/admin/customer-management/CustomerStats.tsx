@@ -1,4 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    CustomerSegmentation,
+    MonthlyCustomer,
+    RecentActivity,
+    StatsData,
+} from '@/pages/admin/customer-management';
+import { formatPrice } from '@/utils/format-price';
 import { DollarSign, ShoppingCart, TrendingUp, Users } from 'lucide-react';
 import {
     CartesianGrid,
@@ -64,11 +71,23 @@ import {
 //     },
 // ];
 
+type CustomerStatsProps = {
+    data: {
+        monthlyCustomers: MonthlyCustomer[];
+        customerSegmentation: CustomerSegmentation[];
+        statsData: StatsData[];
+        recentActivities: RecentActivity[];
+    };
+};
+
 export function CustomerStats({
-    data: { monthlyCustomers, customerSegmentation, statsData },
-}: {
-    data: any;
-}) {
+    data: {
+        monthlyCustomers,
+        customerSegmentation,
+        statsData,
+        recentActivities,
+    },
+}: CustomerStatsProps) {
     const statCards = [
         {
             title: 'Total Pelanggan',
@@ -192,36 +211,7 @@ export function CustomerStats({
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {[
-                            {
-                                name: 'Budi Santoso',
-                                action: 'Melakukan pemesanan',
-                                item: 'Nasi Goreng Spesial x2',
-                                time: '5 menit yang lalu',
-                                amount: 'Rp 85.000',
-                            },
-                            {
-                                name: 'Siti Nurhaliza',
-                                action: 'Memberikan rating 5★',
-                                item: 'Es Teh Manis',
-                                time: '15 menit yang lalu',
-                                amount: '',
-                            },
-                            {
-                                name: 'Ahmad Wijaya',
-                                action: 'Melakukan pemesanan',
-                                item: 'Paket Hemat Keluarga',
-                                time: '32 menit yang lalu',
-                                amount: 'Rp 150.000',
-                            },
-                            {
-                                name: 'Dewi Lestari',
-                                action: 'Menambahkan ke wishlist',
-                                item: 'Kopi Latte Premium',
-                                time: '1 jam yang lalu',
-                                amount: '',
-                            },
-                        ].map((activity, index) => (
+                        {recentActivities.map((activity, index) => (
                             <div
                                 key={index}
                                 className="flex items-center justify-between border-b py-3 last:border-b-0"
@@ -240,9 +230,11 @@ export function CustomerStats({
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    {activity.amount && (
+                                    {!activity.amount ? (
+                                        ''
+                                    ) : (
                                         <p className="text-slate-900">
-                                            {activity.amount}
+                                            {formatPrice(activity.amount)}
                                         </p>
                                     )}
                                     <p className="text-slate-500">

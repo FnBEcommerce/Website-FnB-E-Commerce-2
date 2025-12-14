@@ -1,0 +1,557 @@
+import { CheckoutPage } from '@/components/product-customer/CheckoutPage';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
+import { Product } from '@/types/product';
+import { UserInfo } from '@/types/user';
+import { Link } from '@inertiajs/react';
+import {
+    ChevronRight,
+    Minus,
+    Plus,
+    ShoppingBag,
+    ShoppingCart,
+    Trash2,
+} from 'lucide-react';
+import { useState } from 'react';
+
+type CartItem = Product & {
+    quantity: number;
+    selected: boolean;
+    inStock: boolean;
+};
+
+type productCartProps = {
+    user: UserInfo;
+    cartItem: CartItem;
+};
+
+export default function CartPage({ user, cartItem }: productCartProps) {
+    const [currentPage, setCurrentPage] = useState<
+        'product-cart' | 'checkout' | 'location' | '/'
+    >('product-cart');
+    const [cartItems, setCartItems] = useState<CartItem[]>([
+        {
+            id: 1,
+            name: '7-Minute Khichdi - Superb Vegetable',
+            quantity: 2,
+            priceDiscount: 120,
+            priceOrigin: 150,
+            category: 'Ready to Eat',
+            image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            selected: true,
+            inStock: true,
+        },
+        {
+            id: 2,
+            name: '7-Minute Khichdi - Classic Dal',
+            priceDiscount: 120,
+            priceOrigin: 150,
+            category: 'Ready to Eat',
+            quantity: 1,
+            image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            selected: true,
+            inStock: true,
+        },
+        {
+            id: 3,
+            name: '7-Minute Khichdi - Spicy Tadka',
+            quantity: 3,
+            image: 'https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGljeSUyMGluZGlhbiUyMGZvb2R8ZW58MXx8fHwxNzM0MDQzMzAyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            selected: false,
+            inStock: true,
+            priceDiscount: 120,
+            priceOrigin: 150,
+            category: 'Ready to Eat',
+        },
+        {
+            id: 4,
+            name: '7-Minute Khichdi - Mixed Lentils',
+            quantity: 1,
+            image: 'https://images.unsplash.com/photo-1698573504114-20125ec6adae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZW50aWwlMjByaWNlJTIwZGlzaHxlbnwxfHx8fDE3MzQwNDMzMDN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+            selected: true,
+            inStock: false,
+            priceDiscount: 120,
+            priceOrigin: 150,
+            category: 'Ready to Eat',
+        },
+    ]);
+
+    const updateQuantity = (id: number, newQuantity: number) => {
+        if (newQuantity < 1) return;
+        setCartItems((items) =>
+            items.map((item) =>
+                item.id === id ? { ...item, quantity: newQuantity } : item,
+            ),
+        );
+    };
+
+    const removeItem = (id: number) => {
+        setCartItems((items) => items.filter((item) => item.id !== id));
+    };
+
+    const toggleItemSelection = (id: number) => {
+        setCartItems((items) =>
+            items.map((item) =>
+                item.id === id ? { ...item, selected: !item.selected } : item,
+            ),
+        );
+    };
+
+    const toggleSelectAll = () => {
+        const allSelected = cartItems.every((item) => item.selected);
+        setCartItems((items) =>
+            items.map((item) =>
+                item.inStock ? { ...item, selected: !allSelected } : item,
+            ),
+        );
+    };
+
+    const selectedItems = cartItems.filter(
+        (item) => item.selected && item.inStock,
+    );
+    const subtotal = selectedItems.reduce(
+        (sum, item) => sum + item.priceDiscount * item.quantity,
+        0,
+    );
+    const deliveryFee = subtotal > 299 ? 0 : 40;
+    const total = subtotal + deliveryFee;
+
+    const allInStockSelected = cartItems
+        .filter((item) => item.inStock)
+        .every((item) => item.selected);
+
+    return (
+        <div className="min-h-screen bg-gray-50">
+            {currentPage === 'product-cart' && (
+                <div className="container mx-auto px-4 py-8">
+                    <div className="mb-6">
+                        <Link href="/product2">
+                            <button className="mb-2 text-[#FF6900] hover:underline">
+                                ← Continue Shopping
+                            </button>
+                        </Link>
+
+                        <h1
+                            className="text-[32px] text-gray-900"
+                            style={{ fontWeight: 700 }}
+                        >
+                            Shopping Cart
+                        </h1>
+                        <p className="mt-1 text-gray-600">
+                            {cartItems.length}{' '}
+                            {cartItems.length === 1 ? 'item' : 'items'} in your
+                            cart
+                        </p>
+                    </div>
+
+                    {cartItems.length === 0 ? (
+                        <Card className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
+                            <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-orange-100">
+                                <ShoppingCart className="h-12 w-12 text-[#FF6900]" />
+                            </div>
+                            <h2
+                                className="mb-2 text-[24px] text-gray-900"
+                                style={{ fontWeight: 600 }}
+                            >
+                                Your Cart is Empty
+                            </h2>
+                            <p className="mb-6 text-gray-600">
+                                Looks like you haven't added anything to your
+                                cart yet
+                            </p>
+                            <Button className="bg-[#FF6900] px-8 text-white hover:bg-[#E55D00]">
+                                <ShoppingBag className="mr-2 h-4 w-4" />
+                                Start Shopping
+                            </Button>
+                        </Card>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
+                            <div className="space-y-4 lg:col-span-2">
+                                <Card className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                                    <div className="flex items-center gap-3">
+                                        <Checkbox
+                                            id="select-all"
+                                            checked={allInStockSelected}
+                                            onCheckedChange={toggleSelectAll}
+                                            className="border-[#FF6900] data-[state=checked]:bg-[#FF6900]"
+                                        />
+                                        <Label
+                                            htmlFor="select-all"
+                                            className="fw-600 cursor-pointer text-gray-900"
+                                        >
+                                            Select All Items (
+                                            {
+                                                cartItems.filter(
+                                                    (item) => item.inStock,
+                                                ).length
+                                            }
+                                            )
+                                        </Label>
+                                    </div>
+                                </Card>
+
+                                <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                                    <div className="space-y-6">
+                                        {cartItems.map((item, index) => (
+                                            <div key={item.id}>
+                                                <div className="flex gap-4">
+                                                    <div className="flex items-start pt-2">
+                                                        <Checkbox
+                                                            id={`item-${item.id}`}
+                                                            checked={
+                                                                item.selected
+                                                            }
+                                                            onCheckedChange={() =>
+                                                                toggleItemSelection(
+                                                                    item.id,
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                !item.inStock
+                                                            }
+                                                            className="border-[#FF6900] data-[state=checked]:bg-[#FF6900]"
+                                                        />
+                                                    </div>
+
+                                                    <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                                                        <img
+                                                            src={item.image}
+                                                            alt={item.name}
+                                                            className={`h-full w-full object-cover ${!item.inStock ? 'opacity-50 grayscale' : ''}`}
+                                                        />
+                                                        {!item.inStock && (
+                                                            <div className="bg-opacity-40 absolute inset-0 flex items-center justify-center bg-black">
+                                                                <span
+                                                                    className="text-[12px] text-white"
+                                                                    style={{
+                                                                        fontWeight: 600,
+                                                                    }}
+                                                                >
+                                                                    Out of Stock
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="min-w-0 flex-1">
+                                                        <h3
+                                                            className={`mb-1 text-gray-900 ${!item.inStock ? 'text-gray-500' : ''}`}
+                                                            style={{
+                                                                fontWeight: 600,
+                                                            }}
+                                                        >
+                                                            {item.name}
+                                                        </h3>
+
+                                                        <div className="mb-3 flex items-center gap-2">
+                                                            <span
+                                                                className={`${item.inStock ? 'text-[#FF6900]' : 'text-gray-400'}`}
+                                                                style={{
+                                                                    fontWeight: 600,
+                                                                }}
+                                                            >
+                                                                ₹
+                                                                {
+                                                                    item.priceDiscount
+                                                                }
+                                                            </span>
+                                                            {item.priceOrigin && (
+                                                                <>
+                                                                    <span className="text-[14px] text-gray-400 line-through">
+                                                                        ₹
+                                                                        {
+                                                                            item.priceOrigin
+                                                                        }
+                                                                    </span>
+                                                                    <Badge className="bg-orange-100 text-[11px] text-[#FF6900]">
+                                                                        {Math.round(
+                                                                            ((item.priceOrigin -
+                                                                                item.priceDiscount) /
+                                                                                item.priceOrigin) *
+                                                                                100,
+                                                                        )}
+                                                                        % OFF
+                                                                    </Badge>
+                                                                </>
+                                                            )}
+                                                        </div>
+
+                                                        {item.inStock ? (
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="flex items-center overflow-hidden rounded-lg border-2 border-[#FF6900]">
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            updateQuantity(
+                                                                                item.id,
+                                                                                item.quantity -
+                                                                                    1,
+                                                                            )
+                                                                        }
+                                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-orange-50"
+                                                                    >
+                                                                        <Minus className="h-4 w-4 text-[#FF6900]" />
+                                                                    </button>
+                                                                    <span
+                                                                        className="flex h-8 w-12 items-center justify-center border-x-2 border-[#FF6900] text-gray-900"
+                                                                        style={{
+                                                                            fontWeight: 600,
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            item.quantity
+                                                                        }
+                                                                    </span>
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            updateQuantity(
+                                                                                item.id,
+                                                                                item.quantity +
+                                                                                    1,
+                                                                            )
+                                                                        }
+                                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-orange-50"
+                                                                    >
+                                                                        <Plus className="h-4 w-4 text-[#FF6900]" />
+                                                                    </button>
+                                                                </div>
+
+                                                                <button
+                                                                    onClick={() =>
+                                                                        removeItem(
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                    className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center gap-2">
+                                                                <Badge className="bg-red-100 text-red-600">
+                                                                    Out of Stock
+                                                                </Badge>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        removeItem(
+                                                                            item.id,
+                                                                        )
+                                                                    }
+                                                                    className="ml-2 rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="text-right">
+                                                        <p
+                                                            className={`${item.inStock ? 'text-gray-900' : 'text-gray-400'}`}
+                                                            style={{
+                                                                fontWeight: 600,
+                                                            }}
+                                                        >
+                                                            ₹
+                                                            {item.priceDiscount *
+                                                                item.quantity}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {index <
+                                                    cartItems.length - 1 && (
+                                                    <Separator className="mt-6" />
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Card>
+                            </div>
+
+                            <div className="lg:col-span-1">
+                                <div className="sticky top-24 space-y-4">
+                                    <Card className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                                        <h3
+                                            className="mb-4 text-[18px] text-gray-900"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            Price Details
+                                        </h3>
+
+                                        <div className="space-y-3">
+                                            {/* Individual Product Lines */}
+                                            {selectedItems.map((item) => (
+                                                <div
+                                                    key={item.id}
+                                                    className="flex justify-between text-gray-600"
+                                                >
+                                                    <span className="text-sm">
+                                                        {item.name} ×{' '}
+                                                        {item.quantity}
+                                                    </span>
+                                                    <span className="text-sm font-medium">
+                                                        ₹
+                                                        {item.priceDiscount *
+                                                            item.quantity}
+                                                    </span>
+                                                </div>
+                                            ))}
+
+                                            {selectedItems.length === 0 && (
+                                                <div className="py-2 text-center text-sm text-gray-500">
+                                                    No items selected
+                                                </div>
+                                            )}
+
+                                            {/* {selectedItems.length > 0 && (
+                                                <>
+                                                    <Separator />
+
+                                                    <div className="flex justify-between text-gray-600">
+                                                        <span>Subtotal</span>
+                                                        <span>₹{subtotal}</span>
+                                                    </div>
+
+                                                    <div className="flex justify-between text-gray-600">
+                                                        <span>Delivery Fee</span>
+                                                        <span
+                                                            className={
+                                                                deliveryFee === 0
+                                                                    ? 'font-medium text-green-600'
+                                                                    : ''
+                                                            }
+                                                        >
+                                                            {deliveryFee === 0
+                                                                ? 'FREE'
+                                                                : `₹${deliveryFee}`}
+                                                        </span>
+                                                    </div>
+                                                </>
+                                            )} */}
+
+                                            <Separator />
+
+                                            <div
+                                                className="flex justify-between text-[18px] text-gray-900"
+                                                style={{ fontWeight: 700 }}
+                                            >
+                                                <span>Total Amount</span>
+                                                <span className="text-[#FF6900]">
+                                                    ₹{total}
+                                                </span>
+                                            </div>
+                                            {/* 
+                                        {subtotal < 299 && subtotal > 0 && (
+                                            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+                                                <p className="text-[13px] text-gray-700">
+                                                    Add items worth ₹
+                                                    {299 - subtotal} more to get
+                                                    FREE delivery!
+                                                </p>
+                                            </div>
+                                        )} */}
+                                        </div>
+
+                                        {/* <Link href="/checkout"> */}
+                                        <Button
+                                            disabled={
+                                                selectedItems.length === 0
+                                            }
+                                            className="w-full bg-[#FF6900] py-6 text-[16px] text-white hover:bg-[#E55D00] disabled:cursor-not-allowed disabled:bg-gray-300"
+                                            style={{ fontWeight: 600 }}
+                                            onClick={() =>
+                                                setCurrentPage('checkout')
+                                            }
+                                        >
+                                            {selectedItems.length === 0 ? (
+                                                'Select Items to Proceed'
+                                            ) : (
+                                                <>
+                                                    Proceed to Checkout
+                                                    <ChevronRight className="ml-2 h-5 w-5" />
+                                                </>
+                                            )}
+                                        </Button>
+                                        {/* </Link> */}
+                                    </Card>
+
+                                    <Card className="rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50 p-4">
+                                        <div className="space-y-3">
+                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
+                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
+                                                    <span className="text-[12px] text-white">
+                                                        ✓
+                                                    </span>
+                                                </div>
+                                                <span>
+                                                    100% Safe & Secure Payments
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
+                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
+                                                    <span className="text-[12px] text-white">
+                                                        ✓
+                                                    </span>
+                                                </div>
+                                                <span>
+                                                    Easy Returns & Refunds
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
+                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
+                                                    <span className="text-[12px] text-white">
+                                                        ✓
+                                                    </span>
+                                                </div>
+                                                <span>
+                                                    Genuine Quality Products
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </Card>
+
+                                    <Link href="/products2">
+                                        <Button className="w-full rounded-lg border-2 border-dashed border-[#FF6900] bg-white py-3 text-[#FF6900] transition-colors hover:bg-orange-50">
+                                            Add More Items
+                                            <Plus className="ml-2 h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {currentPage === 'checkout' && (
+                <main className="flex-1">
+                    <CheckoutPage
+                        user={user}
+                        onNavigateToLocation={() => setCurrentPage('location')}
+                        onNavigateToHome={() => setCurrentPage('/')}
+                    />
+                </main>
+            )}
+        </div>
+    );
+}
+
+function Label({
+    htmlFor,
+    children,
+    className,
+}: {
+    htmlFor?: string;
+    children: React.ReactNode;
+    className?: string;
+}) {
+    return (
+        <label htmlFor={htmlFor} className={className}>
+            {children}
+        </label>
+    );
+}

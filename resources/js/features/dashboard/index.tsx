@@ -15,34 +15,34 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
-import { Analytics } from './components/analytics';
-import { Overview } from './components/overview';
-import { RecentSales } from './components/recent-sales';
+import { Analytics } from '../admin/components/analytics';
+import { Overview } from '../admin/components/overview';
+import { RecentSales } from '../admin/components/recent-sales';
 
 const topNav = [
     {
         title: 'Overview',
-        href: 'dashboard/overview',
+        href: 'admin',
         isActive: true,
         disabled: false,
     },
     {
         title: 'Customers',
-        href: 'dashboard/customers',
+        href: 'admin/customer-management',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Products',
-        href: 'dashboard/products',
+        href: 'admin/product-management',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
     {
         title: 'Settings',
-        href: 'dashboard/settings',
+        href: 'admin/settings',
         isActive: false,
-        disabled: true,
+        disabled: false,
     },
 ];
 

@@ -1,0 +1,201 @@
+import { Features } from '@/components/homepage/Features';
+import { Hero } from '@/components/homepage/Hero';
+import { Steps } from '@/components/homepage/Steps';
+import RootLayout from '@/components/layout/root-layout';
+// import { ProductCard } from '@/components/ui/product-card-homepage';
+import { ProductCard } from '@/components/ui/product-card-homepage';
+import { useCart } from '@/context/CartContext';
+import HomepageLayout from '@/layouts/client-side/HomepageLayout';
+import type { Product } from '@/types';
+import type { ReactNode } from 'react';
+
+// interface Product {
+//     id: string;
+//     name: string;
+//     description: string;
+//     price: number;
+//     image: string;
+//     category: string;
+//     popular: boolean;
+//     rating: number;
+//     preparationTime: string;
+// }
+
+// const mockProducts: Product[] = [
+//     {
+//         id: '1',
+//         name: 'Pav Bhaji',
+//         description:
+//             'Pav bhaji is made with vegetables like potatoes, onions, tomatoes, peas, cauliflower, and capsicum, cooked with pav bhaji masala, turmeric, red chilli powder, cumin seeds, and sometimes garam masala, along with butter, oil, ginger-garlic paste, salt, and lemon juice, served with butter-toasted pav, chopped onions, coriander leaves, and lemon wedges.',
+//         price: 18.99,
+//         image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&h=250&fit=crop',
+//         category: 'Indian',
+//         popular: true,
+//         rating: 4.4,
+//         preparationTime: '15-20 min',
+//     },
+//     {
+//         id: '2',
+//         name: 'Kung Pao Chicken',
+//         description: 'Spicy stir-fried chicken with peanuts and vegetables',
+//         price: 16.99,
+//         image: 'https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=400&h=250&fit=crop',
+//         category: 'Chinese',
+//         popular: true,
+//         rating: 4.6,
+//         preparationTime: '12-18 min',
+//     },
+//     {
+//         id: '3',
+//         name: 'Classic Cheeseburger',
+//         description:
+//             'Beef patty with cheese, lettuce, tomato, and special sauce',
+//         price: 14.99,
+//         image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=250&fit=crop',
+//         category: 'Burgers',
+//         popular: false,
+//         rating: 4.5,
+//         preparationTime: '10-15 min',
+//     },
+//     {
+//         id: '4',
+//         name: 'Salmon Sashimi',
+//         description: 'Fresh salmon sliced thin and served raw',
+//         price: 24.99,
+//         image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=250&fit=crop',
+//         category: 'Sushi',
+//         popular: true,
+//         rating: 4.9,
+//         preparationTime: '5-10 min',
+//     },
+//     {
+//         id: '5',
+//         name: 'Chicken Tacos',
+//         description:
+//             'Three soft tacos with grilled chicken, salsa, and cilantro',
+//         price: 13.99,
+//         image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop',
+//         category: 'Tacos',
+//         popular: false,
+//         rating: 4.4,
+//         preparationTime: '8-12 min',
+//     },
+//     {
+//         id: '6',
+//         name: 'Caesar Salad',
+//         description: 'Crisp romaine lettuce with parmesan cheese and croutons',
+//         price: 12.99,
+//         image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=250&fit=crop',
+//         category: 'Salads',
+//         popular: false,
+//         rating: 4.7,
+//         preparationTime: '5-8 min',
+//     },
+//     {
+//         id: '7',
+//         name: 'Chocolate Cake',
+//         description: 'Rich chocolate cake with chocolate frosting',
+//         price: 8.99,
+//         image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=250&fit=crop',
+//         category: 'Desserts',
+//         popular: true,
+//         rating: 4.6,
+//         preparationTime: '3-5 min',
+//     },
+//     {
+//         id: '8',
+//         name: 'Cappuccino',
+//         description: 'Rich espresso with steamed milk and foam',
+//         price: 5.99,
+//         image: 'https://images.unsplash.com/photo-1545665225-b23b99e4d45e?w=400&h=250&fit=crop',
+//         category: 'Coffee',
+//         popular: false,
+//         rating: 4.3,
+//         preparationTime: '2-4 min',
+//     },
+// ];
+
+type ProductWithRating = Product & { rating: Number };
+//type intersect
+interface HomePageProps {
+    products: ProductWithRating[];
+}
+export default function HomePage({ products }: HomePageProps) {
+    return (
+        <RootLayout>
+            {/* <LanguageProvider> */}
+
+            <div className="min-h-screen">
+                {/* Hero Section */}
+                <Hero />
+                {/* All Products */}
+                <section className="bg-gray-50 py-20">
+                    <div className="container mx-auto px-4">
+                        <div className="mb-14 flex justify-center">
+                            <h2 className="text-4xl font-extrabold">
+                                Menu Kami
+                            </h2>
+                        </div>
+
+                        <Products products={products} />
+                    </div>
+                </section>
+
+                {/* Features */}
+                <Features />
+
+                {/* Steps */}
+                <Steps />
+
+                {/* Footer */}
+                {/* <Footer /> */}
+            </div>
+            {/* </LanguageProvider> */}
+        </RootLayout>
+    );
+}
+
+// interface ProductsProps {
+//     products: Product[];
+// }
+
+function Products({ products }: HomePageProps) {
+    const { dispatch } = useCart();
+
+    // const handleAddToCart = (product: Product) => {
+    //     dispatch({
+    //         type: 'ADD_ITEM',
+    //         payload: {
+    //             id: product.id,
+    //             name: product.name,
+    //             price: product.price,
+    //             restaurant: 'Make your Bites',
+    //             image: product.image,
+    //         },
+    //     });
+    // };
+    // console.log(products[0]);
+    return (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((product) => (
+                <ProductCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    price_discount={product.price_discount}
+                    image={product.image ?? 'none'}
+                    rating={product.rating ?? 0}
+                    category={product.category}
+                    // isFavourite={isFavourite}
+                />
+            ))}
+        </div>
+    );
+}
+
+interface ProductCardProps {
+    product: Product;
+    onAddToCart: () => void;
+}
+
+HomePage.layout = (page: ReactNode) => <HomepageLayout>{page}</HomepageLayout>;

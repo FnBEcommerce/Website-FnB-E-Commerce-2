@@ -114,7 +114,7 @@ import {
 //     },
 // ];
 
-// const monthlyAreaData = [
+// const monthlyAreaDataDummy = [
 //     { month: 'Jan', jaksel: 3.2, jakpus: 2.8, jakbar: 2.4, jaktim: 2.0 },
 //     { month: 'Feb', jaksel: 3.5, jakpus: 3.0, jakbar: 2.6, jaktim: 2.2 },
 //     { month: 'Mar', jaksel: 3.8, jakpus: 3.3, jakbar: 2.8, jaktim: 2.4 },
@@ -122,6 +122,31 @@ import {
 //     { month: 'Mei', jaksel: 4.2, jakpus: 3.7, jakbar: 3.2, jaktim: 2.7 },
 //     { month: 'Jun', jaksel: 4.5, jakpus: 3.9, jakbar: 3.4, jaktim: 2.9 },
 // ];
+
+interface AreaData {
+    area: string;
+    totalCustomers: number;
+    totalOrders: number;
+    totalRevenue: number;
+    avgOrderValue: number;
+    topProduct: string;
+    growth: number;
+}
+
+interface MonthlyAreaData {
+    month: string;
+    jaksel: number;
+    jakpus: number;
+    jakbar: number;
+    jaktim: number;
+}
+
+interface AreaSalesReportProps {
+    data: {
+        areaData: AreaData[];
+        monthlyAreaData: MonthlyAreaData[];
+    };
+}
 
 const COLORS = [
     '#f97316',
@@ -134,8 +159,10 @@ const COLORS = [
     '#84cc16',
 ];
 
-export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
-    const areaRevenueShare = areaData.map((area: any) => ({
+export function AreaSalesReport({
+    data: { areaData, monthlyAreaData },
+}: AreaSalesReportProps) {
+    const areaRevenueShare = areaData.map((area) => ({
         name: area.area,
         value: area.totalRevenue,
     }));
@@ -150,6 +177,8 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
         if (sortBy === 'growth') return b.growth - a.growth;
         return 0;
     });
+
+    const monthlyAreaDataKeys = Object.keys(monthlyAreaData[0]).slice(1);
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('id-ID', {
@@ -261,7 +290,23 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar
+                                {monthlyAreaDataKeys.map((dataKey, i) => {
+                                    const colors = [
+                                        '#f97316',
+                                        '#3b82f6',
+                                        '#10b981',
+                                        '#f59e0b',
+                                    ];
+                                    return (
+                                        <Bar
+                                            key={i}
+                                            dataKey={dataKey}
+                                            fill={colors[i]}
+                                            name={dataKey}
+                                        />
+                                    );
+                                })}
+                                {/* <Bar
                                     dataKey="jaksel"
                                     fill="#f97316"
                                     name="Jakarta Selatan"
@@ -280,7 +325,7 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                     dataKey="jaktim"
                                     fill="#f59e0b"
                                     name="Jakarta Timur"
-                                />
+                                /> */}
                             </BarChart>
                         </ResponsiveContainer>
                     </CardContent>
@@ -299,7 +344,11 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                     cy="50%"
                                     labelLine={false}
                                     label={({ name, percent }) =>
-                                        `${name.split(' ')[0]}: ${(percent * 100).toFixed(0)}%`
+                                        name && percent
+                                            ? `${name.split(' ')[0]}: ${(
+                                                  percent * 100
+                                              ).toFixed(0)}%`
+                                            : ''
                                     }
                                     outerRadius={100}
                                     fill="#8884d8"

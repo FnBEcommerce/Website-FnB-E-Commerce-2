@@ -16,12 +16,14 @@ class CourierFactory extends Factory
      */
     public function definition(): array
     {
+        $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
+
         return [
-            'courier_name' => $this->faker->name(),
-            'courier_license_plate' => strtoupper($this->faker->bothify('B #### ???')),
-            'courier_phone_number' => $this->faker->phoneNumber(),
-            'date_created' => now(),
-            'last_updated' => now(),
+            'name' => $this->faker->name(),
+            'license_plate' => strtoupper($this->faker->bothify('B #### ???')),
+            'phone_number' => $this->faker->phoneNumber(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }
