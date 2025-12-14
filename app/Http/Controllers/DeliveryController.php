@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -14,10 +15,10 @@ class DeliveryController extends Controller
 {
     public function detail(Order $order) {
         // Eager load all necessary relationships for efficiency
-        $order->load('user', 'orderDetails.product', 'shopBranch', 'courier');
+        $order->load('orderDetails.product', 'shopBranch', 'courier');
 
         // Data for the 'user' prop
-        $user = $order->user;
+        $user = Auth::user();
 
         // Data for the 'orderItems' prop
         $orderItems = $order->orderDetails;

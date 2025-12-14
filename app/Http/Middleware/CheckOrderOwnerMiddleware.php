@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckOrderOwner
+class CheckOrderOwnerMiddleware
 {
     /**
      * Handle an incoming request.
