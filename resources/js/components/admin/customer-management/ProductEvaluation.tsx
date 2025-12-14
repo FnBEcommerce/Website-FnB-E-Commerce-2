@@ -242,7 +242,7 @@ export function ProductEvaluation({
                                 <p className="mb-1 text-slate-600">
                                     Rating Rata-rata
                                 </p>
-                                <h2 className="flex items-center gap-1 text-green-600">
+                                <h2 className="flex items-center gap-1">
                                     <span>{avgRatingAll}</span>{' '}
                                     <Star
                                         fill="#FFC83D"

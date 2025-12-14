@@ -159,12 +159,11 @@ const COLORS = [
     '#84cc16',
 ];
 
-export function AreaSalesReport({
-    data: { areaData, monthlyAreaData },
-}: AreaSalesReportProps) {
-    const areaRevenueShare = areaData.map((area) => ({
-        name: area.area,
-        value: area.totalRevenue,
+
+export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
+    const areaRevenueShare = areaData.map((area: any) => ({
+    name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
+    value: area.totalRevenue,
     }));
 
     const [sortBy, setSortBy] = useState('revenue');
@@ -343,13 +342,10 @@ export function AreaSalesReport({
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
-                                    label={({ name, percent }) =>
-                                        name && percent
-                                            ? `${name.split(' ')[0]}: ${(
-                                                  percent * 100
-                                              ).toFixed(0)}%`
-                                            : ''
-                                    }
+                                    label={({ name, percent }) => {
+                                        const formatted = name.split(/(?=[A-Z])/).join(' ');
+                                        return `${formatted}: ${(percent * 100).toFixed(0)}%`;
+                                    }}
                                     outerRadius={100}
                                     fill="#8884d8"
                                     dataKey="value"
@@ -361,6 +357,7 @@ export function AreaSalesReport({
                                         />
                                     ))}
                                 </Pie>
+
                                 <Tooltip
                                     formatter={(value: number) =>
                                         formatCurrency(value)
@@ -549,49 +546,39 @@ export function AreaSalesReport({
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-blue-600">
-                            <Users className="size-6" /> Area Terbanyak
-                            (Pelanggan)
+                            <Users className="size-6" /> Area Terbanyak (Pelanggan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-4">
                             {[...areaData]
-                                .sort(
-                                    (a, b) =>
-                                        b.totalCustomers - a.totalCustomers,
-                                )
+                                .sort((a, b) => b.totalCustomers - a.totalCustomers)
                                 .slice(0, 3)
                                 .map((area, index) => (
                                     <li
                                         key={area.area}
                                         className="flex items-center gap-4"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            {index === 0 && (
-                                                <Medal className="size-7 shrink-0 text-yellow-500" />
-                                            )}
-                                            {index === 1 && (
-                                                <Medal className="size-7 shrink-0 text-gray-400" />
-                                            )}
-                                            {index === 2 && (
-                                                <Medal className="size-7 shrink-0 text-orange-600" />
-                                            )}
-                                            <p className="font-semibold">
-                                                {area.area}
-                                            </p>
+                                        {index === 0 && (
+                                            <Medal className="size-7 shrink-0 text-yellow-500" />
+                                        )}
+                                        {index === 1 && (
+                                            <Medal className="size-7 shrink-0 text-gray-400" />
+                                        )}
+                                        {index === 2 && (
+                                            <Medal className="size-7 shrink-0 text-orange-600" />
+                                        )}
+
+                                        <div>
+                                            <p className="font-semibold">{area.area}</p>
                                             <p className="text-sm text-muted-foreground">
-                                                {area.totalOrders.toLocaleString(
-                                                    'id-ID',
-                                                )}{' '}
-                                                pesanan
+                                                {area.totalOrders.toLocaleString('id-ID')} pesanan
                                             </p>
                                         </div>
-                                        <div className="text-base font-semibold text-blue-600">
-                                            {area.totalCustomers.toLocaleString(
-                                                'id-ID',
-                                            )}{' '}
-                                            pelanggan
-                                        </div>
+
+                                        <p className="ms-auto text-base font-semibold text-blue-600">
+                                            {area.totalCustomers.toLocaleString('id-ID')} pelanggan
+                                        </p>
                                     </li>
                                 ))}
                         </ul>

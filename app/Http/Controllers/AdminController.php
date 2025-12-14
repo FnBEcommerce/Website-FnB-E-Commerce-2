@@ -22,7 +22,7 @@ class AdminController extends Controller
         $customers = User::where('role', 'user')
             ->with(['orders', 'reviews'])
             ->get();
-        
+
         $products = Product::with(['orderDetails', 'reviews'])->get();
         $allOrders = Order::all();
         $currentMonth = Carbon::now()->month;
@@ -93,7 +93,7 @@ class AdminController extends Controller
             $totalSpent = $user->orders->sum('order_total');
             $totalOrders = $user->orders->count();
             $lastOrderDate = $user->orders->max('confirmed_at');
-            
+
             $status = 'Baru';
             if ($totalOrders > 5) $status = 'Setia';
             elseif ($totalOrders > 0) $status = 'Aktif';
@@ -130,9 +130,9 @@ class AdminController extends Controller
         )
         ->whereYear('confirmed_at', Carbon::now()->year)
         ->groupBy('month')
-        ->orderBy(DB::raw('MIN(confirmed_at)'), 'asc') 
+        ->orderBy(DB::raw('MIN(confirmed_at)'), 'asc')
         ->get();
-        
+
         $monthlyCustomers = $monthlyStats->isEmpty() ? [] : $monthlyStats->toArray();
 
         // --- 6. Products Data ---
@@ -434,7 +434,7 @@ class AdminController extends Controller
 
         $products = $productsData->map(function ($product) {
             $shopBranchProduct = $product->shopBranchProducts->first(); // Get first branch for simplicity
-            
+
             return [
                 'id' => $product->id,
                 'name' => $product->name,
