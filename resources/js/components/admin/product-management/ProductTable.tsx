@@ -26,8 +26,8 @@ export function ProductTable({
     console.log('products[0]', products[0]);
 
     return (
-        <div className="overflow-x-auto">
-            <table className="w-full">
+        <div className="overflow-x-auto  rounded-md px-6">
+            <table className="w-full border-separate border-spacing-0">
                 <thead>
                     <tr className="border-b border-slate-200">
                         <th className="px-4 py-3 text-left text-slate-700">
@@ -84,7 +84,7 @@ export function ProductTable({
                                             className="h-12 w-12 shrink-0 rounded-lg object-cover"
                                         />
                                         <div>
-                                            <div className="text-slate-900">
+                                            <div className="text-slate-900 font-medium">
                                                 {product.name}
                                             </div>
                                             <div className="line-clamp-3 text-sm text-slate-500">
@@ -131,7 +131,7 @@ export function ProductTable({
                                     <span
                                         className={
                                             product.stock < 30
-                                                ? 'text-red-600'
+                                                ? 'text-red-600 font-medium'
                                                 : 'text-slate-900'
                                         }
                                     >

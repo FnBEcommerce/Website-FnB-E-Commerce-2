@@ -53,7 +53,7 @@ export function AdminDashboard() {
         <>
             {/* ===== Top Heading ===sea== */}
             <Header>
-                <TopNav links={topNav} />
+                {/* <TopNav links={topNav} /> */}
                 <div className="ms-auto flex items-center space-x-4">
                     <Search />
                     <ThemeSwitch />
@@ -107,7 +107,7 @@ export function AdminDashboard() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
-                                        className="h-4 w-4 text-muted-foreground"
+                                        className="h-4 w-4 text-orange-600"
                                     >
                                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                     </svg>
@@ -134,7 +134,7 @@ export function AdminDashboard() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
-                                        className="h-4 w-4 text-muted-foreground"
+                                        className="h-4 w-4 text-orange-600"
                                     >
                                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                         <circle cx="9" cy="7" r="4" />
@@ -163,7 +163,7 @@ export function AdminDashboard() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
-                                        className="h-4 w-4 text-muted-foreground"
+                                        className="h-4 w-4 text-orange-600"
                                     >
                                         <rect
                                             width="20"
@@ -197,7 +197,7 @@ export function AdminDashboard() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
-                                        className="h-4 w-4 text-muted-foreground"
+                                        className="h-4 w-4 text-orange-600"
                                     >
                                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                     </svg>
