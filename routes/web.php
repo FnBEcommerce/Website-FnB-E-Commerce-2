@@ -13,7 +13,6 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\UserController;
 
-<<<<<<< HEAD
 Route::get('/', function () {
     return Inertia::render('home');
 })->name('home');
@@ -22,11 +21,6 @@ Route::get('/index', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('index');
-=======
-// Route::get('/', function () {
-//     return Inertia::render('home');
-// })->name('home');
->>>>>>> 961501cc0f6a926d888f686a62a40d2f3f57eb88
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
