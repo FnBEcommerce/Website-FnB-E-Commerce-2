@@ -76,7 +76,7 @@ export function CashflowSummaryCard({
             <div className="flex items-center gap-2">
                 <div
                     className={`flex items-center gap-1 rounded-md px-2 py-1 ${
-                        isPositive ? 'bg-emerald-50' : 'bg-red-50'
+                        isPositive ? 'bg-white' : 'bg-white'
                     }`}
                 >
                     {isPositive ? (
