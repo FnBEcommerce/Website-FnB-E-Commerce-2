@@ -14,7 +14,90 @@ use Carbon\Carbon;
 class AdminController extends Controller
 {
     public function index() {
-        return Inertia::render('admin/index');
+        $now = Carbon::now();
+        $lastMonth = $now->copy()->subMonth();
+
+        // Total Revenue
+        $totalRevenue = Order::whereNotNull('confirmed_at')->sum('subtotal');
+        $lastMonthRevenue = Order::whereNotNull('confirmed_at')->whereMonth('confirmed_at', $lastMonth->month)->sum('subtotal');
+        $currentMonthRevenue = Order::whereNotNull('confirmed_at')->whereMonth('confirmed_at', $now->month)->sum('subtotal');
+        $revenueChange = $lastMonthRevenue > 0 ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 : 0;
+
+        // New Users
+        $newUsers = User::whereMonth('created_at', $now->month)->count();
+        $lastMonthNewUsers = User::whereMonth('created_at', $lastMonth->month)->count();
+        $newUserChange = $lastMonthNewUsers > 0 ? (($newUsers - $lastMonthNewUsers) / $lastMonthNewUsers) * 100 : 0;
+
+        // Sales
+        $sales = Order::whereMonth('confirmed_at', $now->month)->count();
+        $lastMonthSales = Order::whereMonth('confirmed_at', $lastMonth->month)->count();
+        $salesChange = $lastMonthSales > 0 ? (($sales - $lastMonthSales) / $lastMonthSales) * 100 : 0;
+
+        // Active Now
+        $activeNow = Order::where('created_at', '>=', $now->copy()->subMinutes(30))->distinct('user_id')->count();
+        $lastHourActive = Order::where('created_at', '>=', $now->copy()->subHour())->distinct('user_id')->count();
+        $activeNowChange = $lastHourActive > 0 ? (($activeNow - $lastHourActive) / $lastHourActive) * 100 : 0;
+
+        $statsData = [
+            [
+                'title' => 'Total Revenue',
+                'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.'),
+                'change' => sprintf('%+.2f%% from last month', $revenueChange),
+            ],
+            [
+                'title' => 'New Users',
+                'value' => '+' . $newUsers,
+                'change' => sprintf('%+.2f%% from last month', $newUserChange),
+            ],
+            [
+                'title' => 'Sales',
+                'value' => '+' . $sales,
+                'change' => sprintf('%+.2f%% from last month', $salesChange),
+            ],
+            [
+                'title' => 'Active Now',
+                'value' => $activeNow,
+                'change' => sprintf('%+.2f%% from last hour', $activeNowChange),
+            ],
+        ];
+
+        $overviewData = Order::select(
+                DB::raw('MONTH(confirmed_at) as month'),
+                DB::raw('SUM(subtotal) as total')
+            )
+            ->whereYear('confirmed_at', $now->year)
+            ->groupBy('month')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => Carbon::create()->month($item->month)->format('M'),
+                    'total' => $item->total,
+                ];
+            })->toArray();
+
+        $currentMonthSales = $sales;
+
+        $recentSales = Order::with('user')
+            ->whereNotNull('confirmed_at')
+            ->latest('confirmed_at')
+            ->take(5)
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'name' => $order->user->name,
+                    'email' => $order->user->email,
+                    'value' => 'Rp ' . number_format($order->subtotal, 0, ',', '.'),
+                ];
+            });
+
+        $props = [
+            'statsData' => $statsData,
+            'overviewData' => $overviewData,
+            'currentMonthSales' => $currentMonthSales,
+            'recentSales' => $recentSales,
+        ];
+
+        return Inertia::render('admin/index', $props);
     }
 
     public function customerManagement() {

@@ -14,6 +14,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AdminPageProps } from '@/pages/admin';
 import { useState } from 'react';
 import { Analytics } from './components/analytics';
 import { Overview } from './components/overview';
@@ -46,72 +47,8 @@ const topNav = [
     },
 ];
 
-// TODO pindah ini
-export type StatsData = {
-    title: string;
-    value: string;
-    change: string;
-    icon: React.ElementType;
-};
-
-// export type
-
-export function AdminDashboard() {
+export function AdminDashboard({ data }: { data: AdminPageProps }) {
     const [activeTab, setActiveTab] = useState('overview');
-
-    const statsData = [];
-    const overviewData = [
-        {
-            name: 'Jan',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Feb',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Mar',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Apr',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'May',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Jun',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Jul',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Aug',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Sep',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Oct',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Nov',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-        {
-            name: 'Dec',
-            total: Math.floor(Math.random() * 5000) + 1000,
-        },
-    ];
-
-    const recentSales = [];
 
     return (
         <>
@@ -178,10 +115,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        $45,231.89
+                                        {data.statsData[0].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +20.1% from last month
+                                        {data.statsData[0].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -207,10 +144,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +2350
+                                        {data.statsData[1].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +180.1% from last month
+                                        {data.statsData[1].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -241,10 +178,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +12,234
+                                        {data.statsData[2].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +19% from last month
+                                        {data.statsData[2].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -268,10 +205,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +573
+                                        {data.statsData[3].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +201 since last hour
+                                        {data.statsData[3].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -282,18 +219,19 @@ export function AdminDashboard() {
                                     <CardTitle>Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="ps-2">
-                                    <Overview data={overviewData} />
+                                    <Overview data={data.overviewData} />
                                 </CardContent>
                             </Card>
                             <Card className="col-span-1 lg:col-span-3">
                                 <CardHeader>
                                     <CardTitle>Recent Sales</CardTitle>
                                     <CardDescription>
-                                        You made 265 sales this month.
+                                        You made {data.currentMonthSales} sales
+                                        this month.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <RecentSales />
+                                    <RecentSales salesData={data.recentSales} />
                                 </CardContent>
                             </Card>
                         </div>
