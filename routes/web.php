@@ -15,6 +15,7 @@ use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\NotificationController;
 
 // Route::get('/', function () {
 //     return Inertia::render('home');
@@ -61,8 +62,6 @@ Route::middleware(['role:admin'])->prefix('/admin')->group(function () {
     Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.product_management');
 });
 
-use App\Http\Controllers\NotificationController;
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
@@ -70,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('/notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');
+    Route::post('/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
 });
 
 Route::middleware(['web'])->prefix('/api')->group(function() {

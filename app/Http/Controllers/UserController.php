@@ -79,4 +79,63 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return response()->json(['message' => 'Logged out successfully.']);
     }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        // return response()->json(['user' => $user]);
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone_number' => 'nullable|string|max:20',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'street' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'label' => 'nullable|string|max:255',
+        ]);
+
+        /* 
+        {
+            "id": 1,
+            "name": "admin",
+            "email": "admin@example.com",
+            "email_verified_at": "2025-06-06T21:39:09.000000Z",
+            "two_factor_secret": null,
+            "two_factor_recovery_codes": null,
+            "two_factor_confirmed_at": null,
+            "created_at": "2025-06-06T21:39:09.000000Z",
+            "updated_at": "2025-06-06T21:39:09.000000Z",
+            "phone_number": "(+62) 681 7648 6762",
+            "birth_date": "1980-07-31T00:00:00.000000Z",
+            "gender": "female",
+            "street": "Ki. Siliwangi No. 121",
+            "city": "Bengkulu",
+            "state": "Jambi",
+            "label": "home",
+            "alt_street": null,
+            "alt_city": null,
+            "alt_state": null,
+            "alt_label": null,
+            "role": "admin"
+        }
+        */
+
+
+        $user->update([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'phone_number' => $validatedData['phone_number'],
+            'birth_date' => $validatedData['birth_date'],
+            'gender' => $validatedData['gender'],
+            'street' => $validatedData['street'],
+            'city' => $validatedData['city'],
+            'state' => $validatedData['state'],
+            'label' => $validatedData['label'],
+        ]);
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+    }
 }
