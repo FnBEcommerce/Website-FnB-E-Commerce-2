@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import type { OrderNew } from '@/types';
+import { Link } from '@inertiajs/react';
 import { CheckCircle, ChefHat, Clock, MapPin, Truck } from 'lucide-react';
 
 interface OrderStatusPageProps {
@@ -171,12 +172,13 @@ export default function OrderStatusPage({
             <div className="container mx-auto px-4 py-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <button
+                    <Link
+                        href="/products"
                         onClick={onNavigateToHome}
                         className="mb-4 inline-flex items-center gap-2 text-[#FF6900] hover:text-[#E55F00]"
                     >
-                        ← Back to Home
-                    </button>
+                        ← Kembali
+                    </Link>
                     <h1
                         className="mb-2 text-[32px]"
                         style={{ fontWeight: 700 }}
