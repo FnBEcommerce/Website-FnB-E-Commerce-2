@@ -77,7 +77,7 @@ export function Header({
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto px-4 py-4">
-                <div className="flex items-center justify-between">
+                <div className="relative flex items-center">
                     <div className="flex items-center">
                         <img
                             src="/images/logo-pbp.png"
@@ -85,7 +85,7 @@ export function Header({
                         />
                     </div>
 
-                    <nav className="hidden items-center space-x-8 md:flex">
+                    <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center space-x-8 md:flex">
                         <a
                             href="/"
                             className="text-xl font-medium transition-colors hover:text-orange-600"
@@ -107,7 +107,7 @@ export function Header({
                         </a>
                     </nav>
 
-                    <div className="flex items-center space-x-4">
+                    <div className="ml-auto flex items-center space-x-4">
                         <Link
                             className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
                             aria-label="Cart"
@@ -115,7 +115,7 @@ export function Header({
                         >
                             <ShoppingCart className="h-5 w-5 text-gray-700" />
                             {cartCount > 0 && (
-                                <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-[#D97706] text-[11px] text-white">
+                                <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white">
                                     {cartCount}
                                 </span>
                             )}

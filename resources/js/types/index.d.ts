@@ -70,6 +70,7 @@ export type Product = {
     price_discount: number;
     quantity: number;
     image: string | null;
+    ingredients: string[];
     popular: boolean;
     rating: number;
     preparation_time: string | null;

@@ -82,7 +82,10 @@ export default function ProductDetailsPage({
                         </div>
 
                         {/* Product Details Tabs */}
-                        <ProductDetails />
+                        <ProductDetails
+                            ingredients={product.ingredients}
+                            description={product.description}
+                        />
 
                         {/* Customer Reviews */}
                         <CustomerReviews reviews={reviews} />

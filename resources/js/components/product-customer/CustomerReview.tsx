@@ -3,6 +3,8 @@ import type { ReviewProps } from '@/types/index';
 import { ChevronLeft, ChevronRight, MessageSquare, Star } from 'lucide-react';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
+// import 'slick-carousel/slick/slick-theme.css';
+// import 'slick-carousel/slick/slick.css';
 
 type CustomerReviewsProps = {
     reviews: ReviewProps;
@@ -16,53 +18,53 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
         { text: 'Perfect for lunch', count: 28 },
     ];
 
-    // const customerReviews = [
-    //     {
-    //         id: 1,
-    //         name: 'Priya Sharma',
-    //         rating: 5,
-    //         date: 'December 10, 2024',
-    //         comment:
-    //             "Absolutely love this khichdi! The vegetables are fresh and flavorful. Perfect for busy weekdays when I don't have time to cook. The 7-minute preparation is a game-changer!",
-    //         helpful: 24,
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Rajesh Kumar',
-    //         rating: 4,
-    //         date: 'December 8, 2024',
-    //         comment:
-    //             "Great taste and very convenient. My only suggestion would be to make it slightly less salty. Otherwise, it's perfect for a quick lunch.",
-    //         helpful: 18,
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Anjali Patel',
-    //         rating: 5,
-    //         date: 'December 5, 2024',
-    //         comment:
-    //             'This has become a staple in my kitchen! Healthy, tasty, and super easy to make. My kids love it too. Highly recommended!',
-    //         helpful: 31,
-    //     },
-    //     {
-    //         id: 4,
-    //         name: 'Vikram Singh',
-    //         rating: 5,
-    //         date: 'December 3, 2024',
-    //         comment:
-    //             "Excellent product! The quality of ingredients is top-notch. I appreciate that it's healthy and doesn't compromise on taste.",
-    //         helpful: 15,
-    //     },
-    //     {
-    //         id: 5,
-    //         name: 'Meera Reddy',
-    //         rating: 4,
-    //         date: 'November 30, 2024',
-    //         comment:
-    //             'Very good khichdi. The portion size is perfect for one person. Would love to see more variety in the vegetable mix.',
-    //         helpful: 12,
-    //     },
-    // ];
+    const customerReviews = reviews ?? [
+        {
+            id: 1,
+            name: 'Priya Sharma',
+            rating: 5,
+            date: 'December 10, 2024',
+            comment:
+                "Absolutely love this khichdi! The vegetables are fresh and flavorful. Perfect for busy weekdays when I don't have time to cook. The 7-minute preparation is a game-changer!",
+            helpful: 24,
+        },
+        {
+            id: 2,
+            name: 'Rajesh Kumar',
+            rating: 4,
+            date: 'December 8, 2024',
+            comment:
+                "Great taste and very convenient. My only suggestion would be to make it slightly less salty. Otherwise, it's perfect for a quick lunch.",
+            helpful: 18,
+        },
+        {
+            id: 3,
+            name: 'Anjali Patel',
+            rating: 5,
+            date: 'December 5, 2024',
+            comment:
+                'This has become a staple in my kitchen! Healthy, tasty, and super easy to make. My kids love it too. Highly recommended!',
+            helpful: 31,
+        },
+        {
+            id: 4,
+            name: 'Vikram Singh',
+            rating: 5,
+            date: 'December 3, 2024',
+            comment:
+                "Excellent product! The quality of ingredients is top-notch. I appreciate that it's healthy and doesn't compromise on taste.",
+            helpful: 15,
+        },
+        {
+            id: 5,
+            name: 'Meera Reddy',
+            rating: 4,
+            date: 'November 30, 2024',
+            comment:
+                'Very good khichdi. The portion size is perfect for one person. Would love to see more variety in the vegetable mix.',
+            helpful: 12,
+        },
+    ];
 
     const [userRating, setUserRating] = useState(0);
     const [hoveredRating, setHoveredRating] = useState(0);

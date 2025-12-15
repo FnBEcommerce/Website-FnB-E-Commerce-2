@@ -37,12 +37,13 @@ Route::get("/checkout", function() {
 //      return Inertia::render('product-detail');
 // })->name('products.detail');
 
-Route::get('/products2', [HomepageController::class, 'productListing'])->name('product.listing');
+Route::get('/products', [HomepageController::class, 'productListing'])->name('product.listing');
 
 Route::middleware(['role:user,admin'])->group(function() {
-    Route::get('/products2/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
+    Route::get('/products/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
     Route::get('/profile', [HomepageController::class, 'userProfile']);
     Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
+    Route::get('/product/status', [HomepageController::class, 'productStatus'])->name('product.cart');
 
     Route::middleware('order.owner')->group(function() {
         Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
