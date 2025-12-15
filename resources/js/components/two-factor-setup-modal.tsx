@@ -1,4 +1,4 @@
-import TwoFactorController from '@/actions/App/Http/Controllers/Settings/TwoFactorController';
+// import TwoFactorController from '@/actions/App/Http/Controllers/Settings/TwoFactorController';
 import { usePage } from '@inertiajs/react';
 import { useForm } from 'laravel-precognition-react-inertia';
 import { FormEventHandler, useState } from 'react';
@@ -38,22 +38,19 @@ export default function TwoFactorSetupModal() {
 
     const handleEnable = () => {
         setEnabling(true);
-        TwoFactorController.enable.submit({
-            preserveScroll: true,
-            onSuccess: (page) => {
-                setQrCode(page.props.jetstream.flash.qrCode);
-                setSetupKey(page.props.jetstream.flash.setupKey);
-            },
-        });
+        // TwoFactorController.enable.submit({
+        //     preserveScroll: true,
+        //     onSuccess: (page) => {
+        //         setQrCode(page.props.jetstream.flash.qrCode);
+        //         setSetupKey(page.props.jetstream.flash.setupKey);
+        //     },
+        // });
     };
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button
-                    onClick={handleEnable}
-                    disabled={enabling}
-                >
+                <Button onClick={handleEnable} disabled={enabling}>
                     Enable
                 </Button>
             </DialogTrigger>
@@ -81,10 +78,7 @@ export default function TwoFactorSetupModal() {
 
                 <form onSubmit={handleSubmission}>
                     <div className="grid flex-1 gap-2">
-                        <Label
-                            htmlFor="code"
-                            className="sr-only"
-                        >
+                        <Label htmlFor="code" className="sr-only">
                             Code
                         </Label>
                         <Input

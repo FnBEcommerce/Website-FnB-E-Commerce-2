@@ -8,7 +8,9 @@ type PayProps = {
 export default function Checkout({ order }: PayProps) {
     const pay = async () => {
         try {
+            console.log(1);
             const response = await axios.post(`/api/orders/${order.id}/pay`);
+            console.log(1);
             console.log('response', response);
 
             window.snap.pay(response.data.snap_token, {
@@ -25,6 +27,7 @@ export default function Checkout({ order }: PayProps) {
                     alert('Pembayaran gagal');
                 },
             });
+            console.log(1);
         } catch (error) {
             console.log('error', error);
         }

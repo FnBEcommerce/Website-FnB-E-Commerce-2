@@ -1,4 +1,4 @@
-import TwoFactorController from '@/actions/App/Http/Controllers/Settings/TwoFactorController';
+// import TwoFactorController from '@/actions/App/Http/Controllers/Settings/TwoFactorController';
 import { usePage } from '@inertiajs/react';
 
 import { Button } from '@/components/ui/button';
@@ -24,19 +24,13 @@ export default function TwoFactorRecoveryCodes() {
                         )}
                     </div>
                     <div className="flex items-center gap-4">
-                        <form {...TwoFactorController.regenerate.form()}>
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                            >
+                        <form /* {...TwoFactorController.regenerate.form()} */>
+                            <Button variant="secondary" size="sm">
                                 Regenerate
                             </Button>
                         </form>
-                        <form {...TwoFactorController.disable.form()}>
-                            <Button
-                                variant="secondary"
-                                size="sm"
-                            >
+                        <form /* {...TwoFactorController.disable.form()} */>
+                            <Button variant="secondary" size="sm">
                                 Disable
                             </Button>
                         </form>
