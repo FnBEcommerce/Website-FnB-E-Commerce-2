@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button';
 import type { OrderNew } from '@/types';
+import { OrderStatus } from '@/types';
 import { Link } from '@inertiajs/react';
 import { CheckCircle, ChefHat, Clock, MapPin, Truck } from 'lucide-react';
 
 interface OrderStatusPageProps {
+    currentOrder: OrderNew;
     onNavigateToHome: () => void;
 }
-
-type OrderStatus = 'cooking' | 'on the way' | 'arrived';
 
 // interface Order {
 //     id: string;
@@ -61,46 +61,47 @@ type OrderStatus = 'cooking' | 'on the way' | 'arrived';
 // };
 
 export default function OrderStatusPage({
+    currentOrder,
     onNavigateToHome,
 }: OrderStatusPageProps) {
     // Dummy data - in real app, this would come from backend
-    const currentOrder: OrderNew = {
-        id: 1,
-        user_id: 1,
-        order_items: [
-            {
-                name: '7-Minute Khichdi - Superb Vegetable',
-                quantity: 2,
-                price_discount: 12000,
-                image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-            },
-            {
-                name: '7-Minute Khichdi - Classic Dal',
-                quantity: 1,
-                price_discount: 12000,
-                image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080',
-            },
-        ],
-        status: 'on the way',
-        estimated_delivery_at: 10,
-        street: '123 MG Road, Bangalore, Karnataka 560001',
-        created_at: 'Dec 13, 2024 at 12:30 PM',
-        total: 247,
-        driver_name: 'Rajesh Kumar',
-        driver_number: '+91 98765 43210',
-        tracking_updates: [
-            {
-                status: 'cooking',
-                time: '12:35 PM',
-                message: 'Your order is being prepared with fresh ingredients',
-            },
-            {
-                status: 'on the way',
-                time: '12:50 PM',
-                message: 'Your order is out for delivery',
-            },
-        ],
-    };
+    // const currentOrder: OrderNew = {
+    //     id: 1,
+    //     user_id: 1,
+    //     order_items: [
+    //         {
+    //             name: '7-Minute Khichdi - Superb Vegetable',
+    //             quantity: 2,
+    //             price_discount: 12000,
+    //             image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    //         },
+    //         {
+    //             name: '7-Minute Khichdi - Classic Dal',
+    //             quantity: 1,
+    //             price_discount: 12000,
+    //             image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    //         },
+    //     ],
+    //     status: 'on the way',
+    //     estimated_delivery_at: 10,
+    //     street: '123 MG Road, Bangalore, Karnataka 560001',
+    //     created_at: 'Dec 13, 2024 at 12:30 PM',
+    //     total: 247,
+    //     driver_name: 'Rajesh Kumar',
+    //     driver_number: '+91 98765 43210',
+    //     tracking_updates: [
+    //         {
+    //             status: 'cooking',
+    //             time: '12:35 PM',
+    //             message: 'Your order is being prepared with fresh ingredients',
+    //         },
+    //         {
+    //             status: 'on the way',
+    //             time: '12:50 PM',
+    //             message: 'Your order is out for delivery',
+    //         },
+    //     ],
+    // };
 
     // const currentOrder: Order2 = {
     //     id: 1,
@@ -145,6 +146,7 @@ export default function OrderStatusPage({
     };
 
     const currentStatusIndex = getStatusIndex(currentOrder.status);
+    console.log(currentOrder);
 
     const statusSteps = [
         {

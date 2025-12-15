@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
             $table->integer('quantity');
             $table->decimal('subtotal', 10, 2);
+            // $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ChevronLeft, ChevronRight, MessageSquare, Star } from 'lucide-react';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
+import Swal from 'sweetalert2';
 // import 'slick-carousel/slick/slick-theme.css';
 // import 'slick-carousel/slick/slick.css';
 
@@ -87,6 +88,7 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
     const [hoveredRating, setHoveredRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const sliderRef = useRef<Slider>(null);
+    const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
     const { auth } = usePage().props;
     const user: User = auth.user;
@@ -120,6 +122,8 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
 
     const handleSubmitReview = async () => {
         if (userRating > 0 && reviewText.trim()) {
+            setIsSubmittingComment(true);
+
             const payload = {
                 user_id: user.id,
                 product_id: product.id,
@@ -130,13 +134,18 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
             const response = await axios.post('/api/product/review', payload);
             console.log('response', response);
 
-            alert(
-                'Thank you for your review! It has been submitted successfully.',
-            );
+            Swal.fire({
+                title: 'Thank you for your review! It has been submitted successfully.',
+                icon: 'success',
+            });
             setUserRating(0);
             setReviewText('');
+            setIsSubmittingComment(false);
         } else {
-            alert('Please provide a rating and write your review.');
+            Swal.fire({
+                title: 'Please provide a rating and write your review.',
+                icon: 'error',
+            });
         }
     };
 
@@ -435,12 +444,13 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
                                 onClick={handleSubmitReview}
                                 disabled={
                                     userRating === 0 ||
-                                    reviewText.trim().length < 10
+                                    reviewText.trim().length < 10 ||
+                                    isSubmittingComment
                                 }
                                 className="bg-[#FF6900] px-8 text-white hover:bg-[#E55F00] disabled:cursor-not-allowed disabled:bg-gray-300"
                                 style={{ fontWeight: 600 }}
                             >
-                                Submit Review
+                                {isSubmittingComment ? 'Mengirim...' : 'Kirim'}
                             </Button>
                         </div>
                     </div>
