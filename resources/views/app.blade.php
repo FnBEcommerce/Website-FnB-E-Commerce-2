@@ -42,6 +42,11 @@
         @viteReactRefresh
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         @inertiaHead
+
+        {{-- Midtrans Snap --}}
+        <script type="text/javascript"
+		src="{{ config('midtrans.snap_url') }}"
+    data-client-key="{{ config('midtrans.client_key') }}"></script>
     </head>
     <body class="font-sans antialiased">
         @inertia

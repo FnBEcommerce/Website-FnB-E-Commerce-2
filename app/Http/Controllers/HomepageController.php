@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers; 
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -73,5 +74,17 @@ class HomepageController extends Controller
 
     public function productStatus(){
         return Inertia::render('homepage/product-status'); 
+
+    }
+    public function order() {
+        return Inertia::render('homepage/order-dummy');
+    }
+
+    public function checkout() {
+        $order = Order::find(1);
+        $props = [
+            'order' => $order
+        ];
+        return Inertia::render('homepage/checkout-dummy', $props);
     }
 }

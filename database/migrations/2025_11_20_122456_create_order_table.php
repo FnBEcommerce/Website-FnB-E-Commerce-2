@@ -20,8 +20,15 @@ return new class extends Migration
             $table->foreignIdFor(ShopBranch::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Courier::class)->nullable()->constrained()->nullOnDelete();
 
+            // --- Required for Midtrans ---
+            $table->string('order_id')->unique();
+            $table->integer('total_amount');
+            $table->string('payment_type')->nullable();
+            $table->timestamp('paid_at')->nullable();
+            // ---
+
             $table->string('payment_method', 50);
-            $table->string('status', 50)->default('pending');
+            $table->string('status', 50)->default('created');
             
             $table->decimal('subtotal', 10, 2);
             $table->decimal('delivery_fee', 10, 2);
