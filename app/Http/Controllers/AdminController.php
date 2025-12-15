@@ -14,7 +14,169 @@ use Carbon\Carbon;
 class AdminController extends Controller
 {
     public function index() {
-        return Inertia::render('admin/index');
+        $now = Carbon::now();
+        $lastMonth = $now->copy()->subMonth();
+
+        // Total Revenue
+        $totalRevenue = Order::whereNotNull('confirmed_at')->sum('subtotal');
+        $lastMonthRevenue = Order::whereNotNull('confirmed_at')->whereMonth('confirmed_at', $lastMonth->month)->sum('subtotal');
+        $currentMonthRevenue = Order::whereNotNull('confirmed_at')->whereMonth('confirmed_at', $now->month)->sum('subtotal');
+        $revenueChange = $lastMonthRevenue > 0 ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100 : 0;
+
+        // New Users
+        $newUsers = User::whereMonth('created_at', $now->month)->count();
+        $lastMonthNewUsers = User::whereMonth('created_at', $lastMonth->month)->count();
+        $newUserChange = $lastMonthNewUsers > 0 ? (($newUsers - $lastMonthNewUsers) / $lastMonthNewUsers) * 100 : 0;
+
+        // Sales
+        $sales = Order::whereMonth('confirmed_at', $now->month)->count();
+        $lastMonthSales = Order::whereMonth('confirmed_at', $lastMonth->month)->count();
+        $salesChange = $lastMonthSales > 0 ? (($sales - $lastMonthSales) / $lastMonthSales) * 100 : 0;
+
+        // Active Now
+        $activeNow = Order::where('created_at', '>=', $now->copy()->subMinutes(30))->distinct('user_id')->count();
+        $lastHourActive = Order::where('created_at', '>=', $now->copy()->subHour())->distinct('user_id')->count();
+        $activeNowChange = $lastHourActive > 0 ? (($activeNow - $lastHourActive) / $lastHourActive) * 100 : 0;
+
+        $statsData = [
+            [
+                'title' => 'Total Revenue',
+                'value' => 'Rp ' . number_format($totalRevenue, 0, ',', '.'),
+                'change' => sprintf('%+.2f%% from last month', $revenueChange),
+            ],
+            [
+                'title' => 'New Users',
+                'value' => '+' . $newUsers,
+                'change' => sprintf('%+.2f%% from last month', $newUserChange),
+            ],
+            [
+                'title' => 'Sales',
+                'value' => '+' . $sales,
+                'change' => sprintf('%+.2f%% from last month', $salesChange),
+            ],
+            [
+                'title' => 'Active Now',
+                'value' => $activeNow,
+                'change' => sprintf('%+.2f%% from last hour', $activeNowChange),
+            ],
+        ];
+
+        $overviewData = Order::select(
+                DB::raw('MONTH(confirmed_at) as month'),
+                DB::raw('SUM(subtotal) as total')
+            )
+            ->whereYear('confirmed_at', $now->year)
+            ->groupBy('month')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => Carbon::create()->month($item->month)->format('M'),
+                    'total' => $item->total,
+                ];
+            })->toArray();
+
+        $currentMonthSales = $sales;
+
+        $recentSales = Order::with('user')
+            ->whereNotNull('confirmed_at')
+            ->latest('confirmed_at')
+            ->take(5)
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'name' => $order->user->name,
+                    'email' => $order->user->email,
+                    'value' => 'Rp ' . number_format($order->subtotal, 0, ',', '.'),
+                ];
+            });
+
+        $trafficOverview = [
+            [
+                'name' => 'Mon',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Tue',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Wed',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Thu',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Fri',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Sat',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Sun',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+        ];
+
+        $trafficStats = [
+            [
+                'title' => 'Jumlah Klik',
+                'value' => '345',
+                'change' => sprintf('%+.2f%% vs minggu sebelumnya', '+10%'),
+            ],
+            [
+                'title' => 'Pelanggan Unik',
+                'value' => '39',
+                'change' => sprintf('%+.2f%% vs minggu sebelumnya', '7%'),
+            ],
+            [
+                'title' => 'Tingkat Bounce',
+                'value' => '42%',
+                'change' => '+10% vs minggu sebelumnya',
+            ],
+            [
+                'title' => 'Rerata Sesi',
+                'value' => '3m 43s',
+                'change' => '+10% vs minggu sebelumnya',
+            ],
+        ];
+
+        $trafficSources = [
+            ['name' => 'Direct', 'value' => 513],
+            ['name' => 'Product Hunt', 'value' => 238],
+            ['name' => 'Twitter', 'value' => 174],
+            ['name' => 'Blog', 'value' => 104],
+        ];
+
+        $devices = [
+            ['name' => 'Desktop', 'value' => 74],
+            ['name' => 'Mobile', 'value' => 22],
+            ['name' => 'Tablet', 'value' => 4],
+        ];
+
+
+        $props = [
+            'statsData' => $statsData,
+            'overviewData' => $overviewData,
+            'currentMonthSales' => $currentMonthSales,
+            'recentSales' => $recentSales,
+            'trafficOverview' => $trafficOverview,
+            'trafficStats' => $trafficStats,
+            'trafficSources' => $trafficSources,
+            'devices' => $devices,
+        ];
+
+        return Inertia::render('admin/index', $props);
     }
 
     public function customerManagement() {

@@ -14,6 +14,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AdminPageProps } from '@/pages/admin';
 import { useState } from 'react';
 import { Analytics } from './components/analytics';
 import { Overview } from './components/overview';
@@ -46,7 +47,7 @@ const topNav = [
     },
 ];
 
-export function AdminDashboard() {
+export function AdminDashboard({ data }: { data: AdminPageProps }) {
     const [activeTab, setActiveTab] = useState('overview');
 
     return (
@@ -114,10 +115,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        $45,231.89
+                                        {data.statsData[0].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +20.1% from last month
+                                        {data.statsData[0].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -143,10 +144,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +2350
+                                        {data.statsData[1].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +180.1% from last month
+                                        {data.statsData[1].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -177,10 +178,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +12,234
+                                        {data.statsData[2].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +19% from last month
+                                        {data.statsData[2].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -204,10 +205,10 @@ export function AdminDashboard() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold">
-                                        +573
+                                        {data.statsData[3].value}
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        +201 since last hour
+                                        {data.statsData[3].change}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -218,24 +219,32 @@ export function AdminDashboard() {
                                     <CardTitle>Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="ps-2">
-                                    <Overview />
+                                    <Overview data={data.overviewData} />
                                 </CardContent>
                             </Card>
                             <Card className="col-span-1 lg:col-span-3">
                                 <CardHeader>
                                     <CardTitle>Recent Sales</CardTitle>
                                     <CardDescription>
-                                        You made 265 sales this month.
+                                        You made {data.currentMonthSales} sales
+                                        this month.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <RecentSales />
+                                    <RecentSales salesData={data.recentSales} />
                                 </CardContent>
                             </Card>
                         </div>
                     </TabsContent>
                     <TabsContent value="analytics" className="space-y-4">
-                        <Analytics />
+                        <Analytics
+                            data={{
+                                trafficOverview: data.trafficOverview,
+                                trafficStats: data.trafficStats,
+                                trafficSources: data.trafficSources,
+                                devices: data.devices,
+                            }}
+                        />
                     </TabsContent>
                 </Tabs>
             </Main>

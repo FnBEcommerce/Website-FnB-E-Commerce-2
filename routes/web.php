@@ -21,7 +21,10 @@ use App\Http\Controllers\PaymentController;
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
-Route::get('/checkout-dummy', [HomepageController::class, 'checkout'])->name('checkout-dummy');
+// Begin payment integration dummy
+Route::get('/products-dummy/{product}', [HomepageController::class, 'productDetailDummy'])->name('products-dummy.detail');
+Route::get('/checkout-dummy', [HomepageController::class, 'checkoutDummy'])->name('checkout-dummy');
+// End payment integration dummy
 
 Route::get("/auth", [HomepageController::class, 'auth'])->name('auth');
 
@@ -68,6 +71,8 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
     // TODO: Protect route
+    Route::post('/orders/create', [PaymentController::class, 'create'])
+    ;
     Route::post('/orders/{order}/pay', [PaymentController::class, 'pay'])
     ;
     // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
