@@ -90,11 +90,90 @@ class AdminController extends Controller
                 ];
             });
 
+        $trafficOverview = [
+            [
+                'name' => 'Mon',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Tue',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Wed',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Thu',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Fri',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Sat',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+            [
+                'name' => 'Sun',
+                'clicks' => rand(100, 999),
+                'uniques' => rand(80, 779),
+            ],
+        ];
+
+        $trafficStats = [
+            [
+                'title' => 'Jumlah Klik',
+                'value' => '345',
+                'change' => sprintf('%+.2f%% vs minggu sebelumnya', '+10%'),
+            ],
+            [
+                'title' => 'Pelanggan Unik',
+                'value' => '39',
+                'change' => sprintf('%+.2f%% vs minggu sebelumnya', '7%'),
+            ],
+            [
+                'title' => 'Tingkat Bounce',
+                'value' => '42%',
+                'change' => '+10% vs minggu sebelumnya',
+            ],
+            [
+                'title' => 'Rerata Sesi',
+                'value' => '3m 43s',
+                'change' => '+10% vs minggu sebelumnya',
+            ],
+        ];
+
+        $trafficSources = [
+            ['name' => 'Direct', 'value' => 513],
+            ['name' => 'Product Hunt', 'value' => 238],
+            ['name' => 'Twitter', 'value' => 174],
+            ['name' => 'Blog', 'value' => 104],
+        ];
+
+        $devices = [
+            ['name' => 'Desktop', 'value' => 74],
+            ['name' => 'Mobile', 'value' => 22],
+            ['name' => 'Tablet', 'value' => 4],
+        ];
+
+
         $props = [
             'statsData' => $statsData,
             'overviewData' => $overviewData,
             'currentMonthSales' => $currentMonthSales,
             'recentSales' => $recentSales,
+            'trafficOverview' => $trafficOverview,
+            'trafficStats' => $trafficStats,
+            'trafficSources' => $trafficSources,
+            'devices' => $devices,
         ];
 
         return Inertia::render('admin/index', $props);

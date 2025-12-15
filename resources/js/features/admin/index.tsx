@@ -237,7 +237,14 @@ export function AdminDashboard({ data }: { data: AdminPageProps }) {
                         </div>
                     </TabsContent>
                     <TabsContent value="analytics" className="space-y-4">
-                        <Analytics />
+                        <Analytics
+                            data={{
+                                trafficOverview: data.trafficOverview,
+                                trafficStats: data.trafficStats,
+                                trafficSources: data.trafficSources,
+                                devices: data.devices,
+                            }}
+                        />
                     </TabsContent>
                 </Tabs>
             </Main>

@@ -24,6 +24,10 @@ export type AdminPageProps = {
     currentMonthSales: number;
     overviewData: OverviewData[];
     recentSales: RecentSalesStats[];
+    trafficOverview: any;
+    trafficStats: any;
+    trafficSources: any;
+    devices: any;
 };
 
 export default function AdminPage({
@@ -31,6 +35,10 @@ export default function AdminPage({
     overviewData,
     currentMonthSales,
     recentSales,
+    trafficOverview,
+    trafficStats,
+    trafficSources,
+    devices,
 }: AdminPageProps) {
     return (
         <AuthenticatedLayout>
@@ -41,6 +49,10 @@ export default function AdminPage({
                         overviewData,
                         currentMonthSales,
                         recentSales,
+                        trafficOverview,
+                        trafficStats,
+                        trafficSources,
+                        devices,
                     }}
                 />
             </SearchProvider>
