@@ -11,7 +11,9 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\DeliveryController;    
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -23,6 +25,8 @@ Route::get('/index', function () {
 })->name('index');
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
+
+Route::get('/checkout-dummy', [HomepageController::class, 'checkout'])->name('checkout-dummy');
 
 Route::get("/auth", [HomepageController::class, 'auth'])->name('auth');
 
@@ -67,6 +71,11 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/logout', [UserController::class, 'logout']);
+    // TODO: Protect route
+    Route::post('/orders/{order}/pay', [PaymentController::class, 'pay'])
+    ;
+    // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
+
 });
 
 require __DIR__.'/settings.php';
