@@ -68,15 +68,18 @@ class HomepageController extends Controller
         return Inertia::render('homepage/user-profile', $props);
     }
 
+    public function productStatus() {
+        $user = Auth::user();
+        $props = [
+            'user' => $user,
+        ];
+        return Inertia::render('homepage/product-status', $props);
+    }
+
     public function productCart() {
         return Inertia::render('homepage/product-cart');
     }
 
-    public function productStatus(){
-        return Inertia::render('homepage/product-status'); 
-
-    }
-    
     public function order() {
         return Inertia::render('homepage/order-dummy');
     }
