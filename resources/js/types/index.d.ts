@@ -212,3 +212,11 @@ export type ReviewProps = Array<
     Pick<User, 'name'> &
         Pick<Review, 'user_id' | 'rating' | 'created_at' | 'description'>
 >;
+
+export type Notification = {
+    id: number;
+    title: string;
+    message: string;
+    time: string;
+    unread: boolean;
+};

@@ -9,14 +9,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use App\Models\Notification;
 
 class HomepageController extends Controller
 {
     public function index() {
-       
-    $products = Product::take(8)->get();
+        $products = Product::take(8)->get();
+        $notifications = [];
+        if (Auth::check()) {
+            $notifications = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        }
+        
         $props = [
-            'products' => $products
+            'products' => $products,
+            'notifications' => $notifications,
         ];
 
         return Inertia::render('homepage/home', $props);

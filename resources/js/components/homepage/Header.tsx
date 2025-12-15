@@ -1,10 +1,12 @@
 import { useCart } from '@/components/homepage/CartContext';
-import { Link } from '@inertiajs/react';
+import { Notification } from '@/types';
+import { Link, router } from '@inertiajs/react';
 import { Bell, Menu, ShoppingCart, Truck, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 
 interface HeaderProps {
+    notifications: Notification[];
     onNavigateToHome?: () => void;
     onNavigateToProfile?: () => void;
     onNavigateToCart?: () => void;
@@ -12,6 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({
+    notifications,
     onNavigateToHome,
     onNavigateToCart,
     onNavigateToProfile,
@@ -22,38 +25,27 @@ export function Header({
     const [showNotifications, setShowNotifications] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
 
-    const notifications = [
-        {
-            id: 1,
-            title: 'Order Shipped',
-            message: 'Your order #12345 has been shipped and will arrive soon.',
-            time: '5 minutes ago',
-            unread: true,
-        },
-        {
-            id: 2,
-            title: 'New Offer Available',
-            message: 'Get 20% off on all Khichdi varieties this weekend!',
-            time: '2 hours ago',
-            unread: true,
-        },
-        {
-            id: 3,
-            title: 'Review Request',
-            message: 'How was your recent purchase? Share your experience.',
-            time: '1 day ago',
-            unread: true,
-        },
-        {
-            id: 4,
-            title: 'Order Delivered',
-            message: 'Your order #12344 has been successfully delivered.',
-            time: '2 days ago',
-            unread: false,
-        },
-    ];
-
     const unreadCount = notifications.filter((n) => n.unread).length;
+
+    console.log(notifications);
+
+    const handleNotificationClick = (notification: Notification) => {
+        if (notification.unread) {
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('content');
+
+            router.put(
+                `/notifications/${notification.id}`,
+                {},
+                {
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                },
+            );
+        }
+    };
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -183,6 +175,11 @@ export function Header({
                                         {notifications.map((notification) => (
                                             <button
                                                 key={notification.id}
+                                                onClick={() =>
+                                                    handleNotificationClick(
+                                                        notification,
+                                                    )
+                                                }
                                                 className={`w-full border-b border-gray-100 p-4 text-left transition-colors hover:bg-gray-50 ${
                                                     notification.unread
                                                         ? 'bg-orange-50/30'

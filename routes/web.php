@@ -61,10 +61,15 @@ Route::middleware(['role:admin'])->prefix('/admin')->group(function () {
     Route::get('/product-management', [AdminController::class, 'productManagement'])->name('admin.product_management');
 });
 
+use App\Http\Controllers\NotificationController;
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::put('/notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');
 });
 
 Route::middleware(['web'])->prefix('/api')->group(function() {
