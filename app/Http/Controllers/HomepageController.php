@@ -15,14 +15,9 @@ class HomepageController extends Controller
 {
     public function index() {
         $products = Product::take(8)->get();
-        $notifications = [];
-        if (Auth::check()) {
-            $notifications = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        }
         
         $props = [
             'products' => $products,
-            'notifications' => $notifications,
         ];
 
         return Inertia::render('homepage/home', $props);

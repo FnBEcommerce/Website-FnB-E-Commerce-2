@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Notification;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -38,6 +40,11 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $notifications = [];
+        if (Auth::check()) {
+            $notifications = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -45,6 +52,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'notifications' => $notifications,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

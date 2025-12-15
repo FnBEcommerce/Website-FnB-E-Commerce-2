@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ui/product-card-homepage';
 import { useCart } from '@/context/CartContext';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, Notification } from '@/types';
+import type { Product } from '@/types';
 import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
@@ -15,9 +15,8 @@ type ProductWithRating = Product & { rating: Number };
 //type intersect
 interface HomePageProps {
     products: ProductWithRating[];
-    notifications: Notification[];
 }
-export default function HomePage({ products, notifications }: HomePageProps) {
+export default function HomePage({ products }: HomePageProps) {
     return (
         <RootLayout>
             {/* <LanguageProvider> */}
@@ -56,7 +55,7 @@ export default function HomePage({ products, notifications }: HomePageProps) {
 //     products: Product[];
 // }
 
-function Products({ products }: Omit<HomePageProps, 'notifications'>) {
+function Products({ products }: HomePageProps) {
     const { dispatch } = useCart();
 
     return (
@@ -96,7 +95,4 @@ interface ProductCardProps {
     onAddToCart: () => void;
 }
 
-HomePage.layout = (page: ReactNode) => {
-    const { props } = page as unknown as { props: HomePageProps };
-    return <HomepageLayout notifications={props.notifications}>{page}</HomepageLayout>;
-}
+HomePage.layout = (page: ReactNode) => <HomepageLayout>{page}</HomepageLayout>;
