@@ -11,7 +11,7 @@ import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import type { Product, ReviewProps, User } from '@/types/index';
 import { ReactNode } from 'react';
 
-type ProductWithRating = Product & {
+export type ProductWithRating = Product & {
     rating: Number;
 };
 
@@ -88,7 +88,7 @@ export default function ProductDetailsPage({
                         />
 
                         {/* Customer Reviews */}
-                        <CustomerReviews reviews={reviews} />
+                        <CustomerReviews reviews={reviews} product={product} />
 
                         {/* Suggested Products */}
                         <SuggestedProducts products={suggestedProducts} />

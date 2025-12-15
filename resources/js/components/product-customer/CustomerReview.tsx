@@ -1,5 +1,8 @@
 import { Button } from '@/components/ui/button';
-import type { ReviewProps } from '@/types/index';
+import { ProductWithRating } from '@/pages/homepage/product-details';
+import type { ReviewProps, User } from '@/types/index';
+import { usePage } from '@inertiajs/react';
+import axios from 'axios';
 import { ChevronLeft, ChevronRight, MessageSquare, Star } from 'lucide-react';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -8,9 +11,10 @@ import Slider from 'react-slick';
 
 type CustomerReviewsProps = {
     reviews: ReviewProps;
+    product: ProductWithRating;
 };
 
-export function CustomerReviews({ reviews }: CustomerReviewsProps) {
+export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
     const reviewHighlights = [
         { text: 'Quick & easy', count: 45 },
         { text: 'Tastes incredible!', count: 38 },
@@ -65,11 +69,27 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
             helpful: 12,
         },
     ];
+    const averageRating = !reviews.length
+        ? 0
+        : Math.round(
+              (reviews
+                  .map((review) => review.rating)
+                  .reduce((prev, next) => prev + next, 0) /
+                  reviews.length) *
+                  10,
+          ) / 10;
+
+    const basedOnReviewReviews =
+        reviews.length <= 100 ? String(reviews.length) : '100+';
+    const goodReviews = reviews.filter((review) => review.rating >= 4);
 
     const [userRating, setUserRating] = useState(0);
     const [hoveredRating, setHoveredRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const sliderRef = useRef<Slider>(null);
+
+    const { auth } = usePage().props;
+    const user: User = auth.user;
 
     const settings = {
         dots: true,
@@ -98,9 +118,18 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
         ],
     };
 
-    const handleSubmitReview = () => {
+    const handleSubmitReview = async () => {
         if (userRating > 0 && reviewText.trim()) {
-            // In a real app, this would send the review to the backend
+            const payload = {
+                user_id: user.id,
+                product_id: product.id,
+                rating: userRating,
+                description: reviewText.trim(),
+            };
+
+            const response = await axios.post('/api/product/review', payload);
+            console.log('response', response);
+
             alert(
                 'Thank you for your review! It has been submitted successfully.',
             );
@@ -123,7 +152,7 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
                                 className="text-[48px] text-green-700"
                                 style={{ fontWeight: 700 }}
                             >
-                                4.5
+                                {averageRating}
                             </div>
                             <div>
                                 <div className="mb-1 flex items-center gap-1">
@@ -131,7 +160,7 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
                                         <Star
                                             key={star}
                                             className={`h-6 w-6 ${
-                                                star <= 4
+                                                star <= averageRating
                                                     ? 'fill-yellow-400 text-yellow-400'
                                                     : 'text-gray-300'
                                             }`}
@@ -139,7 +168,7 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
                                     ))}
                                 </div>
                                 <p className="text-gray-700">
-                                    Based on 100+ reviews
+                                    Based on {basedOnReviewReviews} reviews
                                 </p>
                             </div>
                         </div>

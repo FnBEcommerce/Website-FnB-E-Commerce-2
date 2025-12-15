@@ -14,6 +14,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProductController;
 
 // Route::get('/', function () {
 //     return Inertia::render('home');
@@ -75,8 +76,8 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     ;
     Route::post('/orders/{order}/pay', [PaymentController::class, 'pay'])
     ;
+    Route::post('/product/review', [ProductController::class, 'addReview']);
     // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
-
 });
 
 require __DIR__.'/settings.php';
