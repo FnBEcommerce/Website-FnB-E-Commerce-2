@@ -22,24 +22,11 @@ type UserProfilePageProps = {
 
 export default function UserProfilePage({ user }: UserProfilePageProps) {
     const [isEditing, setIsEditing] = useState(false);
-    const [isEditingAddress, setIsEditingAddress] = useState(false);
+
     const [isEditingPayment, setIsEditingPayment] = useState(false);
 
     const [profileData, setProfileData] = useState<User>(user);
     console.log(profileData);
-
-    const [addressData, setAddressData] = useState({
-        address: '123, Green Park Colony, Sector 12',
-        landmark: 'Near City Mall',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        pincode: '400001',
-        address2: '',
-        landmark2: '',
-        city2: '',
-        state2: '',
-        pincode2: '',
-    });
 
     const [paymentMethods, setPaymentMethods] = useState([
         {
@@ -60,10 +47,6 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
             ...prev,
             [field]: value,
         }));
-    };
-
-    const handleAddressChange = (field: string, value: string) => {
-        setAddressData((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleAddPaymentMethod = () => {
@@ -87,6 +70,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
 
     const handleSave = () => {
         setIsEditing(false);
+        // setIsEditingAddress(false);
         // Here you would typically save to backend/database
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
@@ -101,8 +85,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
     };
 
     const handleSaveAddress = () => {
-        setIsEditingAddress(false);
-        alert('Address updated successfully!');
+        handleSave();
     };
 
     const handleSavePayment = () => {
@@ -469,28 +452,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <Label
-                                        htmlFor="landmark"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Landmark
-                                    </Label>
-                                    <Input
-                                        id="landmark"
-                                        value={addressData.landmark}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'landmark',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -503,15 +465,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                         City
                                     </Label>
                                     <Input
-                                        id="city"
-                                        value={profileData.city ?? ''}
-                                        onChange={(e) =>
-                                            handleInputChange(
-                                                'city',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -532,28 +486,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label
-                                        htmlFor="pincode"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Pincode
-                                    </Label>
-                                    <Input
-                                        id="pincode"
-                                        value={addressData.pincode}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'pincode',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -590,31 +523,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter secondary address"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <Label
-                                        htmlFor="landmark2"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Landmark
-                                    </Label>
-                                    <Input
-                                        id="landmark2"
-                                        value={addressData.landmark2}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'landmark2',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                        placeholder="Enter landmark"
                                     />
                                 </div>
 
@@ -634,7 +545,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter city"
                                     />
@@ -656,31 +567,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter state"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label
-                                        htmlFor="pincode2"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Pincode
-                                    </Label>
-                                    <Input
-                                        id="pincode2"
-                                        value={addressData.pincode2}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'pincode2',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                        placeholder="Enter pincode"
                                     />
                                 </div>
                             </div>
@@ -688,20 +577,18 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                             <div className="mt-4 flex justify-end">
                                 <Button
                                     onClick={() =>
-                                        isEditingAddress
-                                            ? handleSaveAddress()
-                                            : setIsEditingAddress(true)
+                                        isEditing
+                                            ? handleSave()
+                                            : setIsEditing(true)
                                     }
                                     className={
-                                        isEditingAddress
+                                        isEditing
                                             ? 'bg-[#FF6900] text-white hover:bg-[#E55D00]'
                                             : 'border-[#FF6900] text-[#FF6900] hover:bg-orange-50'
                                     }
-                                    variant={
-                                        isEditingAddress ? 'default' : 'outline'
-                                    }
+                                    variant={isEditing ? 'default' : 'outline'}
                                 >
-                                    {isEditingAddress ? (
+                                    {isEditing ? (
                                         <>
                                             <Save className="mr-2 h-4 w-4" />
                                             Save Changes
