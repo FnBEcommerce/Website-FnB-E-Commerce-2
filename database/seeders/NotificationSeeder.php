@@ -18,7 +18,7 @@ class NotificationSeeder extends Seeder
 
         foreach ($users as $user) {
             Notification::factory(5)->create([
-                'user_id' => $user->id,
+                'users_id' => $user->id,
             ]);
         }
     }

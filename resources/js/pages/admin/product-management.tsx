@@ -77,8 +77,12 @@ const topNav = [
     },
 ];
 
-export default function ProductManagement() {
-    const [products, setProducts] = useState<ProductRow[]>([]);
+export default function ProductManagement({
+    products: initialProducts,
+}: {
+    products: ProductRow[];
+}) {
+    const [products, setProducts] = useState<ProductRow[]>(initialProducts);
     const [shopBranches, setShopBranches] = useState<ShopBranch[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -91,18 +95,18 @@ export default function ProductManagement() {
     const [activeTab, setActiveTab] = useState('products');
 
     useEffect(() => {
-        fetchProducts();
+        // fetchProducts();
         fetchShopBranches();
     }, []);
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('/api/products');
-            setProducts(response.data);
-        } catch (error) {
-            console.error('Failed to fetch products:', error);
-        }
-    };
+    // const fetchProducts = async () => {
+    //     try {
+    //         const response = await axios.get('/api/products');
+    //         setProducts(response.data);
+    //     } catch (error) {
+    //         console.error('Failed to fetch products:', error);
+    //     }
+    // };
 
     const fetchShopBranches = async () => {
         try {

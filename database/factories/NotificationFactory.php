@@ -18,10 +18,10 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'users_id' => User::factory(),
             'title' => $this->faker->sentence(),
             'message' => $this->faker->paragraph(),
-            'unread' => $this->faker->boolean(50),
+            // 'unread' => $this->faker->boolean(50),
         ];
     }
 }
