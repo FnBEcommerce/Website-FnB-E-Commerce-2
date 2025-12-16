@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import { UserInfo } from '@/types/user';
 import { formatPrice } from '@/utils/format-price';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import {
     ChevronRight,
     Minus,
@@ -47,7 +47,10 @@ export default function CartPage({ user, cart }: productCartProps) {
     };
 
     const removeItem = (id: number) => {
-        setCartItems((items) => items.filter((item) => item.id !== id));
+        router.delete(`/cart/destroy/${id}`, {
+            preserveScroll: true,
+        });
+        setCartItems(cartItems.filter((item) => item.id !== id));
     };
 
     const toggleItemSelection = (id: number) => {
