@@ -207,11 +207,11 @@ export function ProductDialog({
                             <div>
                                 <Label>Status *</Label>
                                 <Select
-                                    value={formData.status}
+                                    value={formData.status || undefined}
                                     onValueChange={(value) =>
                                         setFormData({
                                             ...formData,
-                                            status: value as any,
+                                            status: value,
                                         })
                                     }
                                 >
@@ -220,9 +220,7 @@ export function ProductDialog({
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="Aktif">Aktif</SelectItem>
-                                        <SelectItem value="Tidak Aktif">
-                                            Tidak Aktif
-                                        </SelectItem>
+                                        <SelectItem value="Tidak Aktif">Tidak Aktif</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
