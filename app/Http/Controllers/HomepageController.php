@@ -152,6 +152,7 @@ class HomepageController extends Controller
             'user' => $user,
             'currentOrder' => $currentOrder,
         ];
+
         return Inertia::render('homepage/product-status', $props);
     }
 

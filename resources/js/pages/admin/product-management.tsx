@@ -4,7 +4,6 @@ import { ConfigDrawer } from '@/components/config-drawer';
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { TopNav } from '@/components/layout/top-nav';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { ThemeSwitch } from '@/components/theme-switch';
@@ -26,8 +25,9 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
+import axios from 'axios';
 import { Download, Filter, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type ProductRow = {
     id: number;
@@ -35,16 +35,12 @@ export type ProductRow = {
     category: string;
     price_origin: number;
     price_discount: number | null;
-    stock: number;
-    branch: string;
+    quantity: number;
+    branch?: string;
     image: string | null;
     description: string;
-    rating: number;
-    status: string;
-};
-
-type ProductManagementProps = {
-    products: ProductRow[];
+    rating?: number;
+    status?: string;
 };
 
 const topNav = [
@@ -74,10 +70,8 @@ const topNav = [
     },
 ];
 
-export default function ProductManagement({
-    products: initialProducts,
-}: ProductManagementProps) {
-    const [products, setProducts] = useState<ProductRow[]>(initialProducts);
+export default function ProductManagement() {
+    const [products, setProducts] = useState<ProductRow[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -88,20 +82,92 @@ export default function ProductManagement({
     );
     const [activeTab, setActiveTab] = useState('products');
 
-    const handleAddProduct = (product: Omit<ProductRow, 'id'>) => {
-        const newProduct: ProductRow = {
-            ...product,
-            id: Date.now(),
-        };
-        setProducts([...products, newProduct]);
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get('/api/products');
+            setProducts(response.data);
+        } catch (error) {
+            console.error('Failed to fetch products:', error);
+        }
     };
 
-    const handleEditProduct = (product: ProductRow) => {
-        setProducts(products.map((p) => (p.id === product.id ? product : p)));
+    const handleAddProduct = async (product: Omit<ProductRow, 'id'>) => {
+        const formData = new FormData();
+        Object.keys(product).forEach((key) => {
+            const value = product[key as keyof typeof product];
+            if (value !== null && value !== undefined) {
+                if (key === 'image' && value instanceof File) {
+                    formData.append(key, value);
+                } else if (
+                    typeof value === 'number' ||
+                    typeof value === 'string'
+                ) {
+                    formData.append(key, String(value));
+                }
+            }
+        });
+
+        try {
+            const response = await axios.post('/api/products', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setProducts([...products, response.data]);
+            handleCloseDialog();
+        } catch (error) {
+            console.error('Failed to add product:', error);
+        }
     };
 
-    const handleDeleteProduct = (id: number) => {
-        setProducts(products.filter((p) => p.id !== id));
+    const handleEditProduct = async (product: ProductRow) => {
+        const formData = new FormData();
+        Object.keys(product).forEach((key) => {
+            const value = product[key as keyof typeof product];
+            if (value !== null && value !== undefined) {
+                if (key === 'image' && value instanceof File) {
+                    formData.append(key, value);
+                } else if (
+                    key !== 'image' &&
+                    (typeof value === 'number' || typeof value === 'string')
+                ) {
+                    formData.append(key, String(value));
+                }
+            }
+        });
+        formData.append('_method', 'PUT');
+
+        try {
+            const response = await axios.post(
+                `/api/products/${product.id}`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            console.log(response);
+            setProducts(
+                products.map((p) => (p.id === product.id ? response.data : p)),
+            );
+            handleCloseDialog();
+        } catch (error) {
+            console.error('Failed to edit product:', error);
+        }
+    };
+
+    const handleDeleteProduct = async (id: number) => {
+        try {
+            await axios.delete(`/api/products/${id}`);
+            setProducts(products.filter((p) => p.id !== id));
+        } catch (error) {
+            console.error('Failed to delete product:', error);
+        }
     };
 
     const handleOpenDialog = (product?: ProductRow) => {
@@ -128,7 +194,9 @@ export default function ProductManagement({
                 categoryFilter === 'all' || product.category === categoryFilter;
 
             const matchesStatus =
-                statusFilter === 'all' || product.status === statusFilter;
+                statusFilter === 'all' ||
+                (product.quantity > 0 ? 'Aktif' : 'Tidak Aktif') ===
+                    statusFilter;
 
             return matchesSearch && matchesCategory && matchesStatus;
         })
@@ -144,9 +212,9 @@ export default function ProductManagement({
                 case 'price-desc':
                     return priceB - priceA;
                 case 'stock':
-                    return (b.stock ?? 0) - (a.stock ?? 0);
+                    return (b.quantity ?? 0) - (a.quantity ?? 0);
                 case 'rating':
-                    return b.rating - a.rating;
+                    return (b.rating ?? 0) - (a.rating ?? 0);
                 default:
                     return 0;
             }
@@ -205,47 +273,73 @@ export default function ProductManagement({
                                 <CardContent>
                                     <div className="space-y-4">
                                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                        {/* KIRI: Input Search */}
-                                        <div className="flex-1 min-w-[240px]">
-                                            <Input
-                                                type="text"
-                                                placeholder="Cari produk..."
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                            />
-                                        </div>
-
-                                        {/* KANAN: Filters (mentok kanan) */}
-                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end w-full sm:w-auto">
-                                            {/* Filter Kategori */}
-                                            <div>
-                                                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Semua Kategori" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="all">Semua Kategori</SelectItem>
-                                                        <SelectItem value="Makanan">Makanan</SelectItem>
-                                                        <SelectItem value="Minuman">Minuman</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
+                                            {/* KIRI: Input Search */}
+                                            <div className="min-w-[240px] flex-1">
+                                                <Input
+                                                    type="text"
+                                                    placeholder="Cari produk..."
+                                                    value={searchQuery}
+                                                    onChange={(e) =>
+                                                        setSearchQuery(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                />
                                             </div>
 
-                                            {/* Filter Status */}
-                                            <div>
-                                                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Semua Status" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="all">Semua Status</SelectItem>
-                                                        <SelectItem value="Aktif">Aktif</SelectItem>
-                                                        <SelectItem value="Tidak Aktif">Tidak Aktif</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
+                                            {/* KANAN: Filters (mentok kanan) */}
+                                            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+                                                {/* Filter Kategori */}
+                                                <div>
+                                                    <Select
+                                                        value={categoryFilter}
+                                                        onValueChange={
+                                                            setCategoryFilter
+                                                        }
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Semua Kategori" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="all">
+                                                                Semua Kategori
+                                                            </SelectItem>
+                                                            <SelectItem value="Makanan">
+                                                                Makanan
+                                                            </SelectItem>
+                                                            <SelectItem value="Minuman">
+                                                                Minuman
+                                                            </SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+
+                                                {/* Filter Status */}
+                                                <div>
+                                                    <Select
+                                                        value={statusFilter}
+                                                        onValueChange={
+                                                            setStatusFilter
+                                                        }
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Semua Status" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="all">
+                                                                Semua Status
+                                                            </SelectItem>
+                                                            <SelectItem value="Aktif">
+                                                                Aktif
+                                                            </SelectItem>
+                                                            <SelectItem value="Tidak Aktif">
+                                                                Tidak Aktif
+                                                            </SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <Filter className="h-4 w-4 text-muted-foreground" />
@@ -287,9 +381,7 @@ export default function ProductManagement({
                                             </div>
                                         </div>
                                         <ProductTable
-                                            products={
-                                                filteredAndSortedProducts
-                                            }
+                                            products={filteredAndSortedProducts}
                                             onEdit={handleOpenDialog}
                                             onDelete={handleDeleteProduct}
                                         />

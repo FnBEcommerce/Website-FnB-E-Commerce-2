@@ -590,33 +590,7 @@ class AdminController extends Controller
         return Inertia::render('admin/cashflow-management', $props);
     }
     public function productManagement() {
-        // Assuming 'shopBranchProducts' is the pivot table/relation for stock and branch
-        // And 'shopBranch' is the relation from pivot to the branch details
-        $productsData = Product::with(['reviews', 'shopBranchProducts.shopBranch'])->get();
-
-        $products = $productsData->map(function ($product) {
-            $shopBranchProduct = $product->shopBranchProducts->first(); // Get first branch for simplicity
-
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'category' => $product->category,
-                'price_origin' => $product->price_origin,
-                'price_discount' => $product->price_discount ?? null,
-                'stock' => $product->quantity ?? 0,
-                'branch' => $shopBranchProduct->shopBranch->name ?? 'N/A',
-                'image' => $product->image,
-                'description' => $product->description,
-                'rating' => round($product->reviews->avg('rating'), 1) ?? 0,
-                'status' => ($product->quantity > 0) ? 'Aktif' : 'Tidak Aktif',
-            ];
-        });
-
-        $props = [
-            'products' => $products
-        ];
-
-        return Inertia::render('admin/product-management', $props);
+        return Inertia::render('admin/product-management');
     }
 }
 

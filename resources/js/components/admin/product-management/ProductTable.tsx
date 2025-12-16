@@ -23,10 +23,8 @@ export function ProductTable({
         }).format(amount);
     };
 
-    console.log('products[0]', products[0]);
-
     return (
-        <div className="overflow-x-auto  rounded-md px-6">
+        <div className="overflow-x-auto rounded-md px-6">
             <table className="w-full border-separate border-spacing-0">
                 <thead>
                     <tr className="border-b border-slate-200">
@@ -78,13 +76,12 @@ export function ProductTable({
                                 <td className="px-4 py-4">
                                     <div className="flex items-center gap-3">
                                         <ImageWithFallback
-                                            // src={product.image || undefined}
-                                            src="https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                            src={product.image || undefined}
                                             alt={product.name}
                                             className="h-12 w-12 shrink-0 rounded-lg object-cover"
                                         />
                                         <div>
-                                            <div className="text-slate-900 font-medium">
+                                            <div className="font-medium text-slate-900">
                                                 {product.name}
                                             </div>
                                             <div className="line-clamp-3 text-sm text-slate-500">
@@ -130,12 +127,12 @@ export function ProductTable({
                                 <td className="px-4 py-4">
                                     <span
                                         className={
-                                            product.stock < 30
-                                                ? 'text-red-600 font-medium'
+                                            product.quantity < 30
+                                                ? 'font-medium text-red-600'
                                                 : 'text-slate-900'
                                         }
                                     >
-                                        {product.stock} unit
+                                        {product.quantity} unit
                                     </span>
                                 </td>
                                 <td className="px-4 py-4 text-slate-600">
@@ -146,7 +143,9 @@ export function ProductTable({
                                         <div className="flex items-center gap-1">
                                             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                             <span className="text-slate-900">
-                                                {product.rating.toFixed(1)}
+                                                {Number(product.rating).toFixed(
+                                                    1,
+                                                )}
                                             </span>
                                         </div>
                                     ) : (
@@ -158,12 +157,12 @@ export function ProductTable({
                                 <td className="px-4 py-4">
                                     <Badge
                                         className={
-                                            product.stock > 0
+                                            product.quantity > 0
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-gray-100 text-gray-800'
                                         }
                                     >
-                                        {product.stock > 0
+                                        {product.quantity > 0
                                             ? 'Aktif'
                                             : 'Tidak Aktif'}
                                     </Badge>
