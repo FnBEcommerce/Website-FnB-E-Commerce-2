@@ -4,8 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { User } from '@/types';
-import { UserInfo } from '@/types/user';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import {
     Camera,
     CreditCard,
@@ -25,35 +24,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [isEditingAddress, setIsEditingAddress] = useState(false);
     const [isEditingPayment, setIsEditingPayment] = useState(false);
-    // const [profileData, setProfileData] = useState({
-    //     fullName: 'Rajesh Kumar',
-    //     email: 'rajesh.kumar@email.com',
-    //     phone: '+91 98765 43210',
-    //     dateOfBirth: '1990-05-15',
-    //     gender: 'male',
-    //     address: '123, Green Park Colony, Sector 12',
-    //     landmark: 'Near City Mall',
-    //     city: 'Mumbai',
-    //     state: 'Maharashtra',
-    //     pincode: '400001',
-    //     bio: 'Food enthusiast who loves trying new instant meal options. Regular customer of Kamlesh Khichdi Wala.',
-    // });
 
-    const [profileData, setProfileData] = useState<UserInfo>({
-        fullName: user.name,
-        email: user.email,
-        password: user.password,
-        fullNumber: user.phone_number ?? '',
-        birthDate: new Date(),
-        gender: user.gender ?? '',
-        addressInfo: {
-            street: user.street ?? '',
-            city: user.city ?? '',
-            state: '',
-            label: 'home',
-        },
-        altAddressInfo: undefined, // optional
-    });
+    const [profileData, setProfileData] = useState<User>(user);
+    console.log(profileData);
 
     const [addressData, setAddressData] = useState({
         address: '123, Green Park Colony, Sector 12',
@@ -79,13 +52,13 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
         },
     ]);
 
-    const handleInputChange = (field: string, value: string) => {
+    const handleInputChange = (field: keyof User, value: string) => {
         setProfileData((prev) => ({ ...prev, [field]: value }));
     };
-    const handleInputDateChange = (field: string, value: string) => {
+    const handleInputDateChange = (field: keyof User, value: string) => {
         setProfileData((prev) => ({
             ...prev,
-            [field]: new Date(value), // Convert string to Date
+            [field]: value,
         }));
     };
 
@@ -115,6 +88,15 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
     const handleSave = () => {
         setIsEditing(false);
         // Here you would typically save to backend/database
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute('content');
+        router.post('/profile', profileData, {
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        });
+        console.log(profileData);
         alert('Profile updated successfully!');
     };
 
@@ -169,7 +151,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     className="mb-1 text-[20px] text-gray-900"
                                     style={{ fontWeight: 600 }}
                                 >
-                                    {profileData.fullName}
+                                    {profileData.name}
                                 </h2>
                                 <p className="mb-3 text-[14px] text-gray-500">
                                     {profileData.email}
@@ -268,10 +250,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="fullName"
-                                        value={profileData.fullName}
+                                        value={profileData.name}
                                         onChange={(e) =>
                                             handleInputChange(
-                                                'fullName',
+                                                'name',
                                                 e.target.value,
                                             )
                                         }
@@ -312,10 +294,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     <Input
                                         id="phone"
                                         type="tel"
-                                        value={profileData.fullNumber}
+                                        value={profileData.phone_number ?? ''}
                                         onChange={(e) =>
                                             handleInputChange(
-                                                'phone',
+                                                'phone_number',
                                                 e.target.value,
                                             )
                                         }
@@ -335,13 +317,13 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                         id="dateOfBirth"
                                         type="date"
                                         value={
-                                            profileData.birthDate
-                                                .toISOString()
-                                                .split('T')[0]
+                                            profileData.birth_date?.split(
+                                                'T',
+                                            )[0] ?? ''
                                         }
                                         onChange={(e) =>
                                             handleInputDateChange(
-                                                'dateOfBirth',
+                                                'birth_date',
                                                 e.target.value,
                                             )
                                         }
@@ -480,10 +462,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="address"
-                                        value={profileData.addressInfo.street}
+                                        value={profileData.street ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
-                                                'address',
+                                            handleInputChange(
+                                                'street',
                                                 e.target.value,
                                             )
                                         }
@@ -522,9 +504,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="city"
-                                        value={profileData.addressInfo.city}
+                                        value={profileData.city ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
+                                            handleInputChange(
                                                 'city',
                                                 e.target.value,
                                             )
@@ -543,9 +525,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="state"
-                                        value={profileData.addressInfo.state}
+                                        value={profileData.state ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
+                                            handleInputChange(
                                                 'state',
                                                 e.target.value,
                                             )
@@ -601,10 +583,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="address2"
-                                        value={addressData.address2}
+                                        value={profileData.alt_street ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
-                                                'address2',
+                                            handleInputChange(
+                                                'alt_street',
                                                 e.target.value,
                                             )
                                         }
@@ -645,10 +627,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="city2"
-                                        value={addressData.city2}
+                                        value={profileData.alt_city ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
-                                                'city2',
+                                            handleInputChange(
+                                                'alt_city',
                                                 e.target.value,
                                             )
                                         }
@@ -667,10 +649,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Label>
                                     <Input
                                         id="state2"
-                                        value={addressData.state2}
+                                        value={profileData.alt_state ?? ''}
                                         onChange={(e) =>
-                                            handleAddressChange(
-                                                'state2',
+                                            handleInputChange(
+                                                'alt_state',
                                                 e.target.value,
                                             )
                                         }

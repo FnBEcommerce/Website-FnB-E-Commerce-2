@@ -27,6 +27,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    notifications: Notification[];
     [key: string]: unknown;
 }
 
@@ -70,6 +71,7 @@ export type Product = {
     price_discount: number;
     quantity: number;
     image: string | null;
+    ingredients: string[];
     popular: boolean;
     rating: number;
     preparation_time: string | null;
@@ -139,6 +141,43 @@ export type Order = {
     updated_at: string;
 };
 
+export type OrderStatus = 'cooking' | 'on the way' | 'arrived';
+export type PaymentStatus =
+    | 'created'
+    | 'pending'
+    | 'paid'
+    | 'failed'
+    | 'expired'
+    | 'canceled'
+    | 'challenge'
+    | 'refunded';
+
+//new type for status
+export type OrderNew = {
+    id: number;
+    user_id: number;
+    order_items: Pick<
+        Product,
+        'name' | 'quantity' | 'price_discount' | 'image'
+    >[];
+    status: OrderStatus;
+    estimated_delivery_at: number;
+    street: string;
+    created_at: Order['created_at'];
+    total: number;
+    driver_name: Courier['name'];
+    driver_number: Courier['phone_number'];
+    tracking_updates: TrackingUpdate[];
+};
+
+export type TrackingUpdate = {
+    status: OrderStatus;
+    time: string;
+    message: string;
+};
+
+// =========
+
 export type OrderDetail = {
     id: number;
     order_id: number;
@@ -168,4 +207,17 @@ export type Review = {
     description: string;
     created_at: string;
     updated_at: string;
+};
+
+export type ReviewProps = Array<
+    Pick<User, 'name'> &
+        Pick<Review, 'user_id' | 'rating' | 'created_at' | 'description'>
+>;
+
+export type Notification = {
+    id: number;
+    title: string;
+    message: string;
+    time: string;
+    unread: boolean;
 };

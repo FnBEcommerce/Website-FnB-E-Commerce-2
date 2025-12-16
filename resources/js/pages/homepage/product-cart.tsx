@@ -530,7 +530,7 @@ export default function CartPage({ user, cartItem }: productCartProps) {
             {currentPage === 'checkout' && (
                 <main className="flex-1">
                     <CheckoutPage
-                        user={user}
+                        // user={user}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('/')}
                     />

@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { Review } from '@/types';
+import { Review, ReviewProps } from '@/types';
 import { MessageSquare, Star, ThumbsUp } from 'lucide-react';
 
 type CustomerReviewsProps = {
     reviews: Review[];
 };
 
-export function CustomerReviews({ reviews }: CustomerReviewsProps) {
+export function CustomerReviews(reviews: ReviewProps) {
     const reviewHighlights = [
         { text: 'Quick & easy', count: 45 },
         { text: 'Tastes incredible!', count: 38 },

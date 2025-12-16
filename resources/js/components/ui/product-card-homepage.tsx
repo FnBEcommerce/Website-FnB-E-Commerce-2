@@ -5,6 +5,7 @@ import { ProductCardProps } from '@/types/index';
 import {  useState } from 'react';
 import { useCart } from '@/components/homepage/CartContext';
 import type { Product } from '@/types/index';
+import { router } from '@inertiajs/react';
 
 
 
@@ -51,6 +52,11 @@ export  function ProductCard(props: ProductCardProps) {
             });
         };
 
+        const handleCardClick = (id : number) => {
+            
+            router.visit(`/products/${id}`);
+        }
+
         const formatRupiah = (value: number) =>
         new Intl.NumberFormat('id-ID', {
             style: 'currency',
@@ -59,8 +65,8 @@ export  function ProductCard(props: ProductCardProps) {
         }).format(value);
     
     return (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-            <div className="relative aspect-square overflow-hidden bg-gray-50">
+        <div className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" onClick={() => handleCardClick(id)}>
+            <div className="relative aspect-square overflow-hidden bg-gray-50 ">
                 <div className="absolute top-3 left-3 z-10">
                     <span className="inline-block rounded-md border border-gray-200 bg-white px-3 py-1 text-gray-700 shadow-sm">
                         {category}
@@ -109,8 +115,9 @@ export  function ProductCard(props: ProductCardProps) {
                     </span>
 
                     <Button
+
                         onClick={() => handleAddToCart()}
-                        className="bg-primary text-white hover:bg-orange-600"
+                        className="cursor-pointer bg-primary text-white hover:bg-orange-600"
                     >
                         Add
                     </Button>

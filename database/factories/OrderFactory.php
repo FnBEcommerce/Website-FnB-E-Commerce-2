@@ -19,6 +19,17 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $status = $this->faker->randomElement(['cooking', 'on the way', 'arrived']);
+        $payment_status = $this->faker->randomElement([
+            'created',
+            'pending',
+            'paid',
+            'failed',
+            'expired',
+            'canceled',
+            'challenge',
+            'refunded',
+        ]);
         $subtotal = $this->faker->randomFloat(2, 15000, 200000);
         $delivery_fee = $this->faker->randomFloat(2, 5000, 25000);
         // $status = $this->faker->randomElement(['pending', 'processing', 'completed', 'cancelled']);
@@ -42,7 +53,8 @@ class OrderFactory extends Factory
             'payment_type' => fake()->word(),
             'paid_at' => fake()->dateTime(),
             'payment_method' => $this->faker->randomElement(['Cash', 'Transfer', 'E-Wallet']),
-            'status' => 'created',
+            'status' => $status,
+            'payment_status' => $payment_status,
             'subtotal' => $subtotal,
             'delivery_fee' => $delivery_fee,
             'total' => $subtotal + $delivery_fee,

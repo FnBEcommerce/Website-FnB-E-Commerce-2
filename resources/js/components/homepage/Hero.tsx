@@ -1,5 +1,5 @@
+import { Link } from '@inertiajs/react';
 import { Globe, Leaf, Shield, Zap } from 'lucide-react';
-import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { Button } from '../ui/button';
 import { useLanguage } from './LanguageContext';
 // import greenBackground from 'figma:asset/af8f9c76d5e9d20cdce79be680203c8c9e0c8526.png';
@@ -94,19 +94,24 @@ export function Hero() {
 
                         {/* CTA Buttons */}
                         <div className="flex flex-col gap-4 sm:flex-row">
-                            <Button
-                                size="lg"
-                                className="cursor-pointer bg-white text-primary shadow-lg hover:bg-white/90"
-                            >
-                                {t('checkOurProducts')}
-                            </Button>
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="cursor-pointer border-white text-white backdrop-blur-sm hover:bg-white/10"
-                            >
-                                {t('learnMore')}
-                            </Button>
+                            <Link href="/products">
+                                <Button
+                                    size="lg"
+                                    className="cursor-pointer bg-white text-primary shadow-lg hover:bg-white/90"
+                                >
+                                    {t('checkOurProducts')}
+                                </Button>
+                            </Link>
+
+                            <Link href="#why-us">
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="cursor-pointer border-white text-white backdrop-blur-sm hover:bg-white/10"
+                                >
+                                    {t('learnMore')}
+                                </Button>
+                            </Link>
                         </div>
 
                         {/* Trust Indicators */}
@@ -141,9 +146,7 @@ export function Hero() {
                                 <div className="text-2xl font-bold text-white">
                                     100%
                                 </div>
-                                <div className="text-sm text-white">
-                                    Halal
-                                </div>
+                                <div className="text-sm text-white">Halal</div>
                             </div>
                         </div>
                         <div className="absolute -bottom-4 -left-4 rounded-xl bg-orange-500 p-4 shadow-lg backdrop-blur-sm">

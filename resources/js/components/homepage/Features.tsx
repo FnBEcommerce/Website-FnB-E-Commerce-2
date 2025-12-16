@@ -28,7 +28,7 @@ export function Features() {
     return (
         <section
             className="relative bg-gradient-to-r from-orange-500 to-red-500 bg-cover bg-center bg-no-repeat py-20 text-white"
-            // style={{ backgroundImage: `url(${greyBackground})` }}
+            id="why-us"
         >
             {/* Overlay for better text readability */}
 
@@ -40,8 +40,10 @@ export function Features() {
                             Kenapa Memilih Makanan Cepat Saji Kami?
                         </h2>
                         <p className="mb-8 text-lg text-white">
-                            Hidangan cepat saji kami dibuat untuk anda yang ingin makan enak tanpa membuang waktu.
-                            Praktis untuk kerja, kuliah, perjalanan, atau saat tidak sempat memasak.
+                            Hidangan cepat saji kami dibuat untuk anda yang
+                            ingin makan enak tanpa membuang waktu. Praktis untuk
+                            kerja, kuliah, perjalanan, atau saat tidak sempat
+                            memasak.
                         </p>
 
                         <div className="grid gap-6">

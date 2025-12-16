@@ -163,7 +163,7 @@ export default function CustomerManagement({
             <SearchProvider>
                 {/* ===== Top Heading ===sea== */}
                 <Header>
-                    <TopNav links={topNav} />
+                    {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
                         <ThemeSwitch />

@@ -27,6 +27,10 @@ class ProductFactory extends Factory
             "Es Teh Manis", "Es Jeruk", "Lemon Tea", "Milkshake Coklat", "Milkshake Strawberry", "Thai Tea",
             "Green Tea Latte", "Cappuccino", "Americano", "Es Kopi Susu Gula Aren"
         ];
+        $image = $this->faker->randomElement([
+            'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080',
+            'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080',
+        ]);
         $product_categories = ["Makanan", "Minuman"];
         $food_types = ['Spicy', 'Sweet', 'Sour', 'Salty', 'Vegetarian'];
         $badges = ['New', 'Best Seller', 'Recommended'];
@@ -41,7 +45,8 @@ class ProductFactory extends Factory
             'price_origin' => $price,
             'price_discount' => $price * $this->faker->randomFloat(2, 0.7, 0.9),
             'quantity' => $this->faker->numberBetween(0, 100),
-            'image' => 'https://via.placeholder.com/640x480.png/004422?text=' . urlencode($this->faker->word),
+            // 'image' => 'https://via.placeholder.com/640x480.png/004422?text=' . urlencode($this->faker->word),
+            'image' => $image,
             'popular' => $this->faker->boolean(30), // 30% chance of being popular
             'rating' => $this->faker->randomFloat(1, 3, 5),
             'preparation_time' => $this->faker->numberBetween(5, 45) . ' mins',

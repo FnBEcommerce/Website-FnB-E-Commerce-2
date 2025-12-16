@@ -1,17 +1,17 @@
 import { useState } from 'react';
 // import { CheckoutPage } from './components/CheckoutPage';
 import { CheckoutPage } from '@/components/product-customer/CheckoutPage';
-import { CustomerReviews } from '@/components/product-customer/CustomerReviews';
+import { CustomerReviews } from '@/components/product-customer/CustomerReview';
 import { LocationPage } from '@/components/product-customer/LocationPage';
 import { ProductDetails } from '@/components/product-customer/ProductDetails';
 import { ProductImageGallery } from '@/components/product-customer/ProductImageGallery';
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
 import { SuggestedProducts } from '@/components/product-customer/SuggestedProducts';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import type { Product, Review, User } from '@/types/index';
+import type { Product, ReviewProps, User } from '@/types/index';
 import { ReactNode } from 'react';
 
-type ProductWithRating = Product & {
+export type ProductWithRating = Product & {
     rating: Number;
 };
 
@@ -19,7 +19,7 @@ type ProductDetailsProps = Product & {
     user: User;
     productImages: string[];
     product: ProductWithRating;
-    reviews: Review[];
+    reviews: ReviewProps;
     suggestedProducts: Product[];
 };
 
@@ -82,10 +82,13 @@ export default function ProductDetailsPage({
                         </div>
 
                         {/* Product Details Tabs */}
-                        <ProductDetails />
+                        <ProductDetails
+                            ingredients={product.ingredients}
+                            description={product.description}
+                        />
 
                         {/* Customer Reviews */}
-                        <CustomerReviews reviews={reviews} />
+                        <CustomerReviews reviews={reviews} product={product} />
 
                         {/* Suggested Products */}
                         <SuggestedProducts products={suggestedProducts} />

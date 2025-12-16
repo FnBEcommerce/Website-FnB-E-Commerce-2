@@ -28,7 +28,8 @@ return new class extends Migration
             // ---
 
             $table->string('payment_method', 50);
-            $table->string('status', 50)->default('created');
+            $table->string('status', 50)->default('cooking');
+            $table->string('payment_status', 50)->default('created');
             
             $table->decimal('subtotal', 10, 2);
             $table->decimal('delivery_fee', 10, 2);

@@ -1,7 +1,15 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Check } from 'lucide-react';
+import { Product } from '@/types';
 
-export function ProductDetails() {
+type ProductDetailsTabs = {
+    ingredients: Product['ingredients'];
+    description: Product['description'];
+};
+
+export function ProductDetails({
+    ingredients,
+    description,
+}: ProductDetailsTabs) {
     const nutritionalFacts = [
         { nutrient: 'Calories', value: '320 kcal' },
         { nutrient: 'Protein', value: '12g' },
@@ -13,7 +21,7 @@ export function ProductDetails() {
         { nutrient: 'Calcium', value: '8% DV' },
     ];
 
-    const ingredients = [
+    const ingredientsDummy = ingredients ?? [
         'Rice (50%)',
         'Yellow Moong Dal (30%)',
         'Mixed Vegetables (Carrots, Peas, Beans)',
@@ -47,19 +55,21 @@ export function ProductDetails() {
     return (
         <div className="mt-12">
             <Tabs defaultValue="description" className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-2 lg:grid-cols-4">
+                <TabsList className="grid h-auto w-full grid-cols-2 lg:grid-cols-2">
                     <TabsTrigger value="description" className="py-3">
-                        Description
-                    </TabsTrigger>
-                    <TabsTrigger value="nutrition" className="py-3">
-                        Nutrition
+                        Deskripsi Makanan
                     </TabsTrigger>
                     <TabsTrigger value="ingredients" className="py-3">
-                        Ingredients
+                        Bahan Makanan
                     </TabsTrigger>
+                    {/* <TabsTrigger value="nutrition" className="py-3">
+                        Isi Makanan
+                    </TabsTrigger> */}
+
+                    {/*
                     <TabsTrigger value="preparation" className="py-3">
                         Preparation
-                    </TabsTrigger>
+                    </TabsTrigger> */}
                 </TabsList>
 
                 <TabsContent value="description" className="mt-6 space-y-6">
@@ -68,42 +78,7 @@ export function ProductDetails() {
                             About This Product
                         </h3>
                         <p className="leading-relaxed text-gray-700">
-                            Experience the authentic taste of traditional Indian
-                            comfort food with our 7-Minute Khichdi - Superb
-                            Vegetable. This wholesome meal combines perfectly
-                            aged rice and premium yellow moong dal with a medley
-                            of garden-fresh vegetables, creating a nutritious
-                            and delicious dish that's ready in minutes. Each
-                            packet is carefully crafted with authentic spices
-                            and no artificial additives, bringing you the taste
-                            of home-cooked goodness without the hassle.
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 className="mb-3 text-gray-900">
-                            Why Choose This Product?
-                        </h3>
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                            {whyChoose.map((reason, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-start gap-2"
-                                >
-                                    <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                                    <span className="text-gray-700">
-                                        {reason}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="rounded-lg border border-primary bg-amber-50 p-4">
-                        <p className="text-[#1B263B ] italic">
-                            "Khichdi is not just a dish, it's a warm hug in a
-                            bowl - perfect for those days when you need comfort
-                            food that's both nourishing and delicious."
+                            {description}
                         </p>
                     </div>
                 </TabsContent>
@@ -156,9 +131,9 @@ export function ProductDetails() {
                 </TabsContent>
 
                 <TabsContent value="ingredients" className="mt-6">
-                    <h3 className="mb-4 text-gray-900">Ingredients</h3>
+                    <h3 className="mb-4 text-gray-900">Bahan Makanan</h3>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        {ingredients.map((ingredient, index) => (
+                        {ingredientsDummy.map((ingredient, index) => (
                             <div
                                 key={index}
                                 className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3"
@@ -169,13 +144,6 @@ export function ProductDetails() {
                                 </span>
                             </div>
                         ))}
-                    </div>
-                    <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-                        <p className="text-[14px] text-gray-700">
-                            <strong>Allergen Information:</strong> Contains
-                            wheat and may contain traces of nuts. Manufactured
-                            in a facility that processes dairy products.
-                        </p>
                     </div>
                 </TabsContent>
 
