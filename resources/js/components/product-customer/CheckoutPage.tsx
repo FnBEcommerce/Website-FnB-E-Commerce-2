@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { User } from '@/types';
+import { CartItem, User } from '@/types';
 import {
     Banknote,
     CreditCard,
@@ -21,12 +21,14 @@ import { useState } from 'react';
 
 interface CheckoutPageProps {
     user: User;
+    cartItems: CartItem[];
     onNavigateToLocation: () => void;
     onNavigateToHome: () => void;
 }
 
 export function CheckoutPage({
     user,
+    cartItems,
     onNavigateToLocation,
     onNavigateToHome,
 }: CheckoutPageProps) {
@@ -35,26 +37,26 @@ export function CheckoutPage({
     const [paymentMethod, setPaymentMethod] = useState('cod');
 
     // Cart items state
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: '7-Minute Khichdi - Superb Vegetable',
-            variant: '200g Pack',
-            price: 89,
-            originalPrice: 110,
-            quantity: 2,
-            image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        },
-        {
-            id: 2,
-            name: '7-Minute Khichdi - Classic Dal',
-            variant: '200g Pack',
-            price: 79,
-            originalPrice: 99,
-            quantity: 1,
-            image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        },
-    ]);
+    // const [cartItems, setCartItems] = useState([
+    //     {
+    //         id: 1,
+    //         name: '7-Minute Khichdi - Superb Vegetable',
+    //         variant: '200g Pack',
+    //         price: 89,
+    //         originalPrice: 110,
+    //         quantity: 2,
+    //         image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    //     },
+    //     {
+    //         id: 2,
+    //         name: '7-Minute Khichdi - Classic Dal',
+    //         variant: '200g Pack',
+    //         price: 79,
+    //         originalPrice: 99,
+    //         quantity: 1,
+    //         image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    //     },
+    // ]);
 
     console.log(user);
     const [deliveryAddress, setDeliveryAddress] = useState({
@@ -64,19 +66,6 @@ export function CheckoutPage({
         city: user.city,
         state: user.state,
     });
-
-    const updateQuantity = (id: number, newQuantity: number) => {
-        if (newQuantity < 1) return;
-        setCartItems((items) =>
-            items.map((item) =>
-                item.id === id ? { ...item, quantity: newQuantity } : item,
-            ),
-        );
-    };
-
-    const removeItem = (id: number) => {
-        setCartItems((items) => items.filter((item) => item.id !== id));
-    };
 
     const applyCoupon = () => {
         if (couponCode.toUpperCase() === 'SAVE20') {
@@ -90,11 +79,14 @@ export function CheckoutPage({
 
     // Calculate totals
     const subtotal = cartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) => sum + item.product.price_discount * item.quantity,
         0,
     );
     const savings = cartItems.reduce(
-        (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+        (sum, item) =>
+            sum +
+            (item.product.price_origin - item.product.price_discount) *
+                item.quantity,
         0,
     );
     const deliveryFee = subtotal > 299 ? 0 : 40;
@@ -218,8 +210,8 @@ export function CheckoutPage({
                                     >
                                         <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                                             <img
-                                                src={item.image}
-                                                alt={item.name}
+                                                src={item.product.image}
+                                                alt={item.product.name}
                                                 className="h-full w-full object-cover"
                                             />
                                         </div>
@@ -229,10 +221,10 @@ export function CheckoutPage({
                                                 className="mb-1 text-gray-900"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                {item.name}
+                                                {item.product.name}
                                             </h3>
                                             <p className="mb-2 text-[14px] text-gray-500">
-                                                {item.variant}
+                                                {item.product.category}
                                             </p>
 
                                             <div className="mb-2 flex items-center gap-2">
@@ -240,19 +232,19 @@ export function CheckoutPage({
                                                     className="text-primary"
                                                     style={{ fontWeight: 600 }}
                                                 >
-                                                    Rp {item.price}
+                                                    Rp {item.product.price_discount}
                                                 </span>
-                                                {item.originalPrice && (
+                                                {item.product.price_origin && (
                                                     <>
                                                         <span className="text-[14px] text-gray-400 line-through">
                                                             Rp
-                                                            {item.originalPrice}
+                                                            {item.product.price_origin}
                                                         </span>
                                                         <Badge className="bg-orange-100 text-[11px] text-primary">
                                                             {Math.round(
-                                                                ((item.originalPrice -
-                                                                    item.price) /
-                                                                    item.originalPrice) *
+                                                                ((item.product.price_origin -
+                                                                    item.product.price_discount) /
+                                                                    item.product.price_origin) *
                                                                     100,
                                                             )}
                                                             % OFF
@@ -264,13 +256,7 @@ export function CheckoutPage({
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center overflow-hidden rounded-lg border border-gray-300">
                                                     <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.id,
-                                                                item.quantity -
-                                                                    1,
-                                                            )
-                                                        }
+                                                        
                                                         className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
                                                     >
                                                         <Minus className="h-4 w-4 text-gray-600" />
@@ -284,13 +270,7 @@ export function CheckoutPage({
                                                         {item.quantity}
                                                     </span>
                                                     <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.id,
-                                                                item.quantity +
-                                                                    1,
-                                                            )
-                                                        }
+                                                        
                                                         className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
                                                     >
                                                         <Plus className="h-4 w-4 text-gray-600" />
@@ -298,9 +278,7 @@ export function CheckoutPage({
                                                 </div>
 
                                                 <button
-                                                    onClick={() =>
-                                                        removeItem(item.id)
-                                                    }
+                                                    
                                                     className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
@@ -313,7 +291,7 @@ export function CheckoutPage({
                                                 className="text-gray-900"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                ₹{item.price * item.quantity}
+                                                ₹{item.product.price_discount * item.quantity}
                                             </p>
                                         </div>
                                     </div>
