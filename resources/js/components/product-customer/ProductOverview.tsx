@@ -5,7 +5,6 @@ import { getCSRFToken } from '@/utils/csrf';
 import { formatPrice } from '@/utils/format-price';
 import { router } from '@inertiajs/react';
 import { Minus, Plus, Star } from 'lucide-react';
-import { useState } from 'react';
 import { useCart } from '../homepage/CartContext';
 
 type ProductWithRating = Product & {
@@ -16,15 +15,18 @@ type ProductWithRating = Product & {
 interface ProductOverviewProps {
     product: Product;
     reviews: ReviewProps;
+    buyQuantity: number;
+    onChangeBuyQuantity: (quantity: number) => void;
     onNavigateToCheckout?: () => void;
 }
 
 export function ProductOverview({
     product,
     reviews,
+    buyQuantity,
+    onChangeBuyQuantity,
     onNavigateToCheckout,
 }: ProductOverviewProps) {
-    const [quantity, setQuantity] = useState(1);
     const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
     const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
     const { cart } = useCart();
@@ -63,7 +65,7 @@ export function ProductOverview({
         router.post(
             `/cart/update/${cart.id}`,
             {
-                quantity,
+                buyQuantity,
             },
             {
                 headers: {
@@ -170,16 +172,22 @@ export function ProductOverview({
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10"
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        onClick={() =>
+                            onChangeBuyQuantity(Math.max(1, buyQuantity - 1))
+                        }
                     >
                         <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="w-12 text-center">{quantity}</span>
+                    <span className="w-12 text-center">{buyQuantity}</span>
                     <Button
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10"
-                        onClick={() => setQuantity(quantity + 1)}
+                        onClick={() =>
+                            onChangeBuyQuantity(
+                                Math.min(buyQuantity + 1, product.quantity),
+                            )
+                        }
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
