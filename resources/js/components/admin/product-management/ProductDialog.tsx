@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { ProductRow } from '@/pages/admin/product-management';
+import { ProductRow, ShopBranch } from '@/pages/admin/product-management';
 import { X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -18,6 +18,7 @@ type ProductDialogProps = {
     onClose: () => void;
     onSave: (product: Omit<ProductRow, 'id'> | ProductRow) => void;
     product: ProductRow | null;
+    shopBranches: ShopBranch[];
 };
 
 export function ProductDialog({
@@ -25,6 +26,7 @@ export function ProductDialog({
     onClose,
     onSave,
     product,
+    shopBranches,
 }: ProductDialogProps) {
     const getInitialFormData = (): ProductRow => ({
         id: product?.id || 0,
@@ -134,21 +136,11 @@ export function ProductDialog({
                                     <SelectValue placeholder="Pilih Cabang" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Jakarta Pusat">
-                                        Jakarta Pusat
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Selatan">
-                                        Jakarta Selatan
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Barat">
-                                        Jakarta Barat
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Timur">
-                                        Jakarta Timur
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Utara">
-                                        Jakarta Utara
-                                    </SelectItem>
+                                    {shopBranches.map((branch) => (
+                                        <SelectItem key={branch.id} value={branch.name}>
+                                            {branch.name}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>

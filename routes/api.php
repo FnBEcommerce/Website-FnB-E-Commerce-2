@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\TeleUsersController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopBranchController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::apiResource('products', ProductController::class);
+Route::apiResource('shop-branches', ShopBranchController::class)->only(['index']);
 
 Route::post('/send-to-n8n-prepare', function (Request $request) {
     

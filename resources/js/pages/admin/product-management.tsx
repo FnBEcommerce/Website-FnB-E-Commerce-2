@@ -25,9 +25,10 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Download, Filter, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export type ProductRow = {
     id: number;
@@ -41,6 +42,12 @@ export type ProductRow = {
     description: string;
     rating?: number;
     status?: string;
+};
+
+export type ShopBranch = {
+    id: number;
+    name: string;
+    address: string;
 };
 
 const topNav = [
@@ -72,6 +79,7 @@ const topNav = [
 
 export default function ProductManagement() {
     const [products, setProducts] = useState<ProductRow[]>([]);
+    const [shopBranches, setShopBranches] = useState<ShopBranch[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState<string>('all');
     const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -84,6 +92,7 @@ export default function ProductManagement() {
 
     useEffect(() => {
         fetchProducts();
+        fetchShopBranches();
     }, []);
 
     const fetchProducts = async () => {
@@ -92,6 +101,15 @@ export default function ProductManagement() {
             setProducts(response.data);
         } catch (error) {
             console.error('Failed to fetch products:', error);
+        }
+    };
+
+    const fetchShopBranches = async () => {
+        try {
+            const response = await axios.get('/api/shop-branches');
+            setShopBranches(response.data);
+        } catch (error) {
+            console.error('Failed to fetch shop branches:', error);
         }
     };
 
@@ -112,15 +130,36 @@ export default function ProductManagement() {
         });
 
         try {
+            // console.log('formData', formData.keys(), formData.values());
+            formData.forEach((value, key) => {
+                console.log(key, value);
+            });
             const response = await axios.post('/api/products', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            console.log(response);
             setProducts([...products, response.data]);
             handleCloseDialog();
         } catch (error) {
-            console.error('Failed to add product:', error);
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    errors: Record<string, string[]>;
+                }>;
+                if (axiosError.response?.data?.errors) {
+                    const errorMessages = Object.values(
+                        axiosError.response.data.errors,
+                    ).flat();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: `<ul class="list-disc list-inside text-left">${errorMessages.map((e) => `<li>${e}</li>`).join('')}</ul>`,
+                    });
+                }
+            } else {
+                console.error('Failed to add product:', error);
+            }
         }
     };
 
@@ -151,13 +190,28 @@ export default function ProductManagement() {
                     },
                 },
             );
-            console.log(response);
             setProducts(
                 products.map((p) => (p.id === product.id ? response.data : p)),
             );
             handleCloseDialog();
         } catch (error) {
-            console.error('Failed to edit product:', error);
+            if (axios.isAxiosError(error)) {
+                const axiosError = error as AxiosError<{
+                    errors: Record<string, string[]>;
+                }>;
+                if (axiosError.response?.data?.errors) {
+                    const errorMessages = Object.values(
+                        axiosError.response.data.errors,
+                    ).flat();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error',
+                        html: `<ul class="list-disc list-inside text-left">${errorMessages.map((e) => `<li>${e}</li>`).join('')}</ul>`,
+                    });
+                }
+            } else {
+                console.error('Failed to edit product:', error);
+            }
         }
     };
 
@@ -399,6 +453,7 @@ export default function ProductManagement() {
                 onClose={handleCloseDialog}
                 onSave={editingProduct ? handleEditProduct : handleAddProduct}
                 product={editingProduct}
+                shopBranches={shopBranches}
             />
         </AuthenticatedLayout>
     );
