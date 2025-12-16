@@ -56,6 +56,7 @@ export function CheckoutPage({
         },
     ]);
 
+    console.log(user);
     const [deliveryAddress, setDeliveryAddress] = useState({
         name: user.name,
         phone: user.phone_number,

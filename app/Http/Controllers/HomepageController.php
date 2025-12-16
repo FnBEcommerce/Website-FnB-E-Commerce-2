@@ -157,7 +157,11 @@ class HomepageController extends Controller
     }
 
     public function productCart() {
-        return Inertia::render('homepage/product-cart');
+        $user = Auth::user();
+        $props = [
+            'user' => $user,
+        ];
+        return Inertia::render('homepage/product-cart', $props);
     }
 
     public function order() {

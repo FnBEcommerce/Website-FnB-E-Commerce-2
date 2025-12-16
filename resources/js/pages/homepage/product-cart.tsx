@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import HomepageLayout from '@/layouts/client-side/HomepageLayout';
-import { UserInfo } from '@/types/user';
+import { Cart, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
 import { Link, router } from '@inertiajs/react';
 import {
@@ -18,10 +18,8 @@ import {
 } from 'lucide-react';
 import { ReactNode, useState } from 'react';
 
-import { Cart } from '@/types';
-
 type productCartProps = {
-    user: UserInfo;
+    user: User;
     cart: Cart;
 };
 
@@ -509,7 +507,7 @@ export default function CartPage({ user, cart }: productCartProps) {
             {currentPage === 'checkout' && (
                 <main className="flex-1">
                     <CheckoutPage
-                        // user={user}
+                        user={user}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('/')}
                     />
