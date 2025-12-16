@@ -16,10 +16,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TeleUsersController;
 
-// Route::get('/', function () {
-//     return Inertia::render('home');
-// })->name('home');
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
@@ -64,11 +62,11 @@ Route::middleware(['role:admin'])->prefix('/admin')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return Inertia::render('dashboard-laravel');
     })->name('dashboard');
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::put('/notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
     Route::post('/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
 });
 
@@ -84,5 +82,9 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     Route::post('/product/review', [ProductController::class, 'addReview']);
     // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
 });
+
+
+Route::get('courier', [TeleUsersController::class, 'index']);
+
 
 require __DIR__.'/settings.php';

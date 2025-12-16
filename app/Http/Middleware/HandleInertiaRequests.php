@@ -42,7 +42,7 @@ class HandleInertiaRequests extends Middleware
 
         $notifications = [];
         if (Auth::check()) {
-            $notifications = Notification::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+            $notifications = Notification::where('users_id', Auth::id())->orderBy('created_at', 'desc')->get();
         }
 
         return [
