@@ -41,9 +41,16 @@ class HandleInertiaRequests extends Middleware
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         $notifications = [];
+        $cart = null;
+        
         if (Auth::check()) {
             $notifications = Notification::where('users_id', Auth::id())->orderBy('created_at', 'desc')->get();
+            $cart = Auth::user()
+                ->cart()
+                ->with('items.product')
+                ->first();
         }
+
 
         return [
             ...parent::share($request),
@@ -53,6 +60,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'notifications' => $notifications,
+            'cart' => $cart,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

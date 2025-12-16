@@ -1,9 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Product, ReviewProps } from '@/types';
+import { getCSRFToken } from '@/utils/csrf';
 import { formatPrice } from '@/utils/format-price';
+import { router } from '@inertiajs/react';
 import { Minus, Plus, Star } from 'lucide-react';
 import { useState } from 'react';
+import { useCart } from '../homepage/CartContext';
 
 type ProductWithRating = Product & {
     rating: Number;
@@ -24,6 +27,59 @@ export function ProductOverview({
     const [quantity, setQuantity] = useState(1);
     const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
     const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
+    const { cart } = useCart();
+
+    console.log({
+        cart,
+        // cartItems,
+        // cartCount,
+        // addToCart,
+        // removeFromCart,
+        // updateQuantity,
+        // clearCart,
+    });
+
+    const isAlreadyAddedToCart = cart.items
+        .map((item) => item.id)
+        .includes(product.id);
+
+    const addCart = () => {
+        const csrf = getCSRFToken();
+        router.post(
+            '/cart/add',
+            {
+                product_id: product.id,
+            },
+            {
+                headers: {
+                    'X-CSRF-TOKEN': csrf ?? '',
+                },
+            },
+        );
+    };
+
+    const updateCart = () => {
+        const csrf = getCSRFToken();
+        router.post(
+            `/cart/update/${cart.id}`,
+            {
+                quantity,
+            },
+            {
+                headers: {
+                    'X-CSRF-TOKEN': csrf ?? '',
+                },
+            },
+        );
+    };
+
+    const handleAddToCart = () => {
+        if (isAlreadyAddedToCart) {
+            updateCart();
+        } else {
+            addCart();
+        }
+    };
     // console.log(reviews);
 
     // const features = [
@@ -135,6 +191,7 @@ export function ProductOverview({
                 <Button
                     className="flex-1 bg-[#1B263B] py-6 text-[16px] text-white hover:bg-[#273746]"
                     style={{ fontWeight: 600 }}
+                    onClick={handleAddToCart}
                 >
                     ADD TO CART
                 </Button>

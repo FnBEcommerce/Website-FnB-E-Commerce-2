@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { Product } from '@/types/product';
+import HomepageLayout from '@/layouts/client-side/HomepageLayout';
 import { UserInfo } from '@/types/user';
+import { formatPrice } from '@/utils/format-price';
 import { Link } from '@inertiajs/react';
 import {
     ChevronRight,
@@ -15,69 +16,26 @@ import {
     ShoppingCart,
     Trash2,
 } from 'lucide-react';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-type CartItem = Product & {
-    quantity: number;
-    selected: boolean;
-    inStock: boolean;
-};
+import { Cart } from '@/types';
 
 type productCartProps = {
     user: UserInfo;
-    cartItem: CartItem;
+    cart: Cart;
 };
 
-export default function CartPage({ user, cartItem }: productCartProps) {
+export default function CartPage({ user, cart }: productCartProps) {
     const [currentPage, setCurrentPage] = useState<
         'product-cart' | 'checkout' | 'location' | '/'
     >('product-cart');
-    const [cartItems, setCartItems] = useState<CartItem[]>([
-        {
-            id: 1,
-            name: '7-Minute Khichdi - Superb Vegetable',
-            quantity: 2,
-            priceDiscount: 120,
-            priceOrigin: 150,
-            category: 'Ready to Eat',
-            image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+    const [cartItems, setCartItems] = useState(
+        cart.items.map((item) => ({
+            ...item,
             selected: true,
-            inStock: true,
-        },
-        {
-            id: 2,
-            name: '7-Minute Khichdi - Classic Dal',
-            priceDiscount: 120,
-            priceOrigin: 150,
-            category: 'Ready to Eat',
-            quantity: 1,
-            image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            selected: true,
-            inStock: true,
-        },
-        {
-            id: 3,
-            name: '7-Minute Khichdi - Spicy Tadka',
-            quantity: 3,
-            image: 'https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGljeSUyMGluZGlhbiUyMGZvb2R8ZW58MXx8fHwxNzM0MDQzMzAyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            selected: false,
-            inStock: true,
-            priceDiscount: 120,
-            priceOrigin: 150,
-            category: 'Ready to Eat',
-        },
-        {
-            id: 4,
-            name: '7-Minute Khichdi - Mixed Lentils',
-            quantity: 1,
-            image: 'https://images.unsplash.com/photo-1698573504114-20125ec6adae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZW50aWwlMjByaWNlJTIwZGlzaHxlbnwxfHx8fDE3MzQwNDMzMDN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-            selected: true,
-            inStock: false,
-            priceDiscount: 120,
-            priceOrigin: 150,
-            category: 'Ready to Eat',
-        },
-    ]);
+            inStock: item.product.quantity > 0,
+        })),
+    );
 
     const updateQuantity = (id: number, newQuantity: number) => {
         if (newQuantity < 1) return;
@@ -113,7 +71,7 @@ export default function CartPage({ user, cartItem }: productCartProps) {
         (item) => item.selected && item.inStock,
     );
     const subtotal = selectedItems.reduce(
-        (sum, item) => sum + item.priceDiscount * item.quantity,
+        (sum, item) => sum + item.product.price_discount * item.quantity,
         0,
     );
     const deliveryFee = subtotal > 299 ? 0 : 40;
@@ -218,8 +176,14 @@ export default function CartPage({ user, cartItem }: productCartProps) {
 
                                                     <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                                                         <img
-                                                            src={item.image}
-                                                            alt={item.name}
+                                                            src={
+                                                                item.product
+                                                                    .image || ''
+                                                            }
+                                                            alt={
+                                                                item.product
+                                                                    .name
+                                                            }
                                                             className={`h-full w-full object-cover ${!item.inStock ? 'opacity-50 grayscale' : ''}`}
                                                         />
                                                         {!item.inStock && (
@@ -243,7 +207,7 @@ export default function CartPage({ user, cartItem }: productCartProps) {
                                                                 fontWeight: 600,
                                                             }}
                                                         >
-                                                            {item.name}
+                                                            {item.product.name}
                                                         </h3>
 
                                                         <div className="mb-3 flex items-center gap-2">
@@ -253,24 +217,32 @@ export default function CartPage({ user, cartItem }: productCartProps) {
                                                                     fontWeight: 600,
                                                                 }}
                                                             >
-                                                                ₹
-                                                                {
-                                                                    item.priceDiscount
-                                                                }
+                                                                {formatPrice(
+                                                                    item.product
+                                                                        .price_discount,
+                                                                )}
                                                             </span>
-                                                            {item.priceOrigin && (
+                                                            {item.product
+                                                                .price_origin && (
                                                                 <>
                                                                     <span className="text-[14px] text-gray-400 line-through">
-                                                                        ₹
-                                                                        {
-                                                                            item.priceOrigin
-                                                                        }
+                                                                        {formatPrice(
+                                                                            item
+                                                                                .product
+                                                                                .price_origin,
+                                                                        )}
                                                                     </span>
                                                                     <Badge className="bg-orange-100 text-[11px] text-[#FF6900]">
                                                                         {Math.round(
-                                                                            ((item.priceOrigin -
-                                                                                item.priceDiscount) /
-                                                                                item.priceOrigin) *
+                                                                            ((item
+                                                                                .product
+                                                                                .price_origin -
+                                                                                item
+                                                                                    .product
+                                                                                    .price_discount) /
+                                                                                item
+                                                                                    .product
+                                                                                    .price_origin) *
                                                                                 100,
                                                                         )}
                                                                         % OFF
@@ -355,9 +327,11 @@ export default function CartPage({ user, cartItem }: productCartProps) {
                                                                 fontWeight: 600,
                                                             }}
                                                         >
-                                                            ₹
-                                                            {item.priceDiscount *
-                                                                item.quantity}
+                                                            {formatPrice(
+                                                                item.product
+                                                                    .price_discount *
+                                                                    item.quantity,
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -390,13 +364,15 @@ export default function CartPage({ user, cartItem }: productCartProps) {
                                                     className="flex justify-between text-gray-600"
                                                 >
                                                     <span className="text-sm">
-                                                        {item.name} ×{' '}
+                                                        {item.product.name} ×{' '}
                                                         {item.quantity}
                                                     </span>
                                                     <span className="text-sm font-medium">
-                                                        ₹
-                                                        {item.priceDiscount *
-                                                            item.quantity}
+                                                        {formatPrice(
+                                                            item.product
+                                                                .price_discount *
+                                                                item.quantity,
+                                                        )}
                                                     </span>
                                                 </div>
                                             ))}
@@ -441,7 +417,7 @@ export default function CartPage({ user, cartItem }: productCartProps) {
                                             >
                                                 <span>Total Amount</span>
                                                 <span className="text-[#FF6900]">
-                                                    ₹{total}
+                                                    {formatPrice(total)}
                                                 </span>
                                             </div>
                                             {/* 
@@ -555,3 +531,5 @@ function Label({
         </label>
     );
 }
+
+CartPage.layout = (page: ReactNode) => <HomepageLayout>{page}</HomepageLayout>;

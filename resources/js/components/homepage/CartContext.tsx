@@ -1,14 +1,17 @@
+import { Cart, CartItem } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-interface CartItem {
-    id: number | string;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
-}
+// export interface SimpleCartItem {
+//     id: number | string;
+//     name: string;
+//     price: string;
+//     quantity: number;
+//     image: string;
+// }
 
 interface CartContextType {
+    cart: Cart;
     cartItems: CartItem[];
     cartCount: number;
     addToCart: (item: Omit<CartItem, 'quantity'>) => void;
@@ -20,7 +23,18 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const { cart } = usePage().props;
+    console.log('cart', cart);
+    console.log('cart2', {});
+    const initialCartItems = cart.items.map((item) => ({
+        id: item.id,
+        name: item.product.name,
+        price: item.product.price_discount || item.product.price_origin,
+        quantity: item.quantity,
+        image: item.product.image,
+    }));
+
+    const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
 
     const cartCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -63,6 +77,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return (
         <CartContext.Provider
             value={{
+                cart,
                 cartItems,
                 cartCount,
                 addToCart,

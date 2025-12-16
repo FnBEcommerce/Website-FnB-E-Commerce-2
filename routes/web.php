@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TeleUsersController;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
@@ -50,6 +51,12 @@ Route::middleware(['role:user,admin'])->group(function() {
 
     Route::middleware('order.owner')->group(function() {
         Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
+    });
+
+    Route::prefix('/cart')->group(function() {
+        Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+        Route::post('/update/{item}', [CartController::class, 'update'])->name('cart.update');
+        Route::delete('/destroy/{item}', [CartController::class, 'destroy'])->name('cart.destroy');
     });
 });
 

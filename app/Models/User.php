@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(ShopBranch::class, 'shop_branch_user');
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 }

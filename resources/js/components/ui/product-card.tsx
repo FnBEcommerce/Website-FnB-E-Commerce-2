@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import type { Product } from '@/types';
+import { useCart } from '../homepage/CartContext';
 
 // interface Product {
 //     id: number | string;
