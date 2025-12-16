@@ -95,6 +95,10 @@ class UserController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'label' => 'nullable|string|max:255',
+            'alt_street' => 'nullable|string|max:255',
+            'alt_city' => 'nullable|string|max:255',
+            'alt_state' => 'nullable|string|max:255',
+            'alt_label' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8',
         ]);
 
@@ -111,6 +115,10 @@ class UserController extends Controller
             'city' => $validatedData['city'],
             'state' => $validatedData['state'],
             'label' => $validatedData['label'],
+            'alt_street' => $validatedData['alt_street'],
+            'alt_city' => $validatedData['alt_city'],
+            'alt_state' => $validatedData['alt_state'],
+            'alt_label' => $validatedData['alt_label'],
         ]);
         $user->save();
         return redirect()->back()->with('success', 'Profile updated successfully.');
