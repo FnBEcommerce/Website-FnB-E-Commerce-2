@@ -35,7 +35,7 @@ export type User = {
     id: number;
     name: string;
     email: string;
-    password: string;
+
     email_verified_at: string | null;
     phone_number: string | null;
     birth_date: string | null;
