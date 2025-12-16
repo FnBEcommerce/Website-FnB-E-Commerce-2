@@ -14,6 +14,8 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TeleUsersController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -23,6 +25,7 @@ Route::get('/index', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('index');
+
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
@@ -48,6 +51,9 @@ Route::middleware(['role:user,admin'])->group(function() {
     Route::get('/products2/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
     Route::get('/profile', [HomepageController::class, 'userProfile']);
     Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
+    Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
 
     Route::middleware('order.owner')->group(function() {
         Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
@@ -77,5 +83,9 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
 
 });
+
+
+Route::get('courier', [TeleUsersController::class, 'index']);
+
 
 require __DIR__.'/settings.php';

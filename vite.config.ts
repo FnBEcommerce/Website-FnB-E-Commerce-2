@@ -24,4 +24,14 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
+    server: {
+        // 1. Izinkan akses dari mana saja (mengatasi error CORS)
+        cors: {
+            origin: '*', 
+        },
+        // 2. Paksa HMR tetap connect ke localhost agar tidak bingung
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });
