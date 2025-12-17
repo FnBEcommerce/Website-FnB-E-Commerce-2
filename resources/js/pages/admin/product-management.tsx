@@ -144,7 +144,13 @@ export default function ProductManagement({
                 },
             });
             console.log(response);
-            setProducts([...products, response.data]);
+
+            const newProduct = {
+                ...response.data,
+                branch: product.branch, // Tambah branch di sini karena tidak ada pada tabel product
+                rating: Number(product.rating || 0),
+            };
+            setProducts([...products, newProduct]);
             handleCloseDialog();
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -194,8 +200,14 @@ export default function ProductManagement({
                     },
                 },
             );
+            console.log('response', response);
+            const newProduct = {
+                ...response.data,
+                branch: product.branch, // Tambah branch di sini karena tidak ada pada tabel product
+                rating: Number(product.rating || 0),
+            };
             setProducts(
-                products.map((p) => (p.id === product.id ? response.data : p)),
+                products.map((p) => (p.id === product.id ? newProduct : p)),
             );
             handleCloseDialog();
         } catch (error) {

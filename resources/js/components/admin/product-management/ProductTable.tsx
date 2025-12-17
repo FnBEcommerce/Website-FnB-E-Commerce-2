@@ -15,7 +15,6 @@ export function ProductTable({
     onEdit,
     onDelete,
 }: ProductTableProps) {
-    console.log(products);
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('id-ID', {
             style: 'currency',

@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { Product, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
+import { router } from '@inertiajs/react';
 import {
     Banknote,
     CreditCard,
@@ -38,6 +39,53 @@ export function OneCheckoutPage({
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
     const [paymentMethod, setPaymentMethod] = useState('cod');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+    const handlePlaceOrder = async () => {
+        setIsPlacingOrder(true);
+        try {
+            const response = await fetch('/api/orders/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': (
+                        document.querySelector(
+                            'meta[name="csrf-token"]',
+                        ) as HTMLMetaElement
+                    )?.content,
+                },
+                body: JSON.stringify({
+                    cart_items: [
+                        {
+                            product_id: product.id,
+                            quantity: buyQuantity,
+                        },
+                    ],
+                    delivery_fee: deliveryFee,
+                    payment_method: paymentMethod,
+                    delivery_address: deliveryAddress,
+                    subtotal: subtotal,
+                    total: total,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal membuat pesanan');
+            }
+
+            const data = await response.json();
+            console.log('data', data);
+
+            router.visit(
+                `/payment/fake?order_id=${data.order_id}&total=${total}`,
+            );
+        } catch (error) {
+            console.error(error);
+            alert('Gagal membuat pesanan. Mohon coba lagi.');
+        } finally {
+            setIsPlacingOrder(false);
+        }
+    };
 
     // Cart items state
     // const [cartItems, setCartItems] = useState([
@@ -81,11 +129,12 @@ export function OneCheckoutPage({
     };
 
     // Calculate totals
-    const subtotal = product.price_discount ?? product.price_origin;
+    const subtotal =
+        (product.price_discount ?? product.price_origin) * buyQuantity;
     const savings =
         (product.price_origin || product.price_discount) -
         product.price_discount;
-    const deliveryFee = subtotal > 50000 ? 0 : 11000;
+    const deliveryFee = subtotal > 20000 ? 0 : 11000;
     const couponDiscount =
         appliedCoupon === 'SAVE20'
             ? subtotal * 0.2
@@ -518,7 +567,7 @@ export function OneCheckoutPage({
                                                 className="text-[#059669]"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                FREE
+                                                GRATIS
                                             </span>
                                         ) : (
                                             <span>
@@ -564,6 +613,8 @@ export function OneCheckoutPage({
                                 <Button
                                     className="mt-5 w-full bg-primary py-6 text-[16px] text-white hover:bg-orange-600"
                                     style={{ fontWeight: 600 }}
+                                    onClick={handlePlaceOrder}
+                                    disabled={isPlacingOrder}
                                 >
                                     Place Order • {formatPrice(total)}
                                 </Button>
