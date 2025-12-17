@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { CartItem, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
+import { pay } from '@/utils/midtrans';
 import { router } from '@inertiajs/react';
 import {
     Banknote,
@@ -20,6 +21,7 @@ import {
     Wallet,
 } from 'lucide-react';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface CheckoutPageProps {
     user: User;
@@ -136,12 +138,24 @@ export function CheckoutPage({
             const data = await response.json();
             console.log('data', data);
 
-            router.visit(
-                `/payment/fake?order_id=${data.order_id}&total=${total}`,
-            );
+            pay(data.snap_token, {
+                async onSuccess(result) {
+                    router.visit('/product/status');
+                },
+                async onError(result) {
+                    await Swal.fire({
+                        title: 'Pembayaran gagal. Mohon coba lagi',
+                        icon: 'error',
+                    });
+                },
+                onClose() {},
+            });
         } catch (error) {
             console.error(error);
-            alert('Gagal membuat pesanan. Mohon coba lagi.');
+            await Swal.fire({
+                title: 'Gagal membuat pesanan. Mohon coba lagi',
+                icon: 'error',
+            });
         } finally {
             setIsPlacingOrder(false);
         }
