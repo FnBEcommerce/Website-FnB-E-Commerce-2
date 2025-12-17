@@ -170,6 +170,12 @@ export default function OrderStatusPage({
         },
         {
             key: 'cooking' as OrderStatus,
+            label: 'Cooking',
+            icon: ChefHat,
+            description: 'Your order is being prepared',
+        },
+        {
+            key: 'cooking' as OrderStatus,
             label: 'Sedang di masak',
             icon: ChefHat,
             description: 'Orderan anda sedang di persiapkan di dapur',
