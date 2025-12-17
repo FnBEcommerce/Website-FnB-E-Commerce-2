@@ -456,10 +456,14 @@ export function OneCheckoutPage({
                             </div>
 
                             <Button
+                                onClick={handlePlaceOrder}
+                                disabled={isPlacingOrder}
                                 className="mt-5 w-full bg-primary py-6 text-[16px] text-white hover:bg-orange-600"
                                 style={{ fontWeight: 600 }}
                             >
-                                Buat Pesanan • {formatPrice(total)}
+                                {isPlacingOrder
+                                    ? 'Membuat pesanan...'
+                                    : `Buat Pesanan • ${formatPrice(total)}`}
                             </Button>
 
                             <p className="mt-3 text-center text-[12px] text-gray-500">
