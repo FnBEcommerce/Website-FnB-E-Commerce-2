@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // import { CheckoutPage } from './components/CheckoutPage';
-import { CheckoutPage } from '@/components/product-customer/CheckoutPage';
 import { CustomerReviews } from '@/components/product-customer/CustomerReview';
 import { LocationPage } from '@/components/product-customer/LocationPage';
+import { OneCheckoutPage } from '@/components/product-customer/OneCheckoutPage';
 import { ProductDetails } from '@/components/product-customer/ProductDetails';
 import { ProductImageGallery } from '@/components/product-customer/ProductImageGallery';
 import { ProductOverview } from '@/components/product-customer/ProductOverview';
@@ -33,6 +33,7 @@ export default function ProductDetailsPage({
     const [currentPage, setCurrentPage] = useState<
         'product' | 'checkout' | 'location'
     >('product');
+    const [buyQuantity, setBuyQuantity] = useState(1);
 
     return (
         <div className="flex min-h-screen flex-col bg-white">
@@ -77,6 +78,8 @@ export default function ProductDetailsPage({
                                     onNavigateToCheckout={() =>
                                         setCurrentPage('checkout')
                                     }
+                                    buyQuantity={buyQuantity}
+                                    onChangeBuyQuantity={setBuyQuantity}
                                 />
                             </div>
                         </div>
@@ -98,8 +101,10 @@ export default function ProductDetailsPage({
 
             {currentPage === 'checkout' && (
                 <main className="flex-1">
-                    <CheckoutPage
+                    <OneCheckoutPage
                         user={user}
+                        product={product}
+                        buyQuantity={buyQuantity}
                         onNavigateToLocation={() => setCurrentPage('location')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />

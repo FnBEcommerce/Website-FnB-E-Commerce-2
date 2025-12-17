@@ -603,7 +603,7 @@ class AdminController extends Controller
                 'category' => $product->category,
                 'price_origin' => $product->price_origin,
                 'price_discount' => $product->price_discount ?? null,
-                'stock' => $product->quantity ?? 0,
+                'quantity' => $product->quantity ?? 0,
                 'branch' => $shopBranchProduct->shopBranch->name ?? 'N/A',
                 'image' => $product->image,
                 'description' => $product->description,
@@ -615,6 +615,8 @@ class AdminController extends Controller
         $props = [
             'products' => $products
         ];
+
+        // return response()->json($products);
 
         return Inertia::render('admin/product-management', $props);
     }

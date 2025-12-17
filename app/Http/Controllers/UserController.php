@@ -95,35 +95,16 @@ class UserController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'label' => 'nullable|string|max:255',
+            'alt_street' => 'nullable|string|max:255',
+            'alt_city' => 'nullable|string|max:255',
+            'alt_state' => 'nullable|string|max:255',
+            'alt_label' => 'nullable|string|max:255',
+            'password' => 'nullable|string|min:8',
         ]);
 
-        /* 
-        {
-            "id": 1,
-            "name": "admin",
-            "email": "admin@example.com",
-            "email_verified_at": "2025-06-06T21:39:09.000000Z",
-            "two_factor_secret": null,
-            "two_factor_recovery_codes": null,
-            "two_factor_confirmed_at": null,
-            "created_at": "2025-06-06T21:39:09.000000Z",
-            "updated_at": "2025-06-06T21:39:09.000000Z",
-            "phone_number": "(+62) 681 7648 6762",
-            "birth_date": "1980-07-31T00:00:00.000000Z",
-            "gender": "female",
-            "street": "Ki. Siliwangi No. 121",
-            "city": "Bengkulu",
-            "state": "Jambi",
-            "label": "home",
-            "alt_street": null,
-            "alt_city": null,
-            "alt_state": null,
-            "alt_label": null,
-            "role": "admin"
+        if (!empty($validatedData['password'])) {
+            $user->password = Hash::make($validatedData['password']);
         }
-        */
-
-
         $user->update([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
@@ -134,8 +115,12 @@ class UserController extends Controller
             'city' => $validatedData['city'],
             'state' => $validatedData['state'],
             'label' => $validatedData['label'],
+            'alt_street' => $validatedData['alt_street'],
+            'alt_city' => $validatedData['alt_city'],
+            'alt_state' => $validatedData['alt_state'],
+            'alt_label' => $validatedData['alt_label'],
         ]);
-
+        $user->save();
         return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 }

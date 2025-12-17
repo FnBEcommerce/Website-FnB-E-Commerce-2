@@ -22,24 +22,10 @@ type UserProfilePageProps = {
 
 export default function UserProfilePage({ user }: UserProfilePageProps) {
     const [isEditing, setIsEditing] = useState(false);
-    const [isEditingAddress, setIsEditingAddress] = useState(false);
     const [isEditingPayment, setIsEditingPayment] = useState(false);
 
     const [profileData, setProfileData] = useState<User>(user);
     console.log(profileData);
-
-    const [addressData, setAddressData] = useState({
-        address: '123, Green Park Colony, Sector 12',
-        landmark: 'Near City Mall',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        pincode: '400001',
-        address2: '',
-        landmark2: '',
-        city2: '',
-        state2: '',
-        pincode2: '',
-    });
 
     const [paymentMethods, setPaymentMethods] = useState([
         {
@@ -60,10 +46,6 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
             ...prev,
             [field]: value,
         }));
-    };
-
-    const handleAddressChange = (field: string, value: string) => {
-        setAddressData((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleAddPaymentMethod = () => {
@@ -98,11 +80,6 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
         });
         console.log(profileData);
         alert('Profile updated successfully!');
-    };
-
-    const handleSaveAddress = () => {
-        setIsEditingAddress(false);
-        alert('Address updated successfully!');
     };
 
     const handleSavePayment = () => {
@@ -332,28 +309,6 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     />
                                 </div>
 
-                                <div>
-                                    <Label
-                                        htmlFor="password"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Password
-                                    </Label>
-                                    <Input
-                                        id="password"
-                                        type="tel"
-                                        value={profileData.password}
-                                        onChange={(e) =>
-                                            handleInputChange(
-                                                'password',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditing}
-                                        className="mt-1"
-                                    />
-                                </div>
-
                                 <div className="md:col-span-2">
                                     <Label
                                         htmlFor="gender"
@@ -435,21 +390,48 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
 
                         {/* Address Information */}
                         <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-5 flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
-                                    <MapPin className="h-5 w-5 text-[#FF6900]" />
+                            <div className="mb-5 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
+                                        <MapPin className="h-5 w-5 text-[#FF6900]" />
+                                    </div>
+                                    <div>
+                                        <h2
+                                            className="text-[20px] text-gray-900"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            Address Information
+                                        </h2>
+                                        <p className="text-[14px] text-gray-500">
+                                            Update your default delivery address
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2
-                                        className="text-[20px] text-gray-900"
-                                        style={{ fontWeight: 600 }}
-                                    >
-                                        Address Information
-                                    </h2>
-                                    <p className="text-[14px] text-gray-500">
-                                        Update your default delivery address
-                                    </p>
-                                </div>
+                                <Button
+                                    onClick={() =>
+                                        isEditing
+                                            ? handleSave()
+                                            : setIsEditing(true)
+                                    }
+                                    className={
+                                        isEditing
+                                            ? 'bg-[#FF6900] text-white hover:bg-[#E55D00]'
+                                            : 'border-[#FF6900] text-[#FF6900] hover:bg-orange-50'
+                                    }
+                                    variant={isEditing ? 'default' : 'outline'}
+                                >
+                                    {isEditing ? (
+                                        <>
+                                            <Save className="mr-2 h-4 w-4" />
+                                            Save Changes
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Edit2 className="mr-2 h-4 w-4" />
+                                            Edit Address
+                                        </>
+                                    )}
+                                </Button>
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -469,28 +451,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <Label
-                                        htmlFor="landmark"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Landmark
-                                    </Label>
-                                    <Input
-                                        id="landmark"
-                                        value={addressData.landmark}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'landmark',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -511,7 +472,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -532,28 +493,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                    />
-                                </div>
-
-                                <div>
-                                    <Label
-                                        htmlFor="pincode"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Pincode
-                                    </Label>
-                                    <Input
-                                        id="pincode"
-                                        value={addressData.pincode}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'pincode',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                     />
                                 </div>
@@ -590,31 +530,9 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter secondary address"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2">
-                                    <Label
-                                        htmlFor="landmark2"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Landmark
-                                    </Label>
-                                    <Input
-                                        id="landmark2"
-                                        value={addressData.landmark2}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'landmark2',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                        placeholder="Enter landmark"
                                     />
                                 </div>
 
@@ -634,7 +552,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter city"
                                     />
@@ -656,52 +574,49 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                                 e.target.value,
                                             )
                                         }
-                                        disabled={!isEditingAddress}
+                                        disabled={!isEditing}
                                         className="mt-1"
                                         placeholder="Enter state"
                                     />
                                 </div>
-
-                                <div>
-                                    <Label
-                                        htmlFor="pincode2"
-                                        className="mb-2 text-gray-700"
-                                    >
-                                        Pincode
-                                    </Label>
-                                    <Input
-                                        id="pincode2"
-                                        value={addressData.pincode2}
-                                        onChange={(e) =>
-                                            handleAddressChange(
-                                                'pincode2',
-                                                e.target.value,
-                                            )
-                                        }
-                                        disabled={!isEditingAddress}
-                                        className="mt-1"
-                                        placeholder="Enter pincode"
-                                    />
-                                </div>
                             </div>
+                        </Card>
 
-                            <div className="mt-4 flex justify-end">
+                        {/* Payment Methods */}
+                        <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            <div className="mb-5 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
+                                        <CreditCard className="h-5 w-5 text-[#FF6900]" />
+                                    </div>
+                                    <div>
+                                        <h2
+                                            className="text-[20px] text-gray-900"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            Payment Methods
+                                        </h2>
+                                        <p className="text-[14px] text-gray-500">
+                                            Manage your payment methods
+                                        </p>
+                                    </div>
+                                </div>
                                 <Button
                                     onClick={() =>
-                                        isEditingAddress
-                                            ? handleSaveAddress()
-                                            : setIsEditingAddress(true)
+                                        isEditingPayment
+                                            ? handleSavePayment()
+                                            : setIsEditingPayment(true)
                                     }
                                     className={
-                                        isEditingAddress
+                                        isEditingPayment
                                             ? 'bg-[#FF6900] text-white hover:bg-[#E55D00]'
                                             : 'border-[#FF6900] text-[#FF6900] hover:bg-orange-50'
                                     }
                                     variant={
-                                        isEditingAddress ? 'default' : 'outline'
+                                        isEditingPayment ? 'default' : 'outline'
                                     }
                                 >
-                                    {isEditingAddress ? (
+                                    {isEditingPayment ? (
                                         <>
                                             <Save className="mr-2 h-4 w-4" />
                                             Save Changes
@@ -709,123 +624,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     ) : (
                                         <>
                                             <Edit2 className="mr-2 h-4 w-4" />
-                                            Edit Address
+                                            Edit Payment Methods
                                         </>
                                     )}
                                 </Button>
-                            </div>
-                        </Card>
-                        {/* Account Settings */}
-                        {/* <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-5 flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
-                                    <Mail className="h-5 w-5 text-[#FF6900]" />
-                                </div>
-                                <div>
-                                    <h2
-                                        className="text-[20px] text-gray-900"
-                                        style={{ fontWeight: 600 }}
-                                    >
-                                        Account Settings
-                                    </h2>
-                                    <p className="text-[14px] text-gray-500">
-                                        Manage your account preferences
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between rounded-lg bg-gray-50 p-4">
-                                    <div>
-                                        <p
-                                            className="text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            Email Notifications
-                                        </p>
-                                        <p className="text-[14px] text-gray-500">
-                                            Receive updates about orders and
-                                            offers
-                                        </p>
-                                    </div>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        className="h-5 w-5 accent-[#FF6900]"
-                                        disabled={!isEditing}
-                                    />
-                                </div>
-
-                                <div className="flex items-center justify-between rounded-lg bg-gray-50 p-4">
-                                    <div>
-                                        <p
-                                            className="text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            SMS Notifications
-                                        </p>
-                                        <p className="text-[14px] text-gray-500">
-                                            Get delivery updates via SMS
-                                        </p>
-                                    </div>
-                                    <input
-                                        type="checkbox"
-                                        defaultChecked
-                                        className="h-5 w-5 accent-[#FF6900]"
-                                        disabled={!isEditing}
-                                    />
-                                </div>
-
-                                <div className="flex items-center justify-between rounded-lg bg-gray-50 p-4">
-                                    <div>
-                                        <p
-                                            className="text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            Promotional Emails
-                                        </p>
-                                        <p className="text-[14px] text-gray-500">
-                                            Receive special offers and deals
-                                        </p>
-                                    </div>
-                                    <input
-                                        type="checkbox"
-                                        className="h-5 w-5 accent-[#FF6900]"
-                                        disabled={!isEditing}
-                                    />
-                                </div>
-                            </div>
-
-                            <Separator className="my-6" />
-
-                            <div className="space-y-3">
-                                <button className="text-[14px] text-[#FF6900] hover:underline">
-                                    Change Password
-                                </button>
-                                <br />
-                                <button className="text-[14px] text-red-500 hover:underline">
-                                    Delete Account
-                                </button>
-                            </div>
-                        </Card> */}
-
-                        {/* Payment Methods */}
-                        <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-5 flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
-                                    <CreditCard className="h-5 w-5 text-[#FF6900]" />
-                                </div>
-                                <div>
-                                    <h2
-                                        className="text-[20px] text-gray-900"
-                                        style={{ fontWeight: 600 }}
-                                    >
-                                        Payment Methods
-                                    </h2>
-                                    <p className="text-[14px] text-gray-500">
-                                        Manage your payment methods
-                                    </p>
-                                </div>
                             </div>
 
                             <div className="space-y-4">
@@ -907,36 +709,6 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                         Add Card
                                     </Button>
                                 </div>
-                            </div>
-
-                            <div className="mt-4 flex justify-end">
-                                <Button
-                                    onClick={() =>
-                                        isEditingPayment
-                                            ? handleSavePayment()
-                                            : setIsEditingPayment(true)
-                                    }
-                                    className={
-                                        isEditingPayment
-                                            ? 'bg-[#FF6900] text-white hover:bg-[#E55D00]'
-                                            : 'border-[#FF6900] text-[#FF6900] hover:bg-orange-50'
-                                    }
-                                    variant={
-                                        isEditingPayment ? 'default' : 'outline'
-                                    }
-                                >
-                                    {isEditingPayment ? (
-                                        <>
-                                            <Save className="mr-2 h-4 w-4" />
-                                            Save Changes
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Edit2 className="mr-2 h-4 w-4" />
-                                            Edit Payment Methods
-                                        </>
-                                    )}
-                                </Button>
                             </div>
                         </Card>
                     </div>

@@ -102,12 +102,12 @@ export function SignInForm() {
                     />
                 </div>
 
-                <button
+                {/* <button
                     type="button"
                     className="text-sm text-gray-600 transition-colors hover:text-orange-500"
                 >
                     Lupa kata sandi Anda?
-                </button>
+                </button> */}
 
                 <button
                     type="submit"

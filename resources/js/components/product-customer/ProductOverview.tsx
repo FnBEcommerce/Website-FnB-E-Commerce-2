@@ -1,9 +1,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Product, ReviewProps } from '@/types';
+import { getCSRFToken } from '@/utils/csrf';
 import { formatPrice } from '@/utils/format-price';
+import { router } from '@inertiajs/react';
 import { Minus, Plus, Star } from 'lucide-react';
-import { useState } from 'react';
+import { useCart } from '../homepage/CartContext';
 
 type ProductWithRating = Product & {
     rating: Number;
@@ -13,17 +15,73 @@ type ProductWithRating = Product & {
 interface ProductOverviewProps {
     product: Product;
     reviews: ReviewProps;
+    buyQuantity: number;
+    onChangeBuyQuantity: (quantity: number) => void;
     onNavigateToCheckout?: () => void;
 }
 
 export function ProductOverview({
     product,
     reviews,
+    buyQuantity,
+    onChangeBuyQuantity,
     onNavigateToCheckout,
 }: ProductOverviewProps) {
-    const [quantity, setQuantity] = useState(1);
     const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
     const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
+    const { cart } = useCart();
+
+    console.log({
+        cart,
+        // cartItems,
+        // cartCount,
+        // addToCart,
+        // removeFromCart,
+        // updateQuantity,
+        // clearCart,
+    });
+
+    const isAlreadyAddedToCart = cart.items
+        .map((item) => item.id)
+        .includes(product.id);
+
+    const addCart = () => {
+        const csrf = getCSRFToken();
+        router.post(
+            '/cart/add',
+            {
+                product_id: product.id,
+            },
+            {
+                headers: {
+                    'X-CSRF-TOKEN': csrf ?? '',
+                },
+            },
+        );
+    };
+
+    const updateCart = () => {
+        const csrf = getCSRFToken();
+        router.post(
+            `/cart/update/${cart.id}`,
+            {
+                buyQuantity,
+            },
+            {
+                headers: {
+                    'X-CSRF-TOKEN': csrf ?? '',
+                },
+            },
+        );
+    };
+
+    const handleAddToCart = () => {
+        if (isAlreadyAddedToCart) {
+            updateCart();
+        } else {
+            addCart();
+        }
+    };
     // console.log(reviews);
 
     // const features = [
@@ -114,16 +172,22 @@ export function ProductOverview({
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10"
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        onClick={() =>
+                            onChangeBuyQuantity(Math.max(1, buyQuantity - 1))
+                        }
                     >
                         <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="w-12 text-center">{quantity}</span>
+                    <span className="w-12 text-center">{buyQuantity}</span>
                     <Button
                         variant="ghost"
                         size="icon"
                         className="h-10 w-10"
-                        onClick={() => setQuantity(quantity + 1)}
+                        onClick={() =>
+                            onChangeBuyQuantity(
+                                Math.min(buyQuantity + 1, product.quantity),
+                            )
+                        }
                     >
                         <Plus className="h-4 w-4" />
                     </Button>
@@ -135,6 +199,7 @@ export function ProductOverview({
                 <Button
                     className="flex-1 bg-[#1B263B] py-6 text-[16px] text-white hover:bg-[#273746]"
                     style={{ fontWeight: 600 }}
+                    onClick={handleAddToCart}
                 >
                     ADD TO CART
                 </Button>

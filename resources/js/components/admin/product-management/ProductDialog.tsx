@@ -9,15 +9,16 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { ProductRow } from '@/pages/admin/product-management';
+import { ProductRow, ShopBranch } from '@/pages/admin/product-management';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type ProductDialogProps = {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (product: ProductRow) => void;
+    onSave: (product: Omit<ProductRow, 'id'> | ProductRow) => void;
     product: ProductRow | null;
+    shopBranches: ShopBranch[];
 };
 
 export function ProductDialog({
@@ -25,39 +26,43 @@ export function ProductDialog({
     onClose,
     onSave,
     product,
+    shopBranches,
 }: ProductDialogProps) {
-    const initialFormData: ProductRow = product ?? {
-        id: 0,
-        name: '',
-        category: 'Makanan',
-        price_origin: 0,
-        price_discount: null,
-        stock: 0,
-        branch: '',
-        image: '',
-        description: '',
-        rating: 0,
-        status: 'Aktif',
-    };
+    const getInitialFormData = (): ProductRow => ({
+        id: product?.id || 0,
+        name: product?.name || '',
+        category: product?.category || 'Makanan',
+        price_origin: product?.price_origin || 0,
+        price_discount: product?.price_discount || null,
+        quantity: product?.quantity || 0,
+        branch: product?.branch || '',
+        image: product?.image || null,
+        description: product?.description || '',
+        rating: product?.rating || 0,
+        status: product?.status || 'Aktif',
+    });
 
-    const [formData, setFormData] = useState<ProductRow>(initialFormData);
+    const [formData, setFormData] = useState<ProductRow>(getInitialFormData());
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
+    useEffect(() => {
+        setFormData(getInitialFormData());
+        setImageFile(null);
+    }, [product, isOpen]);
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const payload: ProductRow = {
-            ...(product ? { id: product.id } : {}),
+        const payload = {
             ...formData,
-            image:
-                formData.image ||
-                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
-            rating: product?.rating ?? 0,
+            image: imageFile,
         };
 
         onSave(payload);
         onClose();
     };
-
+    
     if (!isOpen) return null;
 
     return (
@@ -131,21 +136,11 @@ export function ProductDialog({
                                     <SelectValue placeholder="Pilih Cabang" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Jakarta Pusat">
-                                        Jakarta Pusat
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Selatan">
-                                        Jakarta Selatan
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Barat">
-                                        Jakarta Barat
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Timur">
-                                        Jakarta Timur
-                                    </SelectItem>
-                                    <SelectItem value="Jakarta Utara">
-                                        Jakarta Utara
-                                    </SelectItem>
+                                    {shopBranches.map((branch) => (
+                                        <SelectItem key={branch.id} value={branch.name}>
+                                            {branch.name}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -171,11 +166,11 @@ export function ProductDialog({
                             <Label>Stok *</Label>
                             <Input
                                 type="number"
-                                value={formData.stock}
+                                value={formData.quantity}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        stock: Number(e.target.value),
+                                        quantity: Number(e.target.value),
                                     })
                                 }
                                 required
@@ -223,23 +218,18 @@ export function ProductDialog({
                             </Select>
                         </div>
 
-                        {/* Image URL */}
+                        {/* Image Upload */}
                         <div className="md:col-span-2">
-                            <Label>URL Gambar</Label>
+                            <Label>Gambar Produk</Label>
                             <Input
-                                type="url"
-                                value={formData.image}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        image: e.target.value,
-                                    })
-                                }
-                                placeholder="https://example.com/image.jpg"
+                                type="file"
+                                onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
                             />
-                            <p className="mt-1 text-sm text-slate-500">
-                                Kosongkan untuk menggunakan gambar default
-                            </p>
+                            {product?.image && !imageFile && (
+                                <p className="mt-2 text-sm text-slate-500">
+                                    Current image: <a href={product.image} target="_blank" rel="noopener noreferrer" className="underline">{product.image}</a>
+                                </p>
+                            )}
                         </div>
 
                         {/* Deskripsi */}
@@ -276,3 +266,4 @@ export function ProductDialog({
         </div>
     );
 }
+

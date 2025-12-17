@@ -35,7 +35,7 @@ export type User = {
     id: number;
     name: string;
     email: string;
-    password: string;
+
     email_verified_at: string | null;
     phone_number: string | null;
     birth_date: string | null;
@@ -220,4 +220,22 @@ export type Notification = {
     message: string;
     time: string;
     unread: boolean;
+};
+
+export type CartItem = {
+    id: number;
+    cart_id: number;
+    product_id: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+    product: Product;
+};
+
+export type Cart = {
+    id: number;
+    user_id: number;
+    updated_at: string;
+    created_at: string;
+    items: CartItem[];
 };

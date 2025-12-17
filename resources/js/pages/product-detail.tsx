@@ -1,4 +1,5 @@
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
+import { useCart } from '@/components/homepage/CartContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -192,7 +193,11 @@ export default function ProductDetailPage() {
     });
     const [localReviews, setLocalReviews] = useState(reviews);
 
-    const onAddToCart = (productId: number, quantity: number) => {};
+    const {} = useCart();
+
+    const onAddToCart = (productId: number, quantity: number) => {
+        console.log(productId, quantity);
+    };
     const onBack = () => {};
 
     const handleAddToCart = () => {

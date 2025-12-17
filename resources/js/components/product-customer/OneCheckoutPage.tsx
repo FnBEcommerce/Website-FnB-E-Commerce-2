@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { CartItem, User } from '@/types';
+import { Product, User } from '@/types';
+import { formatPrice } from '@/utils/format-price';
 import {
     Banknote,
     CreditCard,
@@ -21,14 +22,16 @@ import { useState } from 'react';
 
 interface CheckoutPageProps {
     user: User;
-    cartItems: CartItem[];
+    product: Product;
+    buyQuantity: number;
     onNavigateToLocation: () => void;
     onNavigateToHome: () => void;
 }
 
-export function CheckoutPage({
+export function OneCheckoutPage({
     user,
-    cartItems,
+    product,
+    buyQuantity,
     onNavigateToLocation,
     onNavigateToHome,
 }: CheckoutPageProps) {
@@ -78,18 +81,11 @@ export function CheckoutPage({
     };
 
     // Calculate totals
-    const subtotal = cartItems.reduce(
-        (sum, item) => sum + item.product.price_discount * item.quantity,
-        0,
-    );
-    const savings = cartItems.reduce(
-        (sum, item) =>
-            sum +
-            (item.product.price_origin - item.product.price_discount) *
-                item.quantity,
-        0,
-    );
-    const deliveryFee = subtotal > 299 ? 0 : 40;
+    const subtotal = product.price_discount ?? product.price_origin;
+    const savings =
+        (product.price_origin || product.price_discount) -
+        product.price_discount;
+    const deliveryFee = subtotal > 50000 ? 0 : 11000;
     const couponDiscount =
         appliedCoupon === 'SAVE20'
             ? subtotal * 0.2
@@ -199,103 +195,95 @@ export function CheckoutPage({
                                 className="mb-4 text-[20px] text-gray-900"
                                 style={{ fontWeight: 600 }}
                             >
-                                Order Items ({cartItems.length})
+                                Order Item
                             </h2>
 
                             <div className="space-y-4">
-                                {cartItems.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="flex gap-4 border-b border-gray-100 pb-4 last:border-0 last:pb-0"
-                                    >
-                                        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                                            <img
-                                                src={item.product.image}
-                                                alt={item.product.name}
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </div>
+                                <div
+                                    key={product.id}
+                                    className="flex gap-4 border-b border-gray-100 pb-4 last:border-0 last:pb-0"
+                                >
+                                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                                        <img
+                                            src={product.image || ''}
+                                            alt={product.name}
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
 
-                                        <div className="min-w-0 flex-1">
-                                            <h3
-                                                className="mb-1 text-gray-900"
+                                    <div className="min-w-0 flex-1">
+                                        <h3
+                                            className="mb-1 text-gray-900"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            {product.name}
+                                        </h3>
+                                        <p className="mb-2 text-[14px] text-gray-500">
+                                            {product.category}
+                                        </p>
+
+                                        <div className="mb-2 flex items-center gap-2">
+                                            <span
+                                                className="text-primary"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                {item.product.name}
-                                            </h3>
-                                            <p className="mb-2 text-[14px] text-gray-500">
-                                                {item.product.category}
-                                            </p>
-
-                                            <div className="mb-2 flex items-center gap-2">
-                                                <span
-                                                    className="text-primary"
-                                                    style={{ fontWeight: 600 }}
-                                                >
-                                                    Rp {item.product.price_discount}
-                                                </span>
-                                                {item.product.price_origin && (
-                                                    <>
-                                                        <span className="text-[14px] text-gray-400 line-through">
-                                                            Rp
-                                                            {item.product.price_origin}
-                                                        </span>
-                                                        <Badge className="bg-orange-100 text-[11px] text-primary">
-                                                            {Math.round(
-                                                                ((item.product.price_origin -
-                                                                    item.product.price_discount) /
-                                                                    item.product.price_origin) *
-                                                                    100,
-                                                            )}
-                                                            % OFF
-                                                        </Badge>
-                                                    </>
-                                                )}
-                                            </div>
-
-                                            <div className="flex items-center gap-3">
-                                                <div className="flex items-center overflow-hidden rounded-lg border border-gray-300">
-                                                    <button
-                                                        
-                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
-                                                    >
-                                                        <Minus className="h-4 w-4 text-gray-600" />
-                                                    </button>
-                                                    <span
-                                                        className="flex h-8 w-10 items-center justify-center border-x border-gray-300 text-gray-900"
-                                                        style={{
-                                                            fontWeight: 600,
-                                                        }}
-                                                    >
-                                                        {item.quantity}
+                                                Rp {product.price_discount}
+                                            </span>
+                                            {product.price_origin && (
+                                                <>
+                                                    <span className="text-[14px] text-gray-400 line-through">
+                                                        Rp
+                                                        {product.price_origin}
                                                     </span>
-                                                    <button
-                                                        
-                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
-                                                    >
-                                                        <Plus className="h-4 w-4 text-gray-600" />
-                                                    </button>
-                                                </div>
+                                                    <Badge className="bg-orange-100 text-[11px] text-primary">
+                                                        {Math.round(
+                                                            ((product.price_origin -
+                                                                product.price_discount) /
+                                                                product.price_origin) *
+                                                                100,
+                                                        )}
+                                                        % OFF
+                                                    </Badge>
+                                                </>
+                                            )}
+                                        </div>
 
-                                                <button
-                                                    
-                                                    className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex items-center overflow-hidden rounded-lg border border-gray-300">
+                                                <button className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100">
+                                                    <Minus className="h-4 w-4 text-gray-600" />
+                                                </button>
+                                                <span
+                                                    className="flex h-8 w-10 items-center justify-center border-x border-gray-300 text-gray-900"
+                                                    style={{
+                                                        fontWeight: 600,
+                                                    }}
                                                 >
-                                                    <Trash2 className="h-4 w-4" />
+                                                    {buyQuantity}
+                                                </span>
+                                                <button className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100">
+                                                    <Plus className="h-4 w-4 text-gray-600" />
                                                 </button>
                                             </div>
-                                        </div>
 
-                                        <div className="text-right">
-                                            <p
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                ₹{item.product.price_discount * item.quantity}
-                                            </p>
+                                            <button className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600">
+                                                <Trash2 className="h-4 w-4" />
+                                            </button>
                                         </div>
                                     </div>
-                                ))}
+
+                                    <div className="text-right">
+                                        <p
+                                            className="text-gray-900"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            {formatPrice(
+                                                product.price_discount *
+                                                    buyQuantity,
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </Card>
 
@@ -512,22 +500,14 @@ export function CheckoutPage({
 
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-gray-600">
-                                        <span>
-                                            Subtotal (
-                                            {cartItems.reduce(
-                                                (sum, item) =>
-                                                    sum + item.quantity,
-                                                0,
-                                            )}{' '}
-                                            items)
-                                        </span>
-                                        <span>₹{subtotal}</span>
+                                        <span>Subtotal (1 items)</span>
+                                        <span>{formatPrice(subtotal)}</span>
                                     </div>
 
                                     {savings > 0 && (
                                         <div className="flex justify-between text-primary">
                                             <span>Product Savings</span>
-                                            <span>- ₹{savings}</span>
+                                            <span>-{formatPrice(savings)}</span>
                                         </div>
                                     )}
 
@@ -541,14 +521,18 @@ export function CheckoutPage({
                                                 FREE
                                             </span>
                                         ) : (
-                                            <span>₹{deliveryFee}</span>
+                                            <span>
+                                                {formatPrice(deliveryFee)}
+                                            </span>
                                         )}
                                     </div>
 
                                     {couponDiscount > 0 && (
                                         <div className="flex justify-between text-[#059669]">
                                             <span>Coupon Discount</span>
-                                            <span>- ₹{couponDiscount}</span>
+                                            <span>
+                                                - {formatPrice(couponDiscount)}
+                                            </span>
                                         </div>
                                     )}
 
@@ -560,16 +544,18 @@ export function CheckoutPage({
                                     >
                                         <span>Total Amount</span>
                                         <span className="text-primary">
-                                            ₹{total}
+                                            {formatPrice(total)}
                                         </span>
                                     </div>
 
                                     {subtotal < 299 && (
                                         <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
                                             <p className="text-[13px] text-gray-700">
-                                                Add items worth ₹
-                                                {299 - subtotal} more to get
-                                                FREE delivery!
+                                                Add items worth
+                                                {formatPrice(
+                                                    50000 - subtotal,
+                                                )}{' '}
+                                                more to get FREE delivery!
                                             </p>
                                         </div>
                                     )}
@@ -579,7 +565,7 @@ export function CheckoutPage({
                                     className="mt-5 w-full bg-primary py-6 text-[16px] text-white hover:bg-orange-600"
                                     style={{ fontWeight: 600 }}
                                 >
-                                    Place Order • ₹{total}
+                                    Place Order • {formatPrice(total)}
                                 </Button>
 
                                 <p className="mt-3 text-center text-[12px] text-gray-500">
