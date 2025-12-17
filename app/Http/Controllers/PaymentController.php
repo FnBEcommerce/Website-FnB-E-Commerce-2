@@ -22,6 +22,17 @@ class PaymentController extends Controller
             $customOrderId = time() . rand(100, 999);
             $user = Auth::user();
             $shop_branch_id = 1;
+            // return response()->json([
+            //     'user_id' => $user->id,
+            //     'order_id' => $customOrderId,
+            //     'shop_branch_id' => $shop_branch_id,
+            //     'total' => $request->total,
+            //     'status' => 'created',
+            //     'payment_method' => $request->payment_method,
+            //     'total_amount' => $request->total,
+            //     'subtotal' => $request->total,
+            //     'delivery_fee' => $request->delivery_fee,
+            // ]);
             $order = Order::create([
                 'user_id' => $user->id,
                 'order_id' => $customOrderId,
@@ -29,7 +40,7 @@ class PaymentController extends Controller
                 'total' => $request->total,
                 'status' => 'created',
                 'payment_method' => $request->payment_method,
-                'total_amount' => $request->total_amount,
+                'total_amount' => $request->total,
                 'subtotal' => $request->total,
                 'delivery_fee' => $request->delivery_fee,
             ]);
@@ -38,6 +49,7 @@ class PaymentController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
+                    'subtotal' => $request->
                 ]);
             }
     
