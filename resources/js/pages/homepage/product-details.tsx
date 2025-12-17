@@ -44,17 +44,13 @@ export default function ProductDetailsPage({
                         <div className="container mx-auto px-4 py-3">
                             <div className="text-md flex items-center gap-2 text-gray-600">
                                 <a href="#" className="hover:text-green-600">
-                                    Home
+                                    Beranda
                                 </a>
                                 <span>/</span>
                                 <a href="#" className="hover:text-green-600">
-                                    Products
+                                    Produk
                                 </a>
                                 <span>/</span>
-                                {/* <a href="#" className="hover:text-green-600">
-                                    Instant Khichdi
-                                </a>
-                                <span>/</span> */}
                                 <span className="text-gray-900">
                                     {product.name}
                                 </span>
@@ -62,15 +58,15 @@ export default function ProductDetailsPage({
                         </div>
                     </div>
 
-                    {/* Product Main Section */}
+                    {/* Bagian Utama Produk */}
                     <div className="container mx-auto px-4 py-8">
                         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
-                            {/* Left Column - Product Images */}
+                            {/* Kolom Kiri - Gambar Produk */}
                             <div>
                                 <ProductImageGallery images={productImages} />
                             </div>
 
-                            {/* Right Column - Product Overview */}
+                            {/* Kolom Kanan - Ringkasan Produk */}
                             <div>
                                 <ProductOverview
                                     product={product}
@@ -84,16 +80,16 @@ export default function ProductDetailsPage({
                             </div>
                         </div>
 
-                        {/* Product Details Tabs */}
+                        {/* Detail Produk */}
                         <ProductDetails
                             ingredients={product.ingredients}
                             description={product.description}
                         />
 
-                        {/* Customer Reviews */}
+                        {/* Ulasan Pelanggan */}
                         <CustomerReviews reviews={reviews} product={product} />
 
-                        {/* Suggested Products */}
+                        {/* Produk Rekomendasi */}
                         <SuggestedProducts products={suggestedProducts} />
                     </div>
                 </main>
@@ -114,7 +110,6 @@ export default function ProductDetailsPage({
             {currentPage === 'location' && (
                 <main className="flex-1">
                     <LocationPage
-                        // user={user}
                         onNavigateToCheckout={() => setCurrentPage('checkout')}
                         onNavigateToHome={() => setCurrentPage('product')}
                     />
@@ -123,6 +118,7 @@ export default function ProductDetailsPage({
         </div>
     );
 }
+
 ProductDetailsPage.layout = (page: ReactNode) => (
     <HomepageLayout>{page}</HomepageLayout>
 );

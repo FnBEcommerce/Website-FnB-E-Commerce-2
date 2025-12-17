@@ -151,23 +151,40 @@ export default function OrderStatusPage({
     const statusSteps = [
         {
             key: 'cooking' as OrderStatus,
-            label: 'Cooking',
+            label: 'Sedang di masak',
             icon: ChefHat,
-            description: 'Your order is being prepared',
+            description: 'Orderan anda sedang di persiapkan di dapur',
         },
         {
             key: 'on the way' as OrderStatus,
-            label: 'On the Way',
+            label: 'Dalam perjalanan',
             icon: Truck,
-            description: 'Your order is out for delivery',
+            description: 'Orderan anda sedang dalam perjalanan',
         },
         {
             key: 'arrived' as OrderStatus,
-            label: 'Arrived',
+            label: 'Pesanan diterima',
             icon: CheckCircle,
-            description: 'Order delivered successfully',
+            description: 'Orderan sudah sampai secara sukses',
         },
     ];
+
+    const statusMap = Object.fromEntries(
+        statusSteps.map((step) => [
+            step.key,
+            {
+                label: step.label,
+                description: step.description,
+            },
+        ]),
+    ) as Record<OrderStatus, { label: string; description: string }>;
+
+    const formatRupiah = (value: number) =>
+        new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+        }).format(value);
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -185,7 +202,7 @@ export default function OrderStatusPage({
                         className="mb-2 text-[32px]"
                         style={{ fontWeight: 700 }}
                     >
-                        Track Your Order
+                        Status Pesanan Anda
                     </h1>
                     <p className="text-gray-600">Order {currentOrder.id}</p>
                 </div>
@@ -218,11 +235,11 @@ export default function OrderStatusPage({
                                             style={{ fontWeight: 600 }}
                                         >
                                             {currentOrder.estimated_delivery_at}{' '}
-                                            Minutes
+                                            Menit
                                         </span>
                                     </div>
                                     <p className="text-[14px] text-gray-500">
-                                        Estimated time
+                                        Estimasi Sampai
                                     </p>
                                 </div>
                             </div>
@@ -327,7 +344,7 @@ export default function OrderStatusPage({
                                 className="mb-4 text-[18px]"
                                 style={{ fontWeight: 700 }}
                             >
-                                Tracking Updates
+                                Update Pesanan
                             </h3>
                             <div className="space-y-4">
                                 {currentOrder.tracking_updates.map(
@@ -348,7 +365,10 @@ export default function OrderStatusPage({
                                                     className="mb-1 text-[14px] text-gray-900"
                                                     style={{ fontWeight: 600 }}
                                                 >
-                                                    {update.message}
+                                                    {
+                                                        statusMap[update.status]
+                                                            .description
+                                                    }
                                                 </p>
                                                 <p className="text-[13px] text-gray-500">
                                                     {update.time}
@@ -369,7 +389,7 @@ export default function OrderStatusPage({
                                         className="mb-1 text-[16px]"
                                         style={{ fontWeight: 700 }}
                                     >
-                                        Delivery Address
+                                        Alamat Pengiriman
                                     </h3>
                                     <p className="text-gray-700">
                                         {currentOrder.street}
@@ -386,7 +406,7 @@ export default function OrderStatusPage({
                                 className="mb-4 text-[18px]"
                                 style={{ fontWeight: 700 }}
                             >
-                                Order Summary
+                                Jumlah Pesanan
                             </h3>
 
                             {/* Order Items */}
@@ -417,7 +437,7 @@ export default function OrderStatusPage({
                             <div className="mb-6 space-y-3 border-b border-gray-200 pb-6">
                                 <div className="flex items-center justify-between text-[14px]">
                                     <span className="text-gray-600">
-                                        Order Date
+                                        Tanggal Pesan
                                     </span>
                                     <span className="text-gray-900">
                                         {currentOrder.created_at}
@@ -425,7 +445,7 @@ export default function OrderStatusPage({
                                 </div>
                                 <div className="flex items-center justify-between text-[14px]">
                                     <span className="text-gray-600">
-                                        Order Number
+                                        Nomor Pesanan
                                     </span>
                                     <span className="text-gray-900">
                                         {currentOrder.id}
@@ -439,31 +459,30 @@ export default function OrderStatusPage({
                                     className="text-[16px]"
                                     style={{ fontWeight: 700 }}
                                 >
-                                    Total Amount
+                                    Total Harga
                                 </span>
                                 <span
                                     className="text-[20px] text-[#FF6900]"
                                     style={{ fontWeight: 700 }}
                                 >
-                                    ₹{currentOrder.total}
+                                    {formatRupiah(currentOrder.total)}
                                 </span>
                             </div>
 
                             {/* Actions */}
                             <div className="space-y-3">
-                                <Button
-                                    className="w-full bg-[#FF6900] text-white hover:bg-[#E55F00]"
-                                    style={{ fontWeight: 600 }}
+                                <Link
+                                    href="/products"
+                                    className="cursor-pointer"
                                 >
-                                    Need Help?
-                                </Button>
-                                <Button
-                                    onClick={onNavigateToHome}
-                                    className="w-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                                    style={{ fontWeight: 600 }}
-                                >
-                                    Continue Shopping
-                                </Button>
+                                    <Button
+                                        onClick={onNavigateToHome}
+                                        className="w-full bg-[#FF6900] text-white hover:bg-[#E55F00]"
+                                        style={{ fontWeight: 600 }}
+                                    >
+                                        Lanjutkan Belanja
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>

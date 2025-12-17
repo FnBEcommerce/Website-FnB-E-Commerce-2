@@ -49,7 +49,7 @@ class PaymentController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
-                    'subtotal' => $request->
+                    'subtotal' => $request
                 ]);
             }
     

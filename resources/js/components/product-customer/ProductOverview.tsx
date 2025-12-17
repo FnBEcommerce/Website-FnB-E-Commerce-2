@@ -84,14 +84,6 @@ export function ProductOverview({
     };
     // console.log(reviews);
 
-    // const features = [
-    //     { icon: Clock, text: '7-Minute Prep', color: 'text-green-600' },
-    //     { icon: Leaf, text: '100% Natural', color: 'text-green-700' },
-    //     { icon: Heart, text: 'Healthy Choice', color: 'text-red-500' },
-    //     { icon: Flame, text: 'Authentic Taste', color: 'text-orange-600' },
-    //     { icon: TrendingUp, text: 'Ready to Cook', color: 'text-blue-600' },
-    // ];
-
     return (
         <div className="space-y-6">
             {/* Product Name & Tagline */}
@@ -121,9 +113,7 @@ export function ProductOverview({
                 <span className="text-gray-700">
                     {Number(averageRating).toFixed(1)}/5
                 </span>
-                <span className="text-gray-500">
-                    ({reviews.length} ratings)
-                </span>
+                <span className="text-gray-500">({reviews.length} ulasan)</span>
             </div>
 
             {/* Price & Discount */}
@@ -164,33 +154,45 @@ export function ProductOverview({
                     })}
             </div>
 
-            {/* Quantity Selector */}
-            <div className="flex items-center gap-4">
-                <span className="text-gray-700">Quantity:</span>
-                <div className="flex items-center gap-2 rounded-lg border-2 border-gray-300">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-10 w-10"
-                        onClick={() =>
-                            onChangeBuyQuantity(Math.max(1, buyQuantity - 1))
-                        }
-                    >
-                        <Minus className="h-4 w-4" />
-                    </Button>
-                    <span className="w-12 text-center">{buyQuantity}</span>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-10 w-10"
-                        onClick={() =>
-                            onChangeBuyQuantity(
-                                Math.min(buyQuantity + 1, product.quantity),
-                            )
-                        }
-                    >
-                        <Plus className="h-4 w-4" />
-                    </Button>
+            <div className="flex flex-col gap-3">
+                {/* Stok */}
+                <div className="flex items-center gap-4">
+                    <span className="w-20 text-gray-700">Stok:</span>
+                    <span>{product.quantity}</span>
+                </div>
+
+                {/* Quantity Selector */}
+                <div className="flex items-center gap-4">
+                    <span className="w-20 text-gray-700">Jumlah:</span>
+                    <div className="flex items-center gap-2 rounded-lg border-2 border-gray-300">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10"
+                            onClick={() =>
+                                onChangeBuyQuantity(
+                                    Math.max(1, buyQuantity - 1),
+                                )
+                            }
+                        >
+                            <Minus className="h-4 w-4" />
+                        </Button>
+
+                        <span className="w-12 text-center">{buyQuantity}</span>
+
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10"
+                            onClick={() =>
+                                onChangeBuyQuantity(
+                                    Math.min(buyQuantity + 1, product.quantity),
+                                )
+                            }
+                        >
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -201,22 +203,22 @@ export function ProductOverview({
                     style={{ fontWeight: 600 }}
                     onClick={handleAddToCart}
                 >
-                    ADD TO CART
+                    Tambah ke Keranjang
                 </Button>
                 <Button
                     className="flex-1 bg-primary py-6 text-[16px] text-white hover:bg-orange-400"
                     style={{ fontWeight: 600 }}
                     onClick={onNavigateToCheckout}
                 >
-                    BUY NOW
+                    Pesan Sekarang
                 </Button>
             </div>
 
             {/* Additional Info */}
             <div className="border-t border-gray-200 pt-4">
                 <div className="space-y-2 text-[14px] text-gray-600">
-                    <p>✓ Free shipping on orders above Rp 10,000</p>
-                    <p>✓ 100% secure checkout</p>
+                    <p>✓ Gratis ongkir untuk pesanan di atas Rp 10.000</p>
+                    <p>✓ Pembayaran 100% aman</p>
                 </div>
             </div>
         </div>

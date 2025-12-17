@@ -5,15 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { User } from '@/types';
 import { Link, router } from '@inertiajs/react';
-import {
-    Camera,
-    CreditCard,
-    Edit2,
-    MapPin,
-    Plus,
-    Save,
-    User as UserIcon,
-} from 'lucide-react';
+import { Camera, Edit2, MapPin, Save, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 
 type UserProfilePageProps = {
@@ -389,7 +381,10 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                         </Card>
 
                         {/* Address Information */}
-                        <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <Card
+                            className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+                            id="address-section"
+                        >
                             <div className="mb-5 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
@@ -583,7 +578,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                         </Card>
 
                         {/* Payment Methods */}
-                        <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        {/* <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <div className="mb-5 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
@@ -710,7 +705,7 @@ export default function UserProfilePage({ user }: UserProfilePageProps) {
                                     </Button>
                                 </div>
                             </div>
-                        </Card>
+                        </Card> */}
                     </div>
                 </div>
             </div>

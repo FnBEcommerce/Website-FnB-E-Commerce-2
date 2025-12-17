@@ -44,7 +44,6 @@ export  function ProductCard(props: ProductCardProps) {
         const isFavorite = favorites.includes(id);
         const handleAddToCart = () => {
             addToCart({
-                
                 id: id,
                 name: name,
                 price: price_discount,
@@ -75,7 +74,7 @@ export  function ProductCard(props: ProductCardProps) {
 
                 {/* Favorite */}
                 <button
-                    onClick={() => toggleFavorite(id)}
+                    onClick={(e) =>{toggleFavorite(id);  e.stopPropagation();}}
                     className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md transition-transform hover:scale-110"
                 >
                     <Heart
@@ -116,7 +115,7 @@ export  function ProductCard(props: ProductCardProps) {
 
                     <Button
 
-                        onClick={() => handleAddToCart()}
+                        onClick={(e) => {handleAddToCart(); e.stopPropagation()}}
                         className="cursor-pointer bg-primary text-white hover:bg-orange-600"
                     >
                         Add

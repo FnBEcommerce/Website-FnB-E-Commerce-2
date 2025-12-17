@@ -14,10 +14,10 @@ export function SuggestedProducts({ products }: SuggestedProductsProps) {
                     className="mb-2 text-[28px] text-gray-900"
                     style={{ fontWeight: 700 }}
                 >
-                    You Might Also Like
+                    Produk Lain yang Mungkin Anda Suka
                 </h2>
                 <p className="text-gray-600">
-                    Discover more delicious khichdi varieties from Kamlesh
+                    Temukan lebih banyak varian khichdi lezat dari Kamlesh
                     Khichdi Wala
                 </p>
             </div>

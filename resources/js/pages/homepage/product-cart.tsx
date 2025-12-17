@@ -89,9 +89,9 @@ export default function CartPage({ user, cart }: productCartProps) {
             {currentPage === 'product-cart' && (
                 <div className="container mx-auto px-4 py-8">
                     <div className="mb-6">
-                        <Link href="/product2">
+                        <Link href="/products">
                             <button className="mb-2 text-[#FF6900] hover:underline">
-                                ← Continue Shopping
+                                ← Kembali
                             </button>
                         </Link>
 
@@ -99,12 +99,12 @@ export default function CartPage({ user, cart }: productCartProps) {
                             className="text-[32px] text-gray-900"
                             style={{ fontWeight: 700 }}
                         >
-                            Shopping Cart
+                            Keranjang Pesanan
                         </h1>
                         <p className="mt-1 text-gray-600">
                             {cartItems.length}{' '}
-                            {cartItems.length === 1 ? 'item' : 'items'} in your
-                            cart
+                            {cartItems.length === 1 ? 'item' : 'items'} dalam
+                            keranjang
                         </p>
                     </div>
 
@@ -117,16 +117,17 @@ export default function CartPage({ user, cart }: productCartProps) {
                                 className="mb-2 text-[24px] text-gray-900"
                                 style={{ fontWeight: 600 }}
                             >
-                                Your Cart is Empty
+                                Keranjang anda masih kosong
                             </h2>
                             <p className="mb-6 text-gray-600">
-                                Looks like you haven't added anything to your
-                                cart yet
+                                Temukan pesanan dengan harga menarik untuk anda
                             </p>
-                            <Button className="bg-[#FF6900] px-8 text-white hover:bg-[#E55D00]">
-                                <ShoppingBag className="mr-2 h-4 w-4" />
-                                Start Shopping
-                            </Button>
+                            <Link href="/products">
+                                <Button className="bg-[#FF6900] px-8 text-white hover:bg-[#E55D00]">
+                                    <ShoppingBag className="mr-2 h-4 w-4" />
+                                    Lihat produk
+                                </Button>
+                            </Link>
                         </Card>
                     ) : (
                         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
