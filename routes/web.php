@@ -29,25 +29,27 @@ Route::get('/checkout-dummy', [HomepageController::class, 'checkoutDummy'])->nam
 
 Route::get("/auth", [HomepageController::class, 'auth'])->name('auth');
 
-Route::get("/checkout", function() {
-    return Inertia::render('checkout');
-})->name('checkout');
+// Route::get("/checkout", function() {
+//     return Inertia::render('checkout');
+// })->name('checkout');
 
-Route::get('/payment/fake', function (Request $request) {
-    return Inertia::render('payment/FakePayment', [
-        'order_id' => $request->get('order_id'),
-        'total' => $request->get('total'),
-    ]);
-})->name('payment.fake');
+// Route::post('/payment', [PaymentController::class, 'create'])->name('payment.create');
 
-Route::post('/payment/fake/success', function (Request $request) {
-    $order = Order::find($request->order_id);
-    $order->payment_status = 'paid';
-    $order->paid_at = now();
-    $order->save();
+// Route::get('/payment/fake', function (Request $request) {
+//     return Inertia::render('payment/FakePayment', [
+//         'order_id' => $request->get('order_id'),
+//         'total' => $request->get('total'),
+//     ]);
+// })->name('payment.fake');
 
-    return redirect()->route('product.status')->with('success', 'Payment successful!');
-})->name('payment.fake.success');
+// Route::post('/payment/fake/success', function (Request $request) {
+//     $order = Order::find($request->order_id);
+//     $order->payment_status = 'paid';
+//     $order->paid_at = now();
+//     $order->save();
+
+//     return redirect()->route('product.status')->with('success', 'Payment successful!');
+// })->name('payment.fake.success');
 
 // Route::get("/products", function() {
 //     return Inertia::render('product-listing');
@@ -100,10 +102,9 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     // TODO: Protect route
     Route::post('/orders/create', [PaymentController::class, 'create'])
     ;
-    Route::post('/orders/{order}/pay', [PaymentController::class, 'pay'])
+    Route::post('/orders/pay', [PaymentController::class, 'pay'])
     ;
     Route::post('/product/review', [ProductController::class, 'addReview']);
-    // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
 });
 
 

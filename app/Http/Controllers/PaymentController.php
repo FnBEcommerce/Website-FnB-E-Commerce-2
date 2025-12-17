@@ -16,7 +16,14 @@ class PaymentController extends Controller
 {
     public function create(Request $request)
     {
-        
+        Config::$serverKey = config('midtrans.server_key');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        Config::$isProduction = config('midtrans.is_production');
+        // Set sanitization on (default)
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        // Set 3DS transaction for credit card to true
+        Config::$is3ds = config('midtrans.is_3ds');
+
         try {
             $customOrderId = time() . rand(100, 999);
             $user = Auth::user();
@@ -24,7 +31,7 @@ class PaymentController extends Controller
 
             // Implementasi pemilihan Courier secara acak
             // Mengambil 1 data secara acak, jika kosong set null agar tidak error
-            $courier = Courier::inRandomOrder()->first(); 
+            $courier = Courier::inRandomOrder()->first();
             $courier_id = $courier ? $courier->id : null;
 
             $order = Order::create([
@@ -33,7 +40,7 @@ class PaymentController extends Controller
                 'shop_branch_id' => $shop_branch_id,
                 'courier_id' => $courier_id,
                 'total' => $request->total,
-                'payment_status' => 'created',
+                'payment_status' => 'pending',
                 'status' => 'pending',
                 'payment_method' => $request->payment_method,
                 'total_amount' => $request->total,
@@ -48,79 +55,28 @@ class PaymentController extends Controller
                     'subtotal' => $request->total,
                 ]);
             }
+
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => $order->order_id,
+                    'gross_amount' => ceil($order->total),
+                ),
+                'customer_details' => array(
+                    'first_name' => $user->name,
+                    'email' => $user->email,
+                ),
+            );
+
+            $snapToken = Snap::getSnapToken($params);
     
             return response()->json([
-                'order_id' => $order->id,
+                'order_order_id' => $order->order_id,
+                'snap_token' => $snapToken,
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Gagal membuat order: ' . $th->getMessage(),
-            ]);
+            ], 500);
         }
-        
-
     }
-
-    public function pay(Order $order)
-    {
-        // VALIDASI
-        if ($order->status !== 'created') {
-            abort(400, 'Order tidak valid');
-        }
-
-        // MIDTRANS CONFIG
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
-
-        // return response()->json($order);
-
-        // PARAMETER TRANSAKSI
-        $params = [
-            'transaction_details' => [
-                'order_id' => $order->id,
-                'gross_amount' => $order->total_amount,
-            ],
-            'customer_details' => [
-                'name' => $order->user->name,
-                'email' => $order->user->email,
-            ],
-        ];
-
-        // GENERATE TOKEN
-        $snapToken = Snap::getSnapToken($params);
-        // Snap::
-
-        // KUNCI ORDER
-        $order->update(['status' => 'pending']);
-
-        return response()->json([
-            'snap_token' => $snapToken
-        ]);
-    }
-    // public function getSnapToken(Request $request)
-    // {
-    //     Config::$serverKey = config('midtrans.server_key');
-    //     Config::$isProduction = config('midtrans.is_production');
-    //     Config::$isSanitized = true;
-    //     Config::$is3ds = true;
-
-    //     $params = [
-    //         'transaction_details' => [
-    //             'order_id' => 'ORDER-' . time(),
-    //             'gross_amount' => 150000,
-    //         ],
-    //         'customer_details' => [
-    //             'username' => 'bima',
-    //             'email' => 'bima@example.com',
-    //         ],
-    //     ];
-
-    //     $snapToken = Snap::getSnapToken($params);
-
-    //     return response()->json([
-    //         'snap_token' => $snapToken
-    //     ]);
-    // }
 }
