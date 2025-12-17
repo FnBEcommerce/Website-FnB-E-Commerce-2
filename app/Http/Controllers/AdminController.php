@@ -616,6 +616,8 @@ class AdminController extends Controller
             'products' => $products
         ];
 
+        // return response()->json($props);
+
         // return response()->json($products);
 
         return Inertia::render('admin/product-management', $props);

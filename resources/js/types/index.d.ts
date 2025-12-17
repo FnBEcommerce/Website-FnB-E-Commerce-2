@@ -35,7 +35,6 @@ export type User = {
     id: number;
     name: string;
     email: string;
-
     email_verified_at: string | null;
     phone_number: string | null;
     birth_date: string | null;
@@ -141,7 +140,7 @@ export type Order = {
     updated_at: string;
 };
 
-export type OrderStatus = 'cooking' | 'on the way' | 'arrived';
+export type OrderStatus = 'pending' | 'cooking' | 'on the way' | 'arrived';
 export type PaymentStatus =
     | 'created'
     | 'pending'

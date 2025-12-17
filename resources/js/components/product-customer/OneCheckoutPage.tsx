@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { Product, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Banknote, CreditCard, MapPin } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,18 +28,74 @@ export function OneCheckoutPage({
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
     const [paymentMethod, setPaymentMethod] = useState('cod');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState<'primary' | 'alt'>(
+        'primary',
+    );
+
+    const handlePlaceOrder = async () => {
+        setIsPlacingOrder(true);
+        try {
+            const response = await fetch('/api/orders/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': (
+                        document.querySelector(
+                            'meta[name="csrf-token"]',
+                        ) as HTMLMetaElement
+                    )?.content,
+                },
+                body: JSON.stringify({
+                    cart_items: [
+                        {
+                            product_id: product.id,
+                            quantity: buyQuantity,
+                        },
+                    ],
+                    delivery_fee: deliveryFee,
+                    payment_method: paymentMethod,
+                    delivery_address: activeDeliveryAddress,
+                    subtotal: subtotal,
+                    total: total,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal membuat pesanan');
+            }
+
+            const data = await response.json();
+            console.log('data', data);
+
+            router.visit(
+                `/payment/fake?order_id=${data.order_id}&total=${total}`,
+            );
+        } catch (error) {
+            console.error(error);
+            alert('Gagal membuat pesanan. Mohon coba lagi.');
+        } finally {
+            setIsPlacingOrder(false);
+        }
+    };
 
     // console.log(user);
-    const [deliveryAddress, setDeliveryAddress] = useState({
-        name: user.name,
-        phone: user.phone_number,
-        street: user.street,
-        city: user.city,
-        state: user.state,
-        altStreet: user.alt_street,
-        altCity: user.alt_city,
-        altState: user.alt_state,
-    });
+    const activeDeliveryAddress =
+        selectedAddress === 'primary'
+            ? {
+                  name: user.name,
+                  phone: user.phone_number,
+                  street: user.street,
+                  city: user.city,
+                  state: user.state,
+              }
+            : {
+                  name: user.name,
+                  phone: user.phone_number,
+                  street: user.alt_street,
+                  city: user.alt_city,
+                  state: user.alt_state,
+              };
 
     const applyCoupon = () => {
         if (couponCode.toUpperCase() === 'SAVE20') {
@@ -51,11 +107,13 @@ export function OneCheckoutPage({
         }
     };
 
-    const subtotal = product.price_discount ?? product.price_origin;
+    // Calculate totals
+    const subtotal =
+        (product.price_discount ?? product.price_origin) * buyQuantity;
     const savings =
         (product.price_origin || product.price_discount) -
         product.price_discount;
-    const deliveryFee = subtotal > 50000 ? 0 : 11000;
+    const deliveryFee = subtotal > 20000 ? 0 : 11000;
     const couponDiscount =
         appliedCoupon === 'SAVE20'
             ? subtotal * 0.2
@@ -91,59 +149,36 @@ export function OneCheckoutPage({
                     <div className="space-y-6 lg:col-span-2">
                         {/* Delivery Address Section */}
                         <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                                        <MapPin className="h-5 w-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <h2
-                                            className="text-[20px] text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            Alamat Pengiriman
-                                        </h2>
-                                        <p className="text-[14px] text-gray-500">
-                                            Ke mana pesanan Anda akan dikirim?
-                                        </p>
-                                    </div>
-                                </div>
-                                <Link href="/profile#address-section">
-                                    <Button
-                                        variant="outline"
-                                        className="border-primary text-[#1B263B] hover:bg-green-50"
-                                    >
-                                        Ubah
-                                    </Button>
-                                </Link>
-                            </div>
-
-                            <div className="rounded-lg border border-primary bg-gradient-to-br from-orange-50 to-yellow-50 p-4">
+                            {/* PRIMARY ADDRESS */}
+                            <div
+                                onClick={() => setSelectedAddress('primary')}
+                                className={`cursor-pointer rounded-lg border p-4 transition ${
+                                    selectedAddress === 'primary'
+                                        ? 'border-primary bg-gradient-to-br from-orange-50 to-yellow-50'
+                                        : 'border-gray-200'
+                                }`}
+                            >
                                 <div className="flex items-start gap-3">
-                                    <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-                                        <MapPin className="h-4 w-4 text-white" />
-                                    </div>
+                                    <MapPin className="mt-1 h-5 w-5 text-primary" />
                                     <div className="flex-1">
-                                        <div className="mb-1 flex items-center gap-2">
-                                            <span
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                {deliveryAddress.name}
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-semibold">
+                                                {user.name}
                                             </span>
-                                            <Badge className="bg-primary text-[11px] text-white">
-                                                Rumah
-                                            </Badge>
+                                            {selectedAddress === 'primary' && (
+                                                <Badge className="bg-primary text-[11px] text-white">
+                                                    Dipilih
+                                                </Badge>
+                                            )}
                                         </div>
-                                        <p className="mb-1 text-[14px] text-gray-700">
-                                            {deliveryAddress.phone}
+                                        <p className="text-sm text-gray-700">
+                                            {user.phone_number}
                                         </p>
-                                        <p className="text-[14px] text-gray-600">
-                                            {deliveryAddress.street}
+                                        <p className="text-sm text-gray-600">
+                                            {user.street}
                                         </p>
-                                        <p className="text-[14px] text-gray-600">
-                                            {deliveryAddress.city},{' '}
-                                            {deliveryAddress.state}
+                                        <p className="text-sm text-gray-600">
+                                            {user.city}, {user.state}
                                         </p>
                                     </div>
                                 </div>
@@ -151,73 +186,48 @@ export function OneCheckoutPage({
 
                             {/* second alt address */}
 
-                            {deliveryAddress.altCity &&
-                            deliveryAddress.altState &&
-                            deliveryAddress.altStreet ? (
-                                <div className="rounded-lg border border-primary bg-gradient-to-br from-orange-50 to-yellow-50 p-4">
+                            {/* ALT ADDRESS */}
+                            {user.alt_street &&
+                            user.alt_city &&
+                            user.alt_state ? (
+                                <div
+                                    onClick={() => setSelectedAddress('alt')}
+                                    className={`mt-3 cursor-pointer rounded-lg border p-4 transition ${
+                                        selectedAddress === 'alt'
+                                            ? 'border-primary bg-gradient-to-br from-orange-50 to-yellow-50'
+                                            : 'border-gray-200'
+                                    }`}
+                                >
                                     <div className="flex items-start gap-3">
-                                        <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-                                            <MapPin className="h-4 w-4 text-white" />
-                                        </div>
+                                        <MapPin className="mt-1 h-5 w-5 text-primary" />
                                         <div className="flex-1">
-                                            <div className="mb-1 flex items-center gap-2">
-                                                <span
-                                                    className="text-gray-900"
-                                                    style={{ fontWeight: 600 }}
-                                                >
-                                                    {deliveryAddress.name}
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold">
+                                                    {user.name}
                                                 </span>
-                                                <Badge className="bg-primary text-[11px] text-white">
-                                                    Rumah
-                                                </Badge>
+                                                {selectedAddress === 'alt' && (
+                                                    <Badge className="bg-primary text-[11px] text-white">
+                                                        Dipilih
+                                                    </Badge>
+                                                )}
                                             </div>
-                                            <p className="mb-1 text-[14px] text-gray-700">
-                                                {deliveryAddress.phone}
+                                            <p className="text-sm text-gray-700">
+                                                {user.phone_number}
                                             </p>
-                                            <p className="text-[14px] text-gray-600">
-                                                {deliveryAddress.altStreet}
+                                            <p className="text-sm text-gray-600">
+                                                {user.alt_street}
                                             </p>
-                                            <p className="text-[14px] text-gray-600">
-                                                {deliveryAddress.altCity},{' '}
-                                                {deliveryAddress.altState}
+                                            <p className="text-sm text-gray-600">
+                                                {user.alt_city},{' '}
+                                                {user.alt_state}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
                                 <Link href="/profile#address-section">
-                                    <div className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-4 transition-colors hover:border-primary hover:bg-orange-50">
-                                        <div className="flex items-start gap-3">
-                                            <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
-                                                <MapPin className="h-4 w-4 text-white" />
-                                            </div>
-
-                                            <div className="flex-1">
-                                                <div className="mb-1 flex items-center gap-2">
-                                                    <span
-                                                        className="text-gray-700"
-                                                        style={{
-                                                            fontWeight: 600,
-                                                        }}
-                                                    >
-                                                        Tambahkan alamat kedua?
-                                                    </span>
-                                                    <Badge className="bg-gray-200 text-[11px] text-gray-600">
-                                                        Opsional
-                                                    </Badge>
-                                                </div>
-
-                                                <p className="mb-1 text-[14px] text-gray-500">
-                                                    Anda dapat menambahkan
-                                                    alamat cadangan
-                                                </p>
-
-                                                <p className="text-[14px] text-gray-400">
-                                                    Contoh: alamat kantor, kos,
-                                                    atau rumah keluarga
-                                                </p>
-                                            </div>
-                                        </div>
+                                    <div className="mt-3 cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-4 text-sm text-gray-500 hover:border-primary">
+                                        Tambahkan alamat kedua
                                     </div>
                                 </Link>
                             )}

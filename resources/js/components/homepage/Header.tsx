@@ -1,6 +1,6 @@
 import { useCart } from '@/components/homepage/CartContext';
 import { Notification } from '@/types';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { Bell, Menu, ShoppingCart, Truck, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
@@ -24,6 +24,9 @@ export function Header({
     const { cartCount } = useCart();
     const [showNotifications, setShowNotifications] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
+
+    const { auth } = usePage().props;
+    const user = auth ? auth.user : null;
 
     const unreadCount = notifications.filter((n) => n.unread).length;
 
@@ -97,128 +100,154 @@ export function Header({
                         >
                             {'Kontak'}
                         </a>
+                        {/* {user && user.role === 'admin' && (
+                            <a
+                                href="/admin"
+                                className="text-xl font-medium transition-colors hover:text-orange-600"
+                            >
+                                {'admin'}
+                            </a>
+                        )} */}
                     </nav>
 
                     <div className="ml-auto flex items-center space-x-4">
-                        <Link
-                            className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
-                            aria-label="Cart"
-                            href="/product/cart"
-                        >
-                            <ShoppingCart className="h-5 w-5 text-gray-700" />
-                            {cartCount > 0 && (
-                                <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white">
-                                    {cartCount}
-                                </span>
-                            )}
-                        </Link>
+                        {user && (
+                            <>
+                                <Link
+                                    className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
+                                    aria-label="Cart"
+                                    href="/product/cart"
+                                >
+                                    <ShoppingCart className="h-5 w-5 text-gray-700" />
+                                    {cartCount > 0 && (
+                                        <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white">
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </Link>
 
-                        {/* Product status icon */}
-                        <Link
-                            className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
-                            aria-label="Profile"
-                            href="/product/status"
-                        >
-                            <Truck className="h-5 w-5 text-gray-700" />
-                            <span
-                                className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
-                                style={{ fontWeight: 600 }}
-                            >
-                                1
-                            </span>
-                        </Link>
-
-                        {/* Notification Bell with Dropdown */}
-                        <div className="relative" ref={notificationRef}>
-                            <button
-                                className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
-                                aria-label="Notifications"
-                                onClick={() =>
-                                    setShowNotifications(!showNotifications)
-                                }
-                            >
-                                <Bell className="h-5 w-5 text-gray-700" />
-                                {unreadCount > 0 && (
+                                {/* Product status icon */}
+                                <Link
+                                    className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
+                                    aria-label="Profile"
+                                    href="/product/status"
+                                >
+                                    <Truck className="h-5 w-5 text-gray-700" />
                                     <span
                                         className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
                                         style={{ fontWeight: 600 }}
                                     >
-                                        {unreadCount}
+                                        1
                                     </span>
-                                )}
-                            </button>
+                                </Link>
 
-                            {showNotifications && (
-                                <div className="absolute top-full right-0 mt-2 w-96 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
-                                    {/* Header */}
-                                    <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-4">
-                                        <div className="flex items-center justify-between">
-                                            <h3
-                                                className="text-[16px] text-gray-900"
-                                                style={{ fontWeight: 700 }}
+                                {/* Notification Bell with Dropdown */}
+                                <div className="relative" ref={notificationRef}>
+                                    <button
+                                        className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
+                                        aria-label="Notifications"
+                                        onClick={() =>
+                                            setShowNotifications(
+                                                !showNotifications,
+                                            )
+                                        }
+                                    >
+                                        <Bell className="h-5 w-5 text-gray-700" />
+                                        {unreadCount > 0 && (
+                                            <span
+                                                className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
+                                                style={{ fontWeight: 600 }}
                                             >
-                                                Notifications
-                                            </h3>
-                                            {unreadCount > 0 && (
-                                                <span
-                                                    className="text-[12px] text-[#FF6900]"
-                                                    style={{ fontWeight: 600 }}
-                                                >
-                                                    {unreadCount} new
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
+                                                {unreadCount}
+                                            </span>
+                                        )}
+                                    </button>
 
-                                    {/* Notification List */}
-                                    <div className="max-h-96 overflow-y-auto">
-                                        {notifications.map((notification) => (
-                                            <button
-                                                key={notification.id}
-                                                onClick={() =>
-                                                    handleNotificationClick(
-                                                        notification,
-                                                    )
-                                                }
-                                                className={`w-full border-b border-gray-100 p-4 text-left transition-colors hover:bg-gray-50 ${
-                                                    notification.unread
-                                                        ? 'bg-orange-50/30'
-                                                        : ''
-                                                }`}
-                                            >
-                                                <div className="flex items-start gap-3">
-                                                    <div
-                                                        className={`mt-2 h-2 w-2 flex-shrink-0 rounded-full ${
-                                                            notification.unread
-                                                                ? 'bg-[#FF6900]'
-                                                                : 'bg-transparent'
-                                                        }`}
-                                                    />
-                                                    <div className="min-w-0 flex-1">
-                                                        <p
-                                                            className="mb-1 text-[14px] text-gray-900"
+                                    {showNotifications && (
+                                        <div className="absolute top-full right-0 mt-2 w-96 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
+                                            {/* Header */}
+                                            <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h3
+                                                        className="text-[16px] text-gray-900"
+                                                        style={{
+                                                            fontWeight: 700,
+                                                        }}
+                                                    >
+                                                        Notifications
+                                                    </h3>
+                                                    {unreadCount > 0 && (
+                                                        <span
+                                                            className="text-[12px] text-[#FF6900]"
                                                             style={{
                                                                 fontWeight: 600,
                                                             }}
                                                         >
-                                                            {notification.title}
-                                                        </p>
-                                                        <p className="mb-2 line-clamp-2 text-[13px] text-gray-600">
-                                                            {
-                                                                notification.message
-                                                            }
-                                                        </p>
-                                                        <p className="text-[12px] text-gray-500">
-                                                            {notification.time}
-                                                        </p>
-                                                    </div>
+                                                            {unreadCount} new
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            </button>
-                                        ))}
-                                    </div>
+                                            </div>
+
+                                            {/* Notification List */}
+                                            <div className="max-h-96 overflow-y-auto">
+                                                {notifications.map(
+                                                    (notification) => (
+                                                        <button
+                                                            key={
+                                                                notification.id
+                                                            }
+                                                            onClick={() =>
+                                                                handleNotificationClick(
+                                                                    notification,
+                                                                )
+                                                            }
+                                                            className={`w-full border-b border-gray-100 p-4 text-left transition-colors hover:bg-gray-50 ${
+                                                                notification.unread
+                                                                    ? 'bg-orange-50/30'
+                                                                    : ''
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-start gap-3">
+                                                                <div
+                                                                    className={`mt-2 h-2 w-2 flex-shrink-0 rounded-full ${
+                                                                        notification.unread
+                                                                            ? 'bg-[#FF6900]'
+                                                                            : 'bg-transparent'
+                                                                    }`}
+                                                                />
+                                                                <div className="min-w-0 flex-1">
+                                                                    <p
+                                                                        className="mb-1 text-[14px] text-gray-900"
+                                                                        style={{
+                                                                            fontWeight: 600,
+                                                                        }}
+                                                                    >
+                                                                        {
+                                                                            notification.title
+                                                                        }
+                                                                    </p>
+                                                                    <p className="mb-2 line-clamp-2 text-[13px] text-gray-600">
+                                                                        {
+                                                                            notification.message
+                                                                        }
+                                                                    </p>
+                                                                    <p className="text-[12px] text-gray-500">
+                                                                        {
+                                                                            notification.time
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
+                            </>
+                        )}
 
                         {/* Profile */}
                         <Link
@@ -273,12 +302,14 @@ export function Header({
                             >
                                 {'kontak'}
                             </a>
-                            <a
-                                href="#contact"
-                                className="transition-colors hover:text-orange-600"
-                            >
-                                {'admin'}
-                            </a>
+                            {/* {user && user.role === 'admin' && (
+                                <a
+                                    href="/admin"
+                                    className="text-xl font-medium transition-colors hover:text-orange-600"
+                                >
+                                    {'admin'}
+                                </a>
+                            )} */}
                         </div>
                     </nav>
                 )}

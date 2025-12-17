@@ -1,22 +1,19 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { CartItem, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
+import { Link, router } from '@inertiajs/react';
 import {
     Banknote,
     CreditCard,
     MapPin,
     Minus,
     Plus,
-    Smartphone,
-    Tag,
     Trash2,
-    Wallet,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -37,6 +34,9 @@ export function CheckoutPage({
     const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
     const [paymentMethod, setPaymentMethod] = useState('cod');
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState<'primary' | 'alt'>(
+        'primary',
+    );
 
     // Cart items state
     // const [cartItems, setCartItems] = useState([
@@ -61,13 +61,22 @@ export function CheckoutPage({
     // ]);
 
     console.log(user);
-    const [deliveryAddress, setDeliveryAddress] = useState({
-        name: user.name,
-        phone: user.phone_number,
-        street: user.street, // Updated from address
-        city: user.city,
-        state: user.state,
-    });
+    const activeDeliveryAddress =
+        selectedAddress === 'primary'
+            ? {
+                  name: user.name,
+                  phone: user.phone_number,
+                  street: user.street,
+                  city: user.city,
+                  state: user.state,
+              }
+            : {
+                  name: user.name,
+                  phone: user.phone_number,
+                  street: user.alt_street,
+                  city: user.alt_city,
+                  state: user.alt_state,
+              };
 
     const applyCoupon = () => {
         if (couponCode.toUpperCase() === 'SAVE20') {
@@ -91,7 +100,7 @@ export function CheckoutPage({
                 item.quantity,
         0,
     );
-    const deliveryFee = subtotal > 299 ? 0 : 40;
+    const deliveryFee = subtotal > 20000 ? 0 : 11000;
     const couponDiscount =
         appliedCoupon === 'SAVE20'
             ? subtotal * 0.2
@@ -122,24 +131,25 @@ export function CheckoutPage({
                     })),
                     delivery_fee: deliveryFee,
                     payment_method: paymentMethod,
-                    delivery_address: deliveryAddress,
+                    delivery_address: activeDeliveryAddress,
+                    subtotal: subtotal,
                     total: total,
                 }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to create order');
+                throw new Error('Gagal membuat pesanan');
             }
 
             const data = await response.json();
             console.log('data', data);
 
-            // router.visit(
-            //     `/payment/fake?order_id=${data.order_id}&total=${total}`,
-            // );
+            router.visit(
+                `/payment/fake?order_id=${data.order_id}&total=${total}`,
+            );
         } catch (error) {
             console.error(error);
-            alert('Failed to place order. Please try again.');
+            alert('Gagal membuat pesanan. Mohon coba lagi.');
         } finally {
             setIsPlacingOrder(false);
         }
@@ -154,7 +164,7 @@ export function CheckoutPage({
                         onClick={onNavigateToHome}
                         className="text-primaryf mb-2 hover:underline"
                     >
-                        ← Continue Shopping
+                        ← Lanjutkan Belanja
                     </button>
                     <h1
                         className="text-[32px] text-gray-900"
@@ -163,7 +173,7 @@ export function CheckoutPage({
                         Checkout
                     </h1>
                     <p className="mt-1 text-gray-600">
-                        Complete your order in just a few clicks
+                        Selesaikan pesanan Anda hanya dalam beberapa langkah
                     </p>
                 </div>
 
@@ -172,72 +182,121 @@ export function CheckoutPage({
                     <div className="space-y-6 lg:col-span-2">
                         {/* Delivery Address Section */}
                         <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <div className="mb-4 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                                        <MapPin className="h-5 w-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <h2
-                                            className="text-[20px] text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            Delivery Address
-                                        </h2>
-                                        <p className="text-[14px] text-gray-500">
-                                            Where should we deliver your order?
-                                        </p>
-                                    </div>
-                                </div>
-                                <Button
-                                    onClick={onNavigateToLocation}
-                                    variant="outline"
-                                    className="border-primary text-[#1B263B] hover:bg-green-50"
-                                >
-                                    Change
-                                </Button>
-                            </div>
-
-                            <div className="rounded-lg border border-primary bg-gradient-to-br from-orange-50 to-yellow-50 p-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary">
-                                        <MapPin className="h-4 w-4 text-white" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="mb-1 flex items-center gap-2">
-                                            <span
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                {deliveryAddress.name}
-                                            </span>
-                                            <Badge className="bg-primary text-[11px] text-white">
-                                                Home
-                                            </Badge>
-                                        </div>
-                                        <p className="mb-1 text-[14px] text-gray-700">
-                                            {deliveryAddress.phone}
-                                        </p>
-                                        {/* Updated Rendering: Street Only */}
-                                        <p className="text-[14px] text-gray-600">
-                                            {deliveryAddress.street}
-                                        </p>
-                                        {/* Updated Rendering: City, State Only (No Pincode) */}
-                                        <p className="text-[14px] text-gray-600">
-                                            {deliveryAddress.city},{' '}
-                                            {deliveryAddress.state}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={onNavigateToLocation}
-                                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 py-2.5 text-primary transition-colors hover:border-primary hover:bg-orange-50"
+                            <div
+                                onClick={() => setSelectedAddress('primary')}
+                                className={`cursor-pointer rounded-lg border p-4 transition ${
+                                    selectedAddress === 'primary'
+                                        ? 'border-primary bg-gradient-to-br from-orange-50 to-yellow-50'
+                                        : 'border-gray-200'
+                                }`}
                             >
-                                <Plus className="h-4 w-4" />
-                                Add New Address
-                            </button>
+                                <div className="flex items-start gap-3">
+                                    <MapPin className="mt-1 h-5 w-5 text-primary" />
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-semibold">
+                                                {user.name}
+                                            </span>
+                                            {selectedAddress === 'primary' && (
+                                                <Badge className="bg-primary text-[11px] text-white">
+                                                    Dipilih
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        <p className="text-sm text-gray-700">
+                                            {user.phone_number}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            {user.street}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                            {user.city}, {user.state}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* second alt address */}
+
+                            {/* ALT ADDRESS */}
+                            {user.alt_street &&
+                            user.alt_city &&
+                            user.alt_state ? (
+                                <div
+                                    onClick={() => setSelectedAddress('alt')}
+                                    className={`mt-3 cursor-pointer rounded-lg border p-4 transition ${
+                                        selectedAddress === 'alt'
+                                            ? 'border-primary bg-gradient-to-br from-orange-50 to-yellow-50'
+                                            : 'border-gray-200'
+                                    }`}
+                                >
+                                    <div className="flex items-start gap-3">
+                                        <MapPin className="mt-1 h-5 w-5 text-primary" />
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold">
+                                                    {user.name}
+                                                </span>
+                                                {selectedAddress === 'alt' && (
+                                                    <Badge className="bg-primary text-[11px] text-white">
+                                                        Dipilih
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-700">
+                                                {user.phone_number}
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                                {user.alt_street}
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                                {user.alt_city},{' '}
+                                                {user.alt_state}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Link href="/profile#address-section">
+                                    <div className="mt-3 cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-4 text-sm text-gray-500 hover:border-primary">
+                                        Tambahkan alamat kedua
+                                    </div>
+                                </Link>
+                            )}
+
+                            {/* <Link href="/profile">
+                                                            <div className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-4 transition-colors hover:border-primary hover:bg-orange-50">
+                                                                <div className="flex items-start gap-3">
+                                                                    <div className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
+                                                                        <MapPin className="h-4 w-4 text-white" />
+                                                                    </div>
+                            
+                                                                    <div className="flex-1">
+                                                                        <div className="mb-1 flex items-center gap-2">
+                                                                            <span
+                                                                                className="text-gray-700"
+                                                                                style={{ fontWeight: 600 }}
+                                                                            >
+                                                                                Tambahkan alamat kedua?
+                                                                            </span>
+                                                                            <Badge className="bg-gray-200 text-[11px] text-gray-600">
+                                                                                Opsional
+                                                                            </Badge>
+                                                                        </div>
+                            
+                                                                        <p className="mb-1 text-[14px] text-gray-500">
+                                                                            Anda dapat menambahkan alamat
+                                                                            cadangan
+                                                                        </p>
+                            
+                                                                        <p className="text-[14px] text-gray-400">
+                                                                            Contoh: alamat kantor, kos, atau
+                                                                            rumah keluarga
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </Link> */}
                         </Card>
 
                         {/* Cart Items Section */}
@@ -246,7 +305,7 @@ export function CheckoutPage({
                                 className="mb-4 text-[20px] text-gray-900"
                                 style={{ fontWeight: 600 }}
                             >
-                                Order Items ({cartItems.length})
+                                Item Pesanan ({cartItems.length})
                             </h2>
 
                             <div className="space-y-4">
@@ -279,20 +338,18 @@ export function CheckoutPage({
                                                     className="text-primary"
                                                     style={{ fontWeight: 600 }}
                                                 >
-                                                    Rp{' '}
-                                                    {
+                                                    {formatPrice(
                                                         item.product
-                                                            .price_discount
-                                                    }
+                                                            .price_discount,
+                                                    )}
                                                 </span>
                                                 {item.product.price_origin && (
                                                     <>
                                                         <span className="text-[14px] text-gray-400 line-through">
-                                                            Rp
-                                                            {
+                                                            {formatPrice(
                                                                 item.product
-                                                                    .price_origin
-                                                            }
+                                                                    .price_origin,
+                                                            )}
                                                         </span>
                                                         <Badge className="bg-orange-100 text-[11px] text-primary">
                                                             {Math.round(
@@ -357,7 +414,7 @@ export function CheckoutPage({
                                 className="mb-4 text-[20px] text-gray-900"
                                 style={{ fontWeight: 600 }}
                             >
-                                Payment Method
+                                Metode Pembayaran
                             </h2>
 
                             <RadioGroup
@@ -365,96 +422,41 @@ export function CheckoutPage({
                                 onValueChange={setPaymentMethod}
                                 className="space-y-3"
                             >
-                                <div className="flex cursor-pointer items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-colors hover:border-primary">
+                                <div className="flex items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 hover:border-primary">
                                     <RadioGroupItem value="cod" id="cod" />
                                     <Label
                                         htmlFor="cod"
-                                        className="flex flex-1 cursor-pointer items-center gap-3"
+                                        className="flex flex-1 items-center gap-3"
                                     >
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
                                             <Banknote className="h-5 w-5 text-[#D97706]" />
                                         </div>
                                         <div>
-                                            <p
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                Cash on Delivery
+                                            <p style={{ fontWeight: 600 }}>
+                                                Bayar di Tempat (COD)
                                             </p>
                                             <p className="text-[14px] text-gray-500">
-                                                Pay when you receive
+                                                Bayar saat pesanan diterima
                                             </p>
                                         </div>
                                     </Label>
                                 </div>
 
-                                <div className="flex cursor-pointer items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-colors hover:border-primary">
-                                    <RadioGroupItem value="upi" id="upi" />
+                                <div className="flex items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 hover:border-primary">
+                                    <RadioGroupItem value="cod" id="cod" />
                                     <Label
-                                        htmlFor="upi"
-                                        className="flex flex-1 cursor-pointer items-center gap-3"
+                                        htmlFor="cod"
+                                        className="flex flex-1 items-center gap-3"
                                     >
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
-                                            <Smartphone className="h-5 w-5 text-purple-600" />
-                                        </div>
-                                        <div>
-                                            <p
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                UPI Payment
-                                            </p>
-                                            <p className="text-[14px] text-gray-500">
-                                                Google Pay, PhonePe, Paytm
-                                            </p>
-                                        </div>
-                                    </Label>
-                                </div>
-
-                                <div className="flex cursor-pointer items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-colors hover:border-primary">
-                                    <RadioGroupItem value="card" id="card" />
-                                    <Label
-                                        htmlFor="card"
-                                        className="flex flex-1 cursor-pointer items-center gap-3"
-                                    >
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
                                             <CreditCard className="h-5 w-5 text-blue-600" />
                                         </div>
                                         <div>
-                                            <p
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                Credit / Debit Card
+                                            <p style={{ fontWeight: 600 }}>
+                                                Transfer
                                             </p>
                                             <p className="text-[14px] text-gray-500">
-                                                Visa, Mastercard, RuPay
-                                            </p>
-                                        </div>
-                                    </Label>
-                                </div>
-
-                                <div className="flex cursor-pointer items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 transition-colors hover:border-primary">
-                                    <RadioGroupItem
-                                        value="wallet"
-                                        id="wallet"
-                                    />
-                                    <Label
-                                        htmlFor="wallet"
-                                        className="flex flex-1 cursor-pointer items-center gap-3"
-                                    >
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                                            <Wallet className="h-5 w-5 text-[#059669]" />
-                                        </div>
-                                        <div>
-                                            <p
-                                                className="text-gray-900"
-                                                style={{ fontWeight: 600 }}
-                                            >
-                                                Digital Wallet
-                                            </p>
-                                            <p className="text-[14px] text-gray-500">
-                                                Paytm, Amazon Pay, MobiKwik
+                                                Transfer dan tunggu makanan Anda
                                             </p>
                                         </div>
                                     </Label>
@@ -467,7 +469,7 @@ export function CheckoutPage({
                     <div className="lg:col-span-1">
                         <div className="sticky top-24 space-y-4">
                             {/* Apply Coupon */}
-                            <Card className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+                            {/* <Card className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                                 <div className="mb-3 flex items-center gap-2">
                                     <Tag className="h-5 w-5 text-primary" />
                                     <h3
@@ -551,15 +553,15 @@ export function CheckoutPage({
                                         </div>
                                     </div>
                                 </div>
-                            </Card>
+                            </Card> */}
 
                             {/* Order Summary */}
                             <Card className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
                                 <h3
-                                    className="mb-4 text-[18px] text-gray-900"
+                                    className="text-[18px] text-gray-900"
                                     style={{ fontWeight: 600 }}
                                 >
-                                    Order Summary
+                                    Ringkasan Pesanan
                                 </h3>
 
                                 <div className="space-y-3">
@@ -576,23 +578,14 @@ export function CheckoutPage({
                                         <span>{formatPrice(subtotal)}</span>
                                     </div>
 
-                                    {savings > 0 && (
-                                        <div className="flex justify-between text-primary">
-                                            <span>Product Savings</span>
-                                            <span>
-                                                - {formatPrice(savings)}
-                                            </span>
-                                        </div>
-                                    )}
-
                                     <div className="flex justify-between text-gray-600">
-                                        <span>Delivery Fee</span>
+                                        <span>Biaya Pengiriman</span>
                                         {deliveryFee === 0 ? (
                                             <span
                                                 className="text-[#059669]"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                FREE
+                                                GRATIS
                                             </span>
                                         ) : (
                                             <span>
@@ -616,7 +609,7 @@ export function CheckoutPage({
                                         className="flex justify-between text-[18px] text-gray-900"
                                         style={{ fontWeight: 700 }}
                                     >
-                                        <span>Total Amount</span>
+                                        <span>Total Pembayaran</span>
                                         <span className="text-primary">
                                             {formatPrice(total)}
                                         </span>
@@ -640,13 +633,13 @@ export function CheckoutPage({
                                     style={{ fontWeight: 600 }}
                                 >
                                     {isPlacingOrder
-                                        ? 'Placing Order...'
-                                        : `Place Order • ${formatPrice(total)}`}
+                                        ? 'Membuat pesanan...'
+                                        : `Buat Pesanan • ${formatPrice(total)}`}
                                 </Button>
 
                                 <p className="mt-3 text-center text-[12px] text-gray-500">
-                                    By placing this order, you agree to our
-                                    Terms & Conditions
+                                    Dengan melakukan pemesanan, Anda menyetujui
+                                    Syarat & Ketentuan kami
                                 </p>
                             </Card>
                         </div>

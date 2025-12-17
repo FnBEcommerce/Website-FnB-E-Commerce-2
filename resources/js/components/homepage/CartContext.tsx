@@ -18,6 +18,7 @@ interface CartContextType {
     removeFromCart: (id: number | string) => void;
     updateQuantity: (id: number | string, quantity: number) => void;
     clearCart: () => void;
+    checkExistence: (id: number) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -37,6 +38,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }));
 
     const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
+
+    const checkExistence = (productId: number) => {
+        const isAlreadyAddedToCart = cartItems
+            .map((item) => item.id)
+            .includes(productId);
+        return isAlreadyAddedToCart;
+    };
 
     const cartCount = cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -86,6 +94,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 removeFromCart,
                 updateQuantity,
                 clearCart,
+                checkExistence,
             }}
         >
             {children}

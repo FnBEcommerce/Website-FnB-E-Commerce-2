@@ -29,7 +29,7 @@ export function ProductOverview({
 }: ProductOverviewProps) {
     const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
     const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
-    const { cart } = useCart();
+    const { cart, checkExistence } = useCart();
 
     console.log({
         cart,

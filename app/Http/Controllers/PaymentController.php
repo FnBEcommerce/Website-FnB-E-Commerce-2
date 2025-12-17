@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Courier;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
@@ -16,32 +17,27 @@ class PaymentController extends Controller
     public function create(Request $request)
     {
         
-        // return response()->json($request->all());
-        
         try {
             $customOrderId = time() . rand(100, 999);
             $user = Auth::user();
             $shop_branch_id = 1;
-            // return response()->json([
-            //     'user_id' => $user->id,
-            //     'order_id' => $customOrderId,
-            //     'shop_branch_id' => $shop_branch_id,
-            //     'total' => $request->total,
-            //     'status' => 'created',
-            //     'payment_method' => $request->payment_method,
-            //     'total_amount' => $request->total,
-            //     'subtotal' => $request->total,
-            //     'delivery_fee' => $request->delivery_fee,
-            // ]);
+
+            // Implementasi pemilihan Courier secara acak
+            // Mengambil 1 data secara acak, jika kosong set null agar tidak error
+            $courier = Courier::inRandomOrder()->first(); 
+            $courier_id = $courier ? $courier->id : null;
+
             $order = Order::create([
                 'user_id' => $user->id,
                 'order_id' => $customOrderId,
                 'shop_branch_id' => $shop_branch_id,
+                'courier_id' => $courier_id,
                 'total' => $request->total,
-                'status' => 'created',
+                'payment_status' => 'created',
+                'status' => 'pending',
                 'payment_method' => $request->payment_method,
                 'total_amount' => $request->total,
-                'subtotal' => $request->total,
+                'subtotal' => $request->subtotal,
                 'delivery_fee' => $request->delivery_fee,
             ]);
             foreach ($request->cart_items as $item) {
@@ -49,7 +45,7 @@ class PaymentController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
-                    'subtotal' => $request
+                    'subtotal' => $request->total,
                 ]);
             }
     
