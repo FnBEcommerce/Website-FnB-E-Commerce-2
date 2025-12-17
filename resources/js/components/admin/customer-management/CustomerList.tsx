@@ -198,10 +198,10 @@ export function CustomerList({ data: { customersData } }: CustomerListProps) {
                             Total {filteredCustomers.length} pelanggan
                         </p>
                     </div>
-                    <Button className="flex items-center gap-2">
+                    {/* <Button className="flex items-center gap-2">
                         <Download className="size-4" />
                         Export Data
-                    </Button>
+                    </Button> */}
                 </div>
             </CardHeader>
             <CardContent>

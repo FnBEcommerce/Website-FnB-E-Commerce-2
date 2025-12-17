@@ -166,7 +166,7 @@ export default function CustomerManagement({
                     {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
-                        <ThemeSwitch />
+                        {/* <ThemeSwitch /> */}
                         <ConfigDrawer />
                         <ProfileDropdown />
                     </div>
@@ -179,7 +179,7 @@ export default function CustomerManagement({
                             Manajemen Pelanggan
                         </h1>
                         <div className="flex items-center space-x-2">
-                            <Button>Download</Button>
+                            {/* <Button>Download</Button> */}
                         </div>
                     </div>
                     <Tabs

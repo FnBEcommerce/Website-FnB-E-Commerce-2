@@ -297,7 +297,7 @@ export default function ProductManagement({
                     {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
-                        <ThemeSwitch />
+                        {/* <ThemeSwitch /> */}
                         <ConfigDrawer />
                         <ProfileDropdown />
                     </div>
@@ -313,10 +313,10 @@ export default function ProductManagement({
                                 <Plus className="mr-2 h-4 w-4" />
                                 Tambah Produk
                             </Button>
-                            <Button variant="outline">
+                            {/* <Button variant="outline">
                                 <Download className="mr-2 h-4 w-4" />
                                 Export Data
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
 

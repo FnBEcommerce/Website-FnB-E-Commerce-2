@@ -56,7 +56,7 @@ export function Dashboard() {
                 {/* <TopNav links={topNav} /> */}
                 <div className="ms-auto flex items-center space-x-4">
                     <Search />
-                    <ThemeSwitch />
+                    {/* <ThemeSwitch /> */}
                     <ConfigDrawer />
                     <ProfileDropdown />
                 </div>
@@ -84,12 +84,12 @@ export function Dashboard() {
                             <TabsTrigger value="analytics">
                                 Analytics
                             </TabsTrigger>
-                            <TabsTrigger value="reports" disabled>
+                            {/* <TabsTrigger value="reports" disabled>
                                 Reports
                             </TabsTrigger>
                             <TabsTrigger value="notifications" disabled>
                                 Notifications
-                            </TabsTrigger>
+                            </TabsTrigger> */}
                         </TabsList>
                     </div>
                     <TabsContent value="overview" className="space-y-4">

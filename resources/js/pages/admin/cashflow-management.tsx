@@ -112,7 +112,7 @@ export default function CashflowManagement({
                     {/* <TopNav links={topNav} /> */}
                     <div className="ms-auto flex items-center space-x-4">
                         <Search />
-                        <ThemeSwitch />
+                        {/* <ThemeSwitch /> */}
                         <ConfigDrawer />
                         <ProfileDropdown />
                     </div>
@@ -131,7 +131,7 @@ export default function CashflowManagement({
                                 selectedDate={selectedDate}
                                 setSelectedDate={setSelectedDate}
                             /> */}
-                            <Button>Download</Button>
+                            {/* <Button>Download</Button> */}
                         </div>
                     </div>
                     <Tabs

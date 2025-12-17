@@ -91,10 +91,10 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
                         </div>
 
                         {/* EXPORT */}
-                        <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-white hover:bg-orange-400">
+                        {/* <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-white hover:bg-orange-400">
                             <Download className="h-4 w-4" />
                             Export
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>
