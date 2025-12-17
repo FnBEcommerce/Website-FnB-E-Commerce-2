@@ -61,7 +61,7 @@ export const sidebarData: SidebarData = {
                 {
                     title: 'Manajemen Pelanggan',
                     url: '/admin/customer-management',
-                    badge: '3',
+                    badge: '',
                     icon: Users,
                 },
             ],
