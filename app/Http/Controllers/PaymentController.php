@@ -19,12 +19,13 @@ class PaymentController extends Controller
         // return response()->json($request->all());
         
         try {
+            $customOrderId = time() . rand(100, 999);
             $user = Auth::user();
-            // $shop_branch = User::find($user->id)->shopBranches();
-            // return response()->json($shop_branch);
+            $shop_branch_id = 1;
             $order = Order::create([
                 'user_id' => $user->id,
-                // 'shop_branch_id' => $shop_branch_id,
+                'order_id' => $customOrderId,
+                'shop_branch_id' => $shop_branch_id,
                 'total' => $request->total,
                 'status' => 'created',
                 'payment_method' => $request->payment_method,

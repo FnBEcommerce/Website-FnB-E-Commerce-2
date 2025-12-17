@@ -28,11 +28,13 @@ export default function CartPage({ user, cart }: productCartProps) {
         'product-cart' | 'checkout' | 'location' | '/'
     >('product-cart');
     const [cartItems, setCartItems] = useState(
-        cart.items.map((item) => ({
-            ...item,
-            selected: true,
-            inStock: item.product.quantity > 0,
-        })),
+        !cart
+            ? []
+            : cart.items.map((item) => ({
+                  ...item,
+                  selected: true,
+                  inStock: item.product.quantity > 0,
+              })),
     );
 
     const updateQuantity = (id: number, newQuantity: number) => {
