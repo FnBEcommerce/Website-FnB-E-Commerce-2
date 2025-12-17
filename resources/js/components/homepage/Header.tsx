@@ -85,7 +85,7 @@ export function Header({
                             {'Beranda'}
                         </a>
                         <a
-                            href="#products"
+                            href="/products"
                             className="text-xl font-medium transition-colors hover:text-orange-600"
                         >
                             {'Produk Kami'}
@@ -244,18 +244,18 @@ export function Header({
                     <nav className="mt-4 border-t pt-4 pb-4 md:hidden">
                         <div className="flex flex-col space-y-4">
                             <a
-                                href="#home"
+                                href="/"
                                 className="transition-colors hover:text-orange-600"
                             >
                                 {'beranda'}
                             </a>
                             <a
-                                href="#products"
+                                href="/products"
                                 className="transition-colors hover:text-orange-600"
                             >
                                 {'produk'}
                             </a>
-                            <a
+                            {/* <a
                                 href="#about"
                                 className="transition-colors hover:text-orange-600"
                             >
@@ -266,12 +266,18 @@ export function Header({
                                 className="transition-colors hover:text-orange-600"
                             >
                                 {'keberlanjutan'}
-                            </a>
+                            </a> */}
                             <a
                                 href="#contact"
                                 className="transition-colors hover:text-orange-600"
                             >
                                 {'kontak'}
+                            </a>
+                            <a
+                                href="#contact"
+                                className="transition-colors hover:text-orange-600"
+                            >
+                                {'admin'}
                             </a>
                         </div>
                     </nav>

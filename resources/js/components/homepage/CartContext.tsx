@@ -26,13 +26,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const { cart } = usePage().props;
     console.log('cart', cart);
     console.log('cart2', {});
-    const initialCartItems = cart.items.map((item) => ({
-        id: item.id,
-        name: item.product.name,
-        price: item.product.price_discount || item.product.price_origin,
-        quantity: item.quantity,
-        image: item.product.image,
-    }));
+    const initialCartItems = !cart
+        ? []
+        : cart.items.map((item) => ({
+              id: item.id,
+              name: item.product.name,
+              price: item.product.price_discount || item.product.price_origin,
+              quantity: item.quantity,
+              image: item.product.image,
+          }));
 
     const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems);
 
@@ -77,7 +79,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return (
         <CartContext.Provider
             value={{
-                cart,
+                cart: cart || { items: [] },
                 cartItems,
                 cartCount,
                 addToCart,

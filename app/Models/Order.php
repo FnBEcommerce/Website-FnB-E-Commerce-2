@@ -9,20 +9,23 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'shop_branch_id',
-        'courier_id',
-        'payment_method',
-        'status',
-        'subtotal',
-        'delivery_fee',
-        'total',
-        'confirmed_at',
-        'processed_at',
-        'estimated_delivery_at',
-        'delivered_at',
-    ];
+    // protected $fillable = [
+    //     'id',
+    //     'order_id',
+    //     'user_id',
+    //     'shop_branch_id',
+    //     'courier_id',
+    //     'payment_method',
+    //     'status',
+    //     'subtotal',
+    //     'delivery_fee',
+    //     'total',
+    //     'confirmed_at',
+    //     'processed_at',
+    //     'estimated_delivery_at',
+    //     'delivered_at',
+    // ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'confirmed_at' => 'datetime',

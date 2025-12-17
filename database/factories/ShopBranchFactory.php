@@ -18,8 +18,10 @@ class ShopBranchFactory extends Factory
     {
         $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
+        $names = ['Surabaya', 'Sidoarjo', 'Gresik', 'Malang', 'Blitar'];
+
         return [
-            'name' => $this->faker->company(),
+            'name' => fake()->unique()->randomElement($names),
             'address' => $this->faker->address(),
             'phone_number' => $this->faker->phoneNumber(),
             'created_at' => $createdAt,
