@@ -11,7 +11,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { ProductRow, ShopBranch } from '@/pages/admin/product-management';
 import { X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type ProductDialogProps = {
     isOpen: boolean;
@@ -50,7 +50,6 @@ export function ProductDialog({
         setImageFile(null);
     }, [product, isOpen]);
 
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -59,10 +58,12 @@ export function ProductDialog({
             image: imageFile,
         };
 
+        console.log('payload', payload);
+
         onSave(payload);
         onClose();
     };
-    
+
     if (!isOpen) return null;
 
     return (
@@ -137,7 +138,10 @@ export function ProductDialog({
                                 </SelectTrigger>
                                 <SelectContent>
                                     {shopBranches.map((branch) => (
-                                        <SelectItem key={branch.id} value={branch.name}>
+                                        <SelectItem
+                                            key={branch.id}
+                                            value={branch.name}
+                                        >
                                             {branch.name}
                                         </SelectItem>
                                     ))}
@@ -179,7 +183,7 @@ export function ProductDialog({
 
                         {/* Diskon */}
                         <div>
-                            <Label>Harga Diskon</Label>
+                            <Label>Harga Setelah Diskon</Label>
                             <Input
                                 type="number"
                                 value={formData.price_discount ?? ''}
@@ -195,7 +199,7 @@ export function ProductDialog({
                         </div>
 
                         {/* Status */}
-                        <div>
+                        {/* <div>
                             <Label>Status *</Label>
                             <Select
                                 value={formData.status}
@@ -216,18 +220,32 @@ export function ProductDialog({
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
 
                         {/* Image Upload */}
                         <div className="md:col-span-2">
                             <Label>Gambar Produk</Label>
                             <Input
                                 type="file"
-                                onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+                                onChange={(e) =>
+                                    setImageFile(
+                                        e.target.files
+                                            ? e.target.files[0]
+                                            : null,
+                                    )
+                                }
                             />
                             {product?.image && !imageFile && (
                                 <p className="mt-2 text-sm text-slate-500">
-                                    Current image: <a href={product.image} target="_blank" rel="noopener noreferrer" className="underline">{product.image}</a>
+                                    Current image:{' '}
+                                    <a
+                                        href={product.image}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                    >
+                                        {product.image}
+                                    </a>
                                 </p>
                             )}
                         </div>
@@ -266,4 +284,3 @@ export function ProductDialog({
         </div>
     );
 }
-

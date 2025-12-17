@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\ShopbranchProduct;
+use App\Models\ShopBranch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -26,45 +28,46 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Log::info('Store method called');
-        // $validator = Validator::make($request->all(), [
-        //     'name' => 'required|string|max:255',
-        //     'category' => 'required|string|max:255',
-        //     'price_origin' => 'required|numeric',
-        //     'price_discount' => 'nullable|numeric',
-        //     'quantity' => 'required|integer',
-        //     'description' => 'required|string',
-        //     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        // ]);
-        
-        // if ($validator->fails()) {
-        //     return response()->json($validator->errors(), 422);
-        // }
+
         $errors = [];
 
+        // Validasi Name
         if (!$request->has('name') || !is_string($request->name) || strlen($request->name) > 255) {
             $errors['name'][] = 'Name wajib diisi dan maksimal 255 karakter.';
         }
 
+        // Validasi Category
         if (!$request->has('category') || !is_string($request->category) || strlen($request->category) > 255) {
             $errors['category'][] = 'Category wajib diisi dan maksimal 255 karakter.';
         }
 
+        // --- TAMBAHAN VALIDASI BRANCH ---
+        if (!$request->has('branch') || !is_string($request->branch) || strlen($request->branch) > 255) {
+            $errors['branch'][] = 'Cabang harus dipilih';
+        }
+        // --------------------------------
+
+        // Validasi Price Origin
         if (!$request->has('price_origin') || !is_numeric($request->price_origin)) {
             $errors['price_origin'][] = 'Price origin wajib berupa angka.';
         }
 
+        // Validasi Price Discount
         if ($request->filled('price_discount') && !is_numeric($request->price_discount)) {
             $errors['price_discount'][] = 'Price discount harus berupa angka.';
         }
 
+        // Validasi Quantity
         if (!$request->has('quantity') || !filter_var($request->quantity, FILTER_VALIDATE_INT)) {
             $errors['quantity'][] = 'Quantity wajib berupa bilangan bulat.';
         }
 
+        // Validasi Description
         if (!$request->has('description') || !is_string($request->description)) {
             $errors['description'][] = 'Description wajib diisi.';
         }
 
+        // Validasi Image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
 
@@ -78,22 +81,47 @@ class ProductController extends Controller
             }
         }
 
+        // Return Error jika ada validasi dasar yang gagal
         if (!empty($errors)) {
             return response()->json([
                 'message' => 'Validation error',
                 'errors' => $errors
             ], 422);
         }
+        
         Log::info('Validation passed');
 
-        $product = new Product($request->except('image'));
+        // --- LOGIKA MENCARI SHOP BRANCH ID ---
+        // Mencari data cabang berdasarkan nama yang dikirim (misal: 'surabaya')
+        $branchData = ShopBranch::where('name', $request->branch)->first();
 
+        // Validasi tambahan: Jika cabang tidak ditemukan di database
+        if (!$branchData) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => ['branch' => ['Data cabang tidak ditemukan di database.']]
+            ], 422);
+        }
+
+        // Mengisi variabel dengan ID dari database (misal: 2)
+        $shop_branch_id = $branchData->id;
+        // -------------------------------------
+
+        // Simpan Data Produk
+        $product = new Product($request->except('image'));
+        
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images', 'public');
             $product->image = Storage::url($path);
         }
 
         $product->save();
+
+        // Simpan Relasi ke Tabel Pivot (shopbranch_product)
+        ShopbranchProduct::create([
+            'shop_branch_id' => $shop_branch_id,
+            'product_id' => $product->id,
+        ]);
 
         return response()->json($product, 201);
     }
@@ -156,6 +184,15 @@ class ProductController extends Controller
 
         validateString($request, 'name', 255, $errors);
         validateString($request, 'category', 255, $errors);
+
+        // --- TAMBAHAN VALIDASI BRANCH (Required|String|Max:255) ---
+        // Kita tidak menggunakan helper validateString karena helper tersebut mengecek 'has',
+        // sedangkan request Anda meminta 'required' (wajib ada di payload update).
+        if (!$request->has('branch') || !is_string($request->branch) || strlen($request->branch) > 255) {
+            $errors['branch'][] = 'Cabang harus dipilih.';
+        }
+        // -----------------------------------------------------------
+
         validateNumeric($request, 'price_origin', $errors);
         validateInteger($request, 'quantity', $errors);
         validateString($request, 'description', 255, $errors);
