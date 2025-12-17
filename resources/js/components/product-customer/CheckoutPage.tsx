@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { CartItem, User } from '@/types';
 import { formatPrice } from '@/utils/format-price';
+import { router } from '@inertiajs/react';
 import {
     Banknote,
     CreditCard,
@@ -91,7 +92,7 @@ export function CheckoutPage({
                 item.quantity,
         0,
     );
-    const deliveryFee = subtotal > 299 ? 0 : 40;
+    const deliveryFee = subtotal > 20000 ? 0 : 11000;
     const couponDiscount =
         appliedCoupon === 'SAVE20'
             ? subtotal * 0.2
@@ -123,23 +124,24 @@ export function CheckoutPage({
                     delivery_fee: deliveryFee,
                     payment_method: paymentMethod,
                     delivery_address: deliveryAddress,
+                    subtotal: subtotal,
                     total: total,
                 }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to create order');
+                throw new Error('Gagal membuat pesanan');
             }
 
             const data = await response.json();
             console.log('data', data);
 
-            // router.visit(
-            //     `/payment/fake?order_id=${data.order_id}&total=${total}`,
-            // );
+            router.visit(
+                `/payment/fake?order_id=${data.order_id}&total=${total}`,
+            );
         } catch (error) {
             console.error(error);
-            alert('Failed to place order. Please try again.');
+            alert('Gagal membuat pesanan. Mohon coba lagi.');
         } finally {
             setIsPlacingOrder(false);
         }

@@ -19,7 +19,7 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['cooking', 'on the way', 'arrived']);
+        $status = $this->faker->randomElement(['pending', 'cooking', 'on the way', 'arrived']);
         $payment_status = $this->faker->randomElement([
             'created',
             'pending',

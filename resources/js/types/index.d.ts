@@ -141,7 +141,7 @@ export type Order = {
     updated_at: string;
 };
 
-export type OrderStatus = 'cooking' | 'on the way' | 'arrived';
+export type OrderStatus = 'pending' | 'cooking' | 'on the way' | 'arrived';
 export type PaymentStatus =
     | 'created'
     | 'pending'

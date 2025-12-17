@@ -141,7 +141,12 @@ export default function OrderStatusPage({
     //     ],
     // };
     const getStatusIndex = (status: OrderStatus): number => {
-        const statuses: OrderStatus[] = ['cooking', 'on the way', 'arrived'];
+        const statuses: OrderStatus[] = [
+            'pending',
+            'cooking',
+            'on the way',
+            'arrived',
+        ];
         return statuses.indexOf(status);
     };
 
