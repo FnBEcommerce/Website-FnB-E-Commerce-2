@@ -42,10 +42,11 @@ Route::get('/payment/fake', function (Request $request) {
 
 Route::post('/payment/fake/success', function (Request $request) {
     $order = Order::find($request->order_id);
-    $order->status = 'paid';
+    $order->payment_status = 'paid';
+    $order->paid_at = now();
     $order->save();
 
-    return redirect()->route('product.cart')->with('success', 'Payment successful!');
+    return redirect()->route('product.status')->with('success', 'Payment successful!');
 })->name('payment.fake.success');
 
 // Route::get("/products", function() {
@@ -62,7 +63,7 @@ Route::middleware(['role:user,admin'])->group(function() {
     Route::get('/products/{product}', [HomepageController::class, 'productDetail'])->name('product.detail');
     Route::get('/profile', [HomepageController::class, 'userProfile']);
     Route::get('/product/cart', [HomepageController::class, 'productCart'])->name('product.cart');
-    Route::get('/product/status', [HomepageController::class, 'productStatus'])->name('product.cart');
+    Route::get('/product/status', [HomepageController::class, 'productStatus'])->name('product.status');
 
     Route::middleware('order.owner')->group(function() {
         Route::get('/delivery/{order}', [DeliveryController::class, "detail"])->name('delivery');
