@@ -36,9 +36,9 @@ class HomepageController extends Controller
         // ];
         $productImages = [
             $product->image,
-            $product->image,
-            $product->image,
-            $product->image,
+            $product->image_2,
+            $product->image_3,
+            $product->image_4,
         ];
 
         $suggestedProducts = Product::take(4)->get();
