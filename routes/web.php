@@ -33,6 +33,21 @@ Route::get("/checkout", function() {
     return Inertia::render('checkout');
 })->name('checkout');
 
+Route::get('/payment/fake', function (Request $request) {
+    return Inertia::render('payment/FakePayment', [
+        'order_id' => $request->get('order_id'),
+        'total' => $request->get('total'),
+    ]);
+})->name('payment.fake');
+
+Route::post('/payment/fake/success', function (Request $request) {
+    $order = Order::find($request->order_id);
+    $order->status = 'paid';
+    $order->save();
+
+    return redirect()->route('product.cart')->with('success', 'Payment successful!');
+})->name('payment.fake.success');
+
 // Route::get("/products", function() {
 //     return Inertia::render('product-listing');
 // })->name('products');

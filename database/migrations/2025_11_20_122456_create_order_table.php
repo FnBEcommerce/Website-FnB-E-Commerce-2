@@ -15,7 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(ShopBranch::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Courier::class)->nullable()->constrained()->nullOnDelete();

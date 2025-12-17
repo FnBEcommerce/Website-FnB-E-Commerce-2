@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
 import { CartItem, User } from '@/types';
+import { formatPrice } from '@/utils/format-price';
 import {
     Banknote,
     CreditCard,
@@ -35,6 +36,7 @@ export function CheckoutPage({
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
     const [paymentMethod, setPaymentMethod] = useState('cod');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
     // Cart items state
     // const [cartItems, setCartItems] = useState([
@@ -97,6 +99,51 @@ export function CheckoutPage({
               ? 50
               : 0;
     const total = subtotal + deliveryFee - couponDiscount;
+
+    console.log('cartItem', cartItems[0]);
+
+    const handlePlaceOrder = async () => {
+        setIsPlacingOrder(true);
+        try {
+            const response = await fetch('/api/orders/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': (
+                        document.querySelector(
+                            'meta[name="csrf-token"]',
+                        ) as HTMLMetaElement
+                    )?.content,
+                },
+                body: JSON.stringify({
+                    cart_items: cartItems.map((item) => ({
+                        product_id: item.product.id,
+                        quantity: item.quantity,
+                    })),
+                    delivery_fee: deliveryFee,
+                    payment_method: paymentMethod,
+                    delivery_address: deliveryAddress,
+                    total: total,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create order');
+            }
+
+            const data = await response.json();
+            console.log('data', data);
+
+            // router.visit(
+            //     `/payment/fake?order_id=${data.order_id}&total=${total}`,
+            // );
+        } catch (error) {
+            console.error(error);
+            alert('Failed to place order. Please try again.');
+        } finally {
+            setIsPlacingOrder(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -210,7 +257,7 @@ export function CheckoutPage({
                                     >
                                         <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                                             <img
-                                                src={item.product.image}
+                                                src={item.product.image || ''}
                                                 alt={item.product.name}
                                                 className="h-full w-full object-cover"
                                             />
@@ -232,19 +279,29 @@ export function CheckoutPage({
                                                     className="text-primary"
                                                     style={{ fontWeight: 600 }}
                                                 >
-                                                    Rp {item.product.price_discount}
+                                                    Rp{' '}
+                                                    {
+                                                        item.product
+                                                            .price_discount
+                                                    }
                                                 </span>
                                                 {item.product.price_origin && (
                                                     <>
                                                         <span className="text-[14px] text-gray-400 line-through">
                                                             Rp
-                                                            {item.product.price_origin}
+                                                            {
+                                                                item.product
+                                                                    .price_origin
+                                                            }
                                                         </span>
                                                         <Badge className="bg-orange-100 text-[11px] text-primary">
                                                             {Math.round(
-                                                                ((item.product.price_origin -
-                                                                    item.product.price_discount) /
-                                                                    item.product.price_origin) *
+                                                                ((item.product
+                                                                    .price_origin -
+                                                                    item.product
+                                                                        .price_discount) /
+                                                                    item.product
+                                                                        .price_origin) *
                                                                     100,
                                                             )}
                                                             % OFF
@@ -255,10 +312,7 @@ export function CheckoutPage({
 
                                             <div className="flex items-center gap-3">
                                                 <div className="flex items-center overflow-hidden rounded-lg border border-gray-300">
-                                                    <button
-                                                        
-                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
-                                                    >
+                                                    <button className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100">
                                                         <Minus className="h-4 w-4 text-gray-600" />
                                                     </button>
                                                     <span
@@ -269,18 +323,12 @@ export function CheckoutPage({
                                                     >
                                                         {item.quantity}
                                                     </span>
-                                                    <button
-                                                        
-                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100"
-                                                    >
+                                                    <button className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-gray-100">
                                                         <Plus className="h-4 w-4 text-gray-600" />
                                                     </button>
                                                 </div>
 
-                                                <button
-                                                    
-                                                    className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
-                                                >
+                                                <button className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600">
                                                     <Trash2 className="h-4 w-4" />
                                                 </button>
                                             </div>
@@ -291,7 +339,11 @@ export function CheckoutPage({
                                                 className="text-gray-900"
                                                 style={{ fontWeight: 600 }}
                                             >
-                                                ₹{item.product.price_discount * item.quantity}
+                                                {formatPrice(
+                                                    item.product
+                                                        .price_discount *
+                                                        item.quantity,
+                                                )}
                                             </p>
                                         </div>
                                     </div>
@@ -494,7 +546,7 @@ export function CheckoutPage({
                                                 FIRST50
                                             </p>
                                             <p className="text-gray-600">
-                                                ₹50 off on first order
+                                                Rp 50.000 off on first order
                                             </p>
                                         </div>
                                     </div>
@@ -521,13 +573,15 @@ export function CheckoutPage({
                                             )}{' '}
                                             items)
                                         </span>
-                                        <span>₹{subtotal}</span>
+                                        <span>{formatPrice(subtotal)}</span>
                                     </div>
 
                                     {savings > 0 && (
                                         <div className="flex justify-between text-primary">
                                             <span>Product Savings</span>
-                                            <span>- ₹{savings}</span>
+                                            <span>
+                                                - {formatPrice(savings)}
+                                            </span>
                                         </div>
                                     )}
 
@@ -541,14 +595,18 @@ export function CheckoutPage({
                                                 FREE
                                             </span>
                                         ) : (
-                                            <span>₹{deliveryFee}</span>
+                                            <span>
+                                                {formatPrice(deliveryFee)}
+                                            </span>
                                         )}
                                     </div>
 
                                     {couponDiscount > 0 && (
                                         <div className="flex justify-between text-[#059669]">
                                             <span>Coupon Discount</span>
-                                            <span>- ₹{couponDiscount}</span>
+                                            <span>
+                                                - {formatPrice(couponDiscount)}
+                                            </span>
                                         </div>
                                     )}
 
@@ -560,7 +618,7 @@ export function CheckoutPage({
                                     >
                                         <span>Total Amount</span>
                                         <span className="text-primary">
-                                            ₹{total}
+                                            {formatPrice(total)}
                                         </span>
                                     </div>
 
@@ -576,10 +634,14 @@ export function CheckoutPage({
                                 </div>
 
                                 <Button
+                                    onClick={handlePlaceOrder}
+                                    disabled={isPlacingOrder}
                                     className="mt-5 w-full bg-primary py-6 text-[16px] text-white hover:bg-orange-600"
                                     style={{ fontWeight: 600 }}
                                 >
-                                    Place Order • ₹{total}
+                                    {isPlacingOrder
+                                        ? 'Placing Order...'
+                                        : `Place Order • ${formatPrice(total)}`}
                                 </Button>
 
                                 <p className="mt-3 text-center text-[12px] text-gray-500">
