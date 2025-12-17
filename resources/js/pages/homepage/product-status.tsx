@@ -2,7 +2,14 @@ import { Button } from '@/components/ui/button';
 import type { OrderNew } from '@/types';
 import { OrderStatus } from '@/types';
 import { Link } from '@inertiajs/react';
-import { CheckCircle, ChefHat, Clock, MapPin, Truck } from 'lucide-react';
+import {
+    CheckCircle,
+    ChefHat,
+    Clock,
+    Clock10,
+    MapPin,
+    Truck,
+} from 'lucide-react';
 
 interface OrderStatusPageProps {
     currentOrder: OrderNew;
@@ -152,8 +159,15 @@ export default function OrderStatusPage({
 
     const currentStatusIndex = getStatusIndex(currentOrder.status);
     console.log(currentOrder);
+    console.log(currentStatusIndex);
 
     const statusSteps = [
+        {
+            key: 'pending' as OrderStatus,
+            label: 'Pending',
+            icon: Clock10,
+            description: 'Your order is being prepared',
+        },
         {
             key: 'cooking' as OrderStatus,
             label: 'Cooking',
