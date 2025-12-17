@@ -105,7 +105,6 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
     Route::post('/orders/pay', [PaymentController::class, 'pay'])
     ;
     Route::post('/product/review', [ProductController::class, 'addReview']);
-    // Route::post('/midtrans/webhook', [MidtransWebhookController::class, 'handle']);
 });
 
 

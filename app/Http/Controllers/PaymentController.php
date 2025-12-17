@@ -58,7 +58,7 @@ class PaymentController extends Controller
 
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => $customOrderId,
+                    'order_id' => $order->order_id,
                     'gross_amount' => ceil($order->total),
                 ),
                 'customer_details' => array(
@@ -78,21 +78,5 @@ class PaymentController extends Controller
                 'message' => 'Gagal membuat order: ' . $th->getMessage(),
             ], 500);
         }
-        
-
-    }
-
-    public function pay(Order $order)
-    {
-        // VALIDASI
-        if ($order->status !== 'created') {
-            return response()->json([
-                'message' => 'Order tidak valid untuk diproses pembayaran.',
-            ], 400);
-        }
-
-        return response()->json([
-            // 'snap_token' => $snapToken
-        ]);
     }
 }
