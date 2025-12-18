@@ -1,152 +1,79 @@
 import { Button } from '@/components/ui/button';
 import type { OrderNew } from '@/types';
 import { OrderStatus } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import {
+    ArrowLeft,
     CheckCircle,
     ChefHat,
     Clock,
     Clock10,
     MapPin,
+    ShoppingBag,
     Truck,
 } from 'lucide-react';
 
 interface OrderStatusPageProps {
-    currentOrder: OrderNew;
+    currentOrder: OrderNew | null;
     onNavigateToHome: () => void;
 }
 
-// interface Order {
-//     id: string;
-//     orderNumber: string;
-//     items: {
-//         name: string;
-//         quantity: number;
-//         image: string;
-//     }[];
-//     status: OrderStatus;
-//     estimatedTime: string;
-//     address: string;
-//     orderDate: string;
-//     totalAmount: number;
-//     driverName?: string;
-//     driverPhone?: string;
-//     trackingUpdates: {
-//         status: OrderStatus;
-//         time: string;
-//         message: string;
-//     }[];
-// }
-
-// export type Order = {
-//     id: number;
-//     user_id: number;
-//     shop_branch_id?: number;
-//     courier_id?: number | null;
-//     order_items: Pick<
-//         Product,
-//         'name' | 'quantity' | 'price_discount' | 'image'
-//     >[];
-//     payment_method?: string;
-//     status: OrderStatus;
-//     estimated_delivery_at: number;
-//     street: User['street'];
-//     confirmed_at: string | null;
-//     delivery_fee?: number;
-//     total: number;
-//     driver_name?: string;
-//     driver_number?: string;
-//     trackingUpdates: {
-//         status: OrderStatus;
-//         time: string;
-//         message: string;
-//     }[];
-//     processed_at?: string | null;
-//     delivered_at?: string | null;
-//     created_at?: string;
-//     updated_at?: string;
-// };
-
 export default function OrderStatusPage({
     currentOrder,
-    onNavigateToHome,
 }: OrderStatusPageProps) {
-    // Dummy data - in real app, this would come from backend
-    // const currentOrder: OrderNew = {
-    //     id: 1,
-    //     user_id: 1,
-    //     order_items: [
-    //         {
-    //             name: '7-Minute Khichdi - Superb Vegetable',
-    //             quantity: 2,
-    //             price_discount: 12000,
-    //             image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    //         },
-    //         {
-    //             name: '7-Minute Khichdi - Classic Dal',
-    //             quantity: 1,
-    //             price_discount: 12000,
-    //             image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    //         },
-    //     ],
-    //     status: 'on the way',
-    //     estimated_delivery_at: 10,
-    //     street: '123 MG Road, Bangalore, Karnataka 560001',
-    //     created_at: 'Dec 13, 2024 at 12:30 PM',
-    //     total: 247,
-    //     driver_name: 'Rajesh Kumar',
-    //     driver_number: '+91 98765 43210',
-    //     tracking_updates: [
-    //         {
-    //             status: 'cooking',
-    //             time: '12:35 PM',
-    //             message: 'Your order is being prepared with fresh ingredients',
-    //         },
-    //         {
-    //             status: 'on the way',
-    //             time: '12:50 PM',
-    //             message: 'Your order is out for delivery',
-    //         },
-    //     ],
-    // };
+    if (!currentOrder) {
+        const navigate = (url: string) => router.visit(url);
 
-    // const currentOrder: Order2 = {
-    //     id: 1,
-    //     user_id: 1
-    //     order_items: [
-    //         {
-    //             name: '7-Minute Khichdi - Superb Vegetable',
-    //             quantity: 2,
-    //             price_discount: 12000
-    //             image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraGljaGRpJTIwYm93bCUyMHZlZ2V0YWJsZXxlbnwxfHx8fDE3NjA1MTM2ODR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    //         },
-    //         {
-    //             name: '7-Minute Khichdi - Classic Dal',
-    //             quantity: 1,
-    //             price_discount: 12000
-    //             image: 'https://images.unsplash.com/photo-1653849942524-ef2c6882d70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjByaWNlJTIwbGVudGlsJTIwZGlzaHxlbnwxfHx8fDE3NjA1MTM2ODV8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    //         },
-    //     ],
-    //     status: 'on the way',
-    //     estimated_delivery_at: '15-20 mins',
-    //     address: '123 MG Road, Bangalore, Karnataka 560001',
-    //     orderDate: 'Dec 13, 2024 at 12:30 PM',
-    //     totalAmount: 247,
-    //     driverName: 'Rajesh Kumar',
-    //     driverPhone: '+91 98765 43210',
-    //     trackingUpdates: [
-    //         {
-    //             status: 'cooking',
-    //             time: '12:35 PM',
-    //             message: 'Your order is being prepared with fresh ingredients',
-    //         },
-    //         {
-    //             status: 'on the way',
-    //             time: '12:50 PM',
-    //             message: 'Your order is out for delivery',
-    //         },
-    //     ],
-    // };
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+                <div className="w-full max-w-md animate-in space-y-8 text-center duration-500 fade-in zoom-in">
+                    {/* Illustration Icon */}
+                    <div className="relative mx-auto h-28 w-28">
+                        <div className="absolute inset-0 animate-pulse rounded-full bg-orange-100" />
+                        <div className="relative flex h-full w-full items-center justify-center rounded-full border border-orange-50 bg-white shadow-xl">
+                            <ShoppingBag className="h-12 w-12 text-[#FF6900]" />
+                            <div className="absolute -top-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-[#FF6900] shadow-lg">
+                                <span className="text-sm font-bold text-white">
+                                    !
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Text Information */}
+                    <div className="space-y-3">
+                        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+                            Belum Ada Pesanan
+                        </h2>
+                        <p className="text-lg leading-relaxed text-gray-500">
+                            Perut mulai lapar? <br />
+                            Yuk, jelajahi menu lezat kami dan buat pesanan
+                            pertamamu sekarang!
+                        </p>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col gap-3 pt-4">
+                        <Button
+                            onClick={() => navigate('/products')}
+                            className="h-14 w-full rounded-2xl bg-[#FF6900] text-base font-bold text-white shadow-lg shadow-orange-200 transition-all hover:scale-[1.02] hover:bg-[#E55F00] active:scale-95"
+                        >
+                            Mulai Pesan Sekarang
+                        </Button>
+
+                        <button
+                            onClick={() => navigate('/')}
+                            className="inline-flex items-center justify-center gap-2 py-2 text-sm font-semibold text-gray-400 transition-colors hover:text-[#FF6900]"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            Kembali ke Beranda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     const getStatusIndex = (status: OrderStatus): number => {
         const statuses: OrderStatus[] = [
             'pending',
@@ -158,8 +85,6 @@ export default function OrderStatusPage({
     };
 
     const currentStatusIndex = getStatusIndex(currentOrder.status);
-    console.log(currentOrder);
-    console.log(currentStatusIndex);
 
     const statusSteps = [
         {
