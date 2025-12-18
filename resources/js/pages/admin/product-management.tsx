@@ -233,7 +233,7 @@ export default function ProductManagement({
 
     const handleDeleteProduct = async (id: number) => {
         try {
-            await axios.delete(`/api/products/${id}`);
+            await axios.post(`/api/products/delete/${id}`);
             setProducts(products.filter((p) => p.id !== id));
         } catch (error) {
             console.error('Failed to delete product:', error);

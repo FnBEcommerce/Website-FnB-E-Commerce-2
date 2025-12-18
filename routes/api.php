@@ -16,6 +16,9 @@ Route::post('/midtrans/callback', [MidtransWebhookController::class, 'handle']);
 // Example: http://localhost:8000/api/images/products/49CzOHie3FRluAlHOg97VLSJZEL1ZQuWO7idWE70.png
 Route::get('/images/products/{filename}', [ProductController::class, 'getImage']);
 
+// /api/products/delete/{id}
+Route::post('/products/delete/{id}', [ProductController::class, 'destroy']);
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');

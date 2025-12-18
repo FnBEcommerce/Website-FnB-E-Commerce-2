@@ -70,18 +70,22 @@ export function OneCheckoutPage({
             const data = await response.json();
             console.log('data', data);
 
-            pay(data.snap_token, {
-                async onSuccess(result) {
-                    router.visit('/product/status');
-                },
-                async onError(result) {
-                    await Swal.fire({
-                        title: 'Pembayaran gagal. Mohon coba lagi',
-                        icon: 'error',
-                    });
-                },
-                onClose() {},
-            });
+            if (paymentMethod === 'cod') {
+                router.visit('/product/status');
+            } else {
+                pay(data.snap_token, {
+                    async onSuccess(result) {
+                        router.visit('/product/status');
+                    },
+                    async onError(result) {
+                        await Swal.fire({
+                            title: 'Pembayaran gagal. Mohon coba lagi',
+                            icon: 'error',
+                        });
+                    },
+                    onClose() {},
+                });
+            }
         } catch (error) {
             console.error(error);
             await Swal.fire({
@@ -393,9 +397,12 @@ export function OneCheckoutPage({
                                 </div>
 
                                 <div className="flex items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 hover:border-primary">
-                                    <RadioGroupItem value="cod" id="cod" />
+                                    <RadioGroupItem
+                                        value="transfer"
+                                        id="transfer"
+                                    />
                                     <Label
-                                        htmlFor="cod"
+                                        htmlFor="transfer"
                                         className="flex flex-1 items-center gap-3"
                                     >
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
