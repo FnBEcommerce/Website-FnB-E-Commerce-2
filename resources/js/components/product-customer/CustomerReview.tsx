@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { ProductWithRating } from '@/pages/homepage/product-details';
 import type { ReviewProps, User } from '@/types/index';
+import { formatDate } from '@/utils/format-created-at';
 import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, MessageSquare, Star } from 'lucide-react';
@@ -241,7 +242,7 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
             </div>
 
             {/* Customer Reviews Carousel */}
-            <div className="mt-12">
+            {/* <div className="mt-12">
                 <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-[24px]" style={{ fontWeight: 700 }}>
                         Ulasan Pelanggan
@@ -262,6 +263,72 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
                             <ChevronRight className="h-5 w-5 text-gray-700" />
                         </button>
                     </div>
+                </div>
+            </div> */}
+
+            {/* Customer Reviews Carousel */}
+            <div className="mt-12">
+                <div className="mb-6 flex items-center justify-between">
+                    <h3 className="text-[24px]" style={{ fontWeight: 700 }}>
+                        Customer Reviews
+                    </h3>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => sliderRef.current?.slickPrev()}
+                            className="rounded-full border border-gray-300 bg-white p-2 transition-colors hover:bg-gray-50"
+                            aria-label="Previous reviews"
+                        >
+                            <ChevronLeft className="h-5 w-5 text-gray-700" />
+                        </button>
+                        <button
+                            onClick={() => sliderRef.current?.slickNext()}
+                            className="rounded-full border border-gray-300 bg-white p-2 transition-colors hover:bg-gray-50"
+                            aria-label="Next reviews"
+                        >
+                            <ChevronRight className="h-5 w-5 text-gray-700" />
+                        </button>
+                    </div>
+                </div>
+
+                <div className="relative">
+                    <Slider ref={sliderRef} {...settings}>
+                        {reviews.map((review) => (
+                            <div key={review.user_id} className="px-2">
+                                <div className="h-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+                                    <div className="mb-3 flex items-start justify-between">
+                                        <div>
+                                            <h4
+                                                className="text-[16px]"
+                                                style={{ fontWeight: 600 }}
+                                            >
+                                                {review.name}
+                                            </h4>
+                                            <p className="text-[14px] text-gray-500">
+                                                {formatDate(review.created_at)}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-3 flex items-center gap-1">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <Star
+                                                key={star}
+                                                className={`h-4 w-4 ${
+                                                    star <= review.rating
+                                                        ? 'fill-yellow-400 text-yellow-400'
+                                                        : 'text-gray-300'
+                                                }`}
+                                            />
+                                        ))}
+                                    </div>
+
+                                    <p className="mb-4 line-clamp-4 text-[14px] text-gray-700">
+                                        {review.description}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </Slider>
                 </div>
             </div>
 

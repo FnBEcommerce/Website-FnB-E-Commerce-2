@@ -41,7 +41,7 @@ class Product extends Model
      */
     protected $casts = [
         'popular' => 'boolean',
-        'rating' => 'decimal:1',
+        'rating' => 'integer', 
         'food_type' => 'array',
     ];
 

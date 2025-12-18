@@ -112,9 +112,7 @@ export function ProductOverview({
                         />
                     ))}
                 </div>
-                <span className="text-gray-700">
-                    {Number(averageRating).toFixed(1)}/5
-                </span>
+                <span className="text-gray-700">{Number(averageRating)}/5</span>
                 <span className="text-gray-500">({reviews.length} ulasan)</span>
             </div>
 
