@@ -70,7 +70,7 @@ class AdminController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
-                    'name' => Carbon::create()->month($item->month)->format('M'),
+                    'name' => Carbon::create()->month((int) $item->month)->format('M'),
                     'total' => $item->total,
                 ];
             })->toArray();

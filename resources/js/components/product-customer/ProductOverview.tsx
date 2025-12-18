@@ -27,7 +27,9 @@ export function ProductOverview({
     onChangeBuyQuantity,
     onNavigateToCheckout,
 }: ProductOverviewProps) {
-    const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
+    const ratingSum = reviews
+        .map((r) => Number(r.rating))
+        .reduce((a, b) => a + b, 0);
     const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
     const { cart, checkExistence } = useCart();
 
