@@ -28,7 +28,9 @@ export function ProductOverview({
     onNavigateToCheckout,
 }: ProductOverviewProps) {
     const ratingSum = reviews.map((r) => r.rating).reduce((a, b) => a + b, 0);
-    const averageRating = !reviews.length ? 0 : ratingSum / reviews.length;
+    const averageRating = !reviews.length
+        ? 0
+        : Math.min(5, Math.max(0, ratingSum / reviews.length));
     const { cart, checkExistence } = useCart();
 
     console.log({
@@ -110,9 +112,7 @@ export function ProductOverview({
                         />
                     ))}
                 </div>
-                <span className="text-gray-700">
-                    {Number(averageRating).toFixed(1)}/5
-                </span>
+                <span className="text-gray-700">{Number(averageRating)}/5</span>
                 <span className="text-gray-500">({reviews.length} ulasan)</span>
             </div>
 
