@@ -111,8 +111,8 @@ class ProductController extends Controller
         $product = new Product($request->except('image'));
         
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
-            $product->image = Storage::url($path);
+            $path = $request->file(key: 'image')->store('images', 'public');
+            $product->image = '/api/images/products/' . basename($path);
         }
 
         $product->save();
@@ -233,17 +233,36 @@ class ProductController extends Controller
         }
         Log::info('Validation passed');
 
+        try {
+            $branch = ShopBranch::where('name', $request->branch)->first();
+            $branch_id = $branch ? $branch->id : null;
+
+            if ($branch_id) {
+                ShopbranchProduct::where('product_id', $product->id)->delete();
+
+                ShopbranchProduct::create([
+                    'product_id' => $product->id,
+                    'shop_branch_id' => $branch->id,
+                ]);
+                Log::info('Branch relation updated', ['product_id' => $product->id, 'branch_id' => $branch->id]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error updating shop branch relation: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error updating shop branch relation',
+                'error' => $e->getMessage()
+            ]);
+        }
 
         $product->fill($request->except('image'));
 
         if ($request->hasFile('image')) {
             Log::info('Image file exists');
-            // Delete old image if it exists
             if ($product->image) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $product->image));
             }
             $path = $request->file('image')->store('images', 'public');
-            $product->image = Storage::url($path);
+            $product->image = '/api/images/products/' . basename($path);
         }
 
         $product->save();
@@ -271,5 +290,15 @@ class ProductController extends Controller
             'rating' => $request->rating,
             'description' => $request->description,
         ]);
+    }
+
+    public function getImage($filename) {
+        $path = storage_path('app/public/images/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
     }
 }

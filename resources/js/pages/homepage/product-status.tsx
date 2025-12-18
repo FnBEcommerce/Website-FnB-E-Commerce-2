@@ -21,9 +21,8 @@ interface OrderStatusPageProps {
 export default function OrderStatusPage({
     currentOrder,
 }: OrderStatusPageProps) {
+    const navigate = (url: string) => router.visit(url);
     if (!currentOrder) {
-        const navigate = (url: string) => router.visit(url);
-
         return (
             <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
                 <div className="w-full max-w-md animate-in space-y-8 text-center duration-500 fade-in zoom-in">
@@ -137,7 +136,7 @@ export default function OrderStatusPage({
                 <div className="mb-8">
                     <Link
                         href="/products"
-                        onClick={onNavigateToHome}
+                        onClick={() => navigate('/')}
                         className="mb-4 inline-flex items-center gap-2 text-[#FF6900] hover:text-[#E55F00]"
                     >
                         ← Kembali
@@ -420,7 +419,7 @@ export default function OrderStatusPage({
                                     className="cursor-pointer"
                                 >
                                     <Button
-                                        onClick={onNavigateToHome}
+                                        onClick={() => navigate('/')}
                                         className="w-full bg-[#FF6900] text-white hover:bg-[#E55F00]"
                                         style={{ fontWeight: 600 }}
                                     >

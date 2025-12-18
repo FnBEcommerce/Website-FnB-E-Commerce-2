@@ -72,15 +72,14 @@ export function CustomerReviews({ reviews, product }: CustomerReviewsProps) {
         },
     ];
 
-    const averageRating = !reviews.length
-        ? 0
-        : Math.round(
-              (reviews
-                  .map((review) => review.rating)
-                  .reduce((prev, next) => prev + next, 0) /
-                  reviews.length) *
-                  10,
-          ) / 10;
+    const totalRating = reviews.reduce(
+        (sum, item) => sum + Number(item.rating),
+        0,
+    );
+
+    const averageRating = reviews.length
+        ? Math.round((totalRating / reviews.length) * 10) / 10
+        : 0;
 
     const basedOnReviewReviews =
         reviews.length <= 100 ? String(reviews.length) : '100+';

@@ -70,18 +70,22 @@ export function OneCheckoutPage({
             const data = await response.json();
             console.log('data', data);
 
-            pay(data.snap_token, {
-                async onSuccess(result) {
-                    router.visit('/product/status');
-                },
-                async onError(result) {
-                    await Swal.fire({
-                        title: 'Pembayaran gagal. Mohon coba lagi',
-                        icon: 'error',
-                    });
-                },
-                onClose() {},
-            });
+            if (paymentMethod === 'cod') {
+                router.visit('/product/status');
+            } else {
+                pay(data.snap_token, {
+                    async onSuccess(result) {
+                        router.visit('/product/status');
+                    },
+                    async onError(result) {
+                        await Swal.fire({
+                            title: 'Pembayaran gagal. Mohon coba lagi',
+                            icon: 'error',
+                        });
+                    },
+                    onClose() {},
+                });
+            }
         } catch (error) {
             console.error(error);
             await Swal.fire({
