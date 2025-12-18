@@ -108,7 +108,7 @@ Route::middleware(['web'])->prefix('/api')->group(function() {
 });
 
 
-Route::get('courier', [TeleUsersController::class, 'index']);
+Route::get('/courier', [TeleUsersController::class, 'index']);
 
 
 require __DIR__.'/settings.php';

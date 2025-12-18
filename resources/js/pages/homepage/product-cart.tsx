@@ -27,6 +27,7 @@ export default function CartPage({ user, cart }: productCartProps) {
     const [currentPage, setCurrentPage] = useState<
         'product-cart' | 'checkout' | 'location' | '/'
     >('product-cart');
+
     const [cartItems, setCartItems] = useState(
         !cart
             ? []
@@ -47,9 +48,7 @@ export default function CartPage({ user, cart }: productCartProps) {
     };
 
     const removeItem = (id: number) => {
-        router.delete(`/cart/destroy/${id}`, {
-            preserveScroll: true,
-        });
+        router.delete(`/cart/destroy/${id}`, { preserveScroll: true });
         setCartItems(cartItems.filter((item) => item.id !== id));
     };
 
@@ -73,10 +72,12 @@ export default function CartPage({ user, cart }: productCartProps) {
     const selectedItems = cartItems.filter(
         (item) => item.selected && item.inStock,
     );
+
     const subtotal = selectedItems.reduce(
         (sum, item) => sum + item.product.price_discount * item.quantity,
         0,
     );
+
     const deliveryFee = subtotal > 299 ? 0 : 40;
     const total = subtotal + deliveryFee;
 
@@ -87,67 +88,57 @@ export default function CartPage({ user, cart }: productCartProps) {
     return (
         <div className="min-h-screen bg-gray-50">
             {currentPage === 'product-cart' && (
-                <div className="container mx-auto px-4 py-8">
+                <div className="container mx-auto px-4 py-6 sm:py-8">
+                    {/* HEADER */}
                     <div className="mb-6">
                         <Link href="/products">
-                            <button className="mb-2 text-[#FF6900] hover:underline">
+                            <button className="mb-2 text-sm text-[#FF6900] hover:underline">
                                 ← Kembali
                             </button>
                         </Link>
 
-                        <h1
-                            className="text-[32px] text-gray-900"
-                            style={{ fontWeight: 700 }}
-                        >
+                        <h1 className="text-2xl font-bold text-gray-900 sm:text-[32px]">
                             Keranjang Pesanan
                         </h1>
-                        <p className="mt-1 text-gray-600">
-                            {cartItems.length}{' '}
-                            {cartItems.length === 1 ? 'item' : 'items'} dalam
-                            keranjang
+
+                        <p className="mt-1 text-sm text-gray-600 sm:text-base">
+                            {cartItems.length} produk di keranjang
                         </p>
                     </div>
 
                     {cartItems.length === 0 ? (
-                        <Card className="rounded-xl border border-gray-200 bg-white p-12 text-center shadow-sm">
-                            <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-orange-100">
-                                <ShoppingCart className="h-12 w-12 text-[#FF6900]" />
+                        <Card className="rounded-xl border bg-white p-8 text-center sm:p-12">
+                            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 sm:h-24 sm:w-24">
+                                <ShoppingCart className="h-10 w-10 text-[#FF6900] sm:h-12 sm:w-12" />
                             </div>
-                            <h2
-                                className="mb-2 text-[24px] text-gray-900"
-                                style={{ fontWeight: 600 }}
-                            >
-                                Keranjang anda masih kosong
+                            <h2 className="mb-2 text-lg font-semibold sm:text-2xl">
+                                Keranjang masih kosong
                             </h2>
-                            <p className="mb-6 text-gray-600">
-                                Temukan pesanan dengan harga menarik untuk anda
+                            <p className="mb-6 text-sm text-gray-600 sm:text-base">
+                                Temukan produk menarik untukmu
                             </p>
                             <Link href="/products">
-                                <Button className="bg-[#FF6900] px-8 text-white hover:bg-[#E55D00]">
+                                <Button className="bg-[#FF6900] text-white hover:bg-[#E55D00]">
                                     <ShoppingBag className="mr-2 h-4 w-4" />
-                                    Lihat produk
+                                    Lihat Produk
                                 </Button>
                             </Link>
                         </Card>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                            {/* CART LIST */}
                             <div className="space-y-4 lg:col-span-2">
-                                <Card className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                                <Card className="rounded-xl border bg-white p-4">
                                     <div className="flex items-center gap-3">
                                         <Checkbox
-                                            id="select-all"
                                             checked={allInStockSelected}
                                             onCheckedChange={toggleSelectAll}
-                                            className="border-[#FF6900] data-[state=checked]:bg-[#FF6900]"
                                         />
-                                        <Label
-                                            htmlFor="select-all"
-                                            className="fw-600 cursor-pointer text-gray-900"
-                                        >
-                                            Select All Items (
+                                        <Label className="cursor-pointer text-sm font-medium">
+                                            Pilih semua produk (
                                             {
                                                 cartItems.filter(
-                                                    (item) => item.inStock,
+                                                    (i) => i.inStock,
                                                 ).length
                                             }
                                             )
@@ -155,72 +146,41 @@ export default function CartPage({ user, cart }: productCartProps) {
                                     </div>
                                 </Card>
 
-                                <Card className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                                <Card className="rounded-xl border bg-white p-4 sm:p-6">
                                     <div className="space-y-6">
                                         {cartItems.map((item, index) => (
                                             <div key={item.id}>
-                                                <div className="flex gap-4">
-                                                    <div className="flex items-start pt-2">
-                                                        <Checkbox
-                                                            id={`item-${item.id}`}
-                                                            checked={
-                                                                item.selected
-                                                            }
-                                                            onCheckedChange={() =>
-                                                                toggleItemSelection(
-                                                                    item.id,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                !item.inStock
-                                                            }
-                                                            className="border-[#FF6900] data-[state=checked]:bg-[#FF6900]"
-                                                        />
-                                                    </div>
+                                                <div className="flex gap-3 sm:gap-4">
+                                                    <Checkbox
+                                                        checked={item.selected}
+                                                        onCheckedChange={() =>
+                                                            toggleItemSelection(
+                                                                item.id,
+                                                            )
+                                                        }
+                                                        disabled={!item.inStock}
+                                                    />
 
-                                                    <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                                                        <img
-                                                            src={
-                                                                item.product
-                                                                    .image || ''
-                                                            }
-                                                            alt={
-                                                                item.product
-                                                                    .name
-                                                            }
-                                                            className={`h-full w-full object-cover ${!item.inStock ? 'opacity-50 grayscale' : ''}`}
-                                                        />
-                                                        {!item.inStock && (
-                                                            <div className="bg-opacity-40 absolute inset-0 flex items-center justify-center bg-black">
-                                                                <span
-                                                                    className="text-[12px] text-white"
-                                                                    style={{
-                                                                        fontWeight: 600,
-                                                                    }}
-                                                                >
-                                                                    Out of Stock
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                                    <img
+                                                        src={
+                                                            item.product
+                                                                .image || ''
+                                                        }
+                                                        alt={item.product.name}
+                                                        className={`h-20 w-20 rounded-lg object-cover ${
+                                                            !item.inStock
+                                                                ? 'opacity-50 grayscale'
+                                                                : ''
+                                                        }`}
+                                                    />
 
                                                     <div className="min-w-0 flex-1">
-                                                        <h3
-                                                            className={`mb-1 text-gray-900 ${!item.inStock ? 'text-gray-500' : ''}`}
-                                                            style={{
-                                                                fontWeight: 600,
-                                                            }}
-                                                        >
+                                                        <h3 className="truncate text-sm font-semibold sm:text-base">
                                                             {item.product.name}
                                                         </h3>
 
-                                                        <div className="mb-3 flex items-center gap-2">
-                                                            <span
-                                                                className={`${item.inStock ? 'text-[#FF6900]' : 'text-gray-400'}`}
-                                                                style={{
-                                                                    fontWeight: 600,
-                                                                }}
-                                                            >
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-semibold text-[#FF6900]">
                                                                 {formatPrice(
                                                                     item.product
                                                                         .price_discount,
@@ -228,36 +188,19 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                             </span>
                                                             {item.product
                                                                 .price_origin && (
-                                                                <>
-                                                                    <span className="text-[14px] text-gray-400 line-through">
-                                                                        {formatPrice(
-                                                                            item
-                                                                                .product
-                                                                                .price_origin,
-                                                                        )}
-                                                                    </span>
-                                                                    <Badge className="bg-orange-100 text-[11px] text-[#FF6900]">
-                                                                        {Math.round(
-                                                                            ((item
-                                                                                .product
-                                                                                .price_origin -
-                                                                                item
-                                                                                    .product
-                                                                                    .price_discount) /
-                                                                                item
-                                                                                    .product
-                                                                                    .price_origin) *
-                                                                                100,
-                                                                        )}
-                                                                        % OFF
-                                                                    </Badge>
-                                                                </>
+                                                                <span className="text-xs text-gray-400 line-through">
+                                                                    {formatPrice(
+                                                                        item
+                                                                            .product
+                                                                            .price_origin,
+                                                                    )}
+                                                                </span>
                                                             )}
                                                         </div>
 
                                                         {item.inStock ? (
-                                                            <div className="flex items-center gap-3">
-                                                                <div className="flex items-center overflow-hidden rounded-lg border-2 border-[#FF6900]">
+                                                            <div className="mt-2 flex items-center gap-2">
+                                                                <div className="flex items-center overflow-hidden rounded-lg border">
                                                                     <button
                                                                         onClick={() =>
                                                                             updateQuantity(
@@ -266,16 +209,11 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                                     1,
                                                                             )
                                                                         }
-                                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-orange-50"
+                                                                        className="flex h-8 w-8 items-center justify-center"
                                                                     >
-                                                                        <Minus className="h-4 w-4 text-[#FF6900]" />
+                                                                        <Minus className="h-4 w-4" />
                                                                     </button>
-                                                                    <span
-                                                                        className="flex h-8 w-12 items-center justify-center border-x-2 border-[#FF6900] text-gray-900"
-                                                                        style={{
-                                                                            fontWeight: 600,
-                                                                        }}
-                                                                    >
+                                                                    <span className="w-10 text-center text-sm font-medium">
                                                                         {
                                                                             item.quantity
                                                                         }
@@ -288,9 +226,9 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                                     1,
                                                                             )
                                                                         }
-                                                                        className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-orange-50"
+                                                                        className="flex h-8 w-8 items-center justify-center"
                                                                     >
-                                                                        <Plus className="h-4 w-4 text-[#FF6900]" />
+                                                                        <Plus className="h-4 w-4" />
                                                                     </button>
                                                                 </div>
 
@@ -300,49 +238,30 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                             item.id,
                                                                         )
                                                                     }
-                                                                    className="rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                                                    className="rounded-lg p-2 text-red-500 hover:bg-red-50"
                                                                 >
                                                                     <Trash2 className="h-4 w-4" />
                                                                 </button>
                                                             </div>
                                                         ) : (
-                                                            <div className="flex items-center gap-2">
-                                                                <Badge className="bg-red-100 text-red-600">
-                                                                    Out of Stock
-                                                                </Badge>
-                                                                <button
-                                                                    onClick={() =>
-                                                                        removeItem(
-                                                                            item.id,
-                                                                        )
-                                                                    }
-                                                                    className="ml-2 rounded-lg p-2 text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
-                                                                >
-                                                                    <Trash2 className="h-4 w-4" />
-                                                                </button>
-                                                            </div>
+                                                            <Badge className="mt-2 bg-red-100 text-red-600">
+                                                                Stok Habis
+                                                            </Badge>
                                                         )}
                                                     </div>
 
-                                                    <div className="text-right">
-                                                        <p
-                                                            className={`${item.inStock ? 'text-gray-900' : 'text-gray-400'}`}
-                                                            style={{
-                                                                fontWeight: 600,
-                                                            }}
-                                                        >
-                                                            {formatPrice(
-                                                                item.product
-                                                                    .price_discount *
-                                                                    item.quantity,
-                                                            )}
-                                                        </p>
+                                                    <div className="text-sm font-semibold">
+                                                        {formatPrice(
+                                                            item.product
+                                                                .price_discount *
+                                                                item.quantity,
+                                                        )}
                                                     </div>
                                                 </div>
 
                                                 {index <
                                                     cartItems.length - 1 && (
-                                                    <Separator className="mt-6" />
+                                                    <Separator className="mt-4" />
                                                 )}
                                             </div>
                                         ))}
@@ -350,153 +269,79 @@ export default function CartPage({ user, cart }: productCartProps) {
                                 </Card>
                             </div>
 
+                            {/* SUMMARY */}
                             <div className="lg:col-span-1">
-                                <div className="sticky top-24 space-y-4">
-                                    <Card className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-                                        <h3
-                                            className="mb-4 text-[18px] text-gray-900"
-                                            style={{ fontWeight: 600 }}
-                                        >
-                                            Price Details
+                                <div className="sticky top-20 space-y-4">
+                                    <Card className="rounded-xl border bg-white p-4">
+                                        <h3 className="mb-3 text-base font-semibold">
+                                            Rincian Harga
                                         </h3>
 
-                                        <div className="space-y-3">
-                                            {/* Individual Product Lines */}
-                                            {selectedItems.map((item) => (
-                                                <div
-                                                    key={item.id}
-                                                    className="flex justify-between text-gray-600"
-                                                >
-                                                    <span className="text-sm">
-                                                        {item.product.name} ×{' '}
-                                                        {item.quantity}
-                                                    </span>
-                                                    <span className="text-sm font-medium">
-                                                        {formatPrice(
-                                                            item.product
-                                                                .price_discount *
-                                                                item.quantity,
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            ))}
+                                        {selectedItems.length === 0 && (
+                                            <p className="text-center text-sm text-gray-500">
+                                                Belum ada produk dipilih
+                                            </p>
+                                        )}
 
-                                            {selectedItems.length === 0 && (
-                                                <div className="py-2 text-center text-sm text-gray-500">
-                                                    No items selected
-                                                </div>
-                                            )}
-
-                                            {/* {selectedItems.length > 0 && (
-                                                <>
-                                                    <Separator />
-
-                                                    <div className="flex justify-between text-gray-600">
-                                                        <span>Subtotal</span>
-                                                        <span>₹{subtotal}</span>
-                                                    </div>
-
-                                                    <div className="flex justify-between text-gray-600">
-                                                        <span>Delivery Fee</span>
-                                                        <span
-                                                            className={
-                                                                deliveryFee === 0
-                                                                    ? 'font-medium text-green-600'
-                                                                    : ''
-                                                            }
-                                                        >
-                                                            {deliveryFee === 0
-                                                                ? 'FREE'
-                                                                : `₹${deliveryFee}`}
-                                                        </span>
-                                                    </div>
-                                                </>
-                                            )} */}
-
-                                            <Separator />
-
+                                        {selectedItems.map((item) => (
                                             <div
-                                                className="flex justify-between text-[18px] text-gray-900"
-                                                style={{ fontWeight: 700 }}
+                                                key={item.id}
+                                                className="flex justify-between text-sm text-gray-600"
                                             >
-                                                <span>Total Amount</span>
-                                                <span className="text-[#FF6900]">
-                                                    {formatPrice(total)}
+                                                <span>
+                                                    {item.product.name} ×{' '}
+                                                    {item.quantity}
+                                                </span>
+                                                <span>
+                                                    {formatPrice(
+                                                        item.product
+                                                            .price_discount *
+                                                            item.quantity,
+                                                    )}
                                                 </span>
                                             </div>
-                                            {/* 
-                                        {subtotal < 299 && subtotal > 0 && (
-                                            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
-                                                <p className="text-[13px] text-gray-700">
-                                                    Add items worth ₹
-                                                    {299 - subtotal} more to get
-                                                    FREE delivery!
-                                                </p>
-                                            </div>
-                                        )} */}
+                                        ))}
+
+                                        <Separator className="my-3" />
+
+                                        <div className="flex justify-between text-lg font-bold">
+                                            <span>Total</span>
+                                            <span className="text-[#FF6900]">
+                                                {formatPrice(total)}
+                                            </span>
                                         </div>
 
-                                        {/* <Link href="/checkout"> */}
                                         <Button
                                             disabled={
                                                 selectedItems.length === 0
                                             }
-                                            className="w-full bg-[#FF6900] py-6 text-[16px] text-white hover:bg-[#E55D00] disabled:cursor-not-allowed disabled:bg-gray-300"
-                                            style={{ fontWeight: 600 }}
+                                            className="mt-4 w-full bg-[#FF6900] text-white hover:bg-[#E55D00]"
                                             onClick={() =>
                                                 setCurrentPage('checkout')
                                             }
                                         >
-                                            {selectedItems.length === 0 ? (
-                                                'Select Items to Proceed'
-                                            ) : (
-                                                <>
-                                                    Proceed to Checkout
-                                                    <ChevronRight className="ml-2 h-5 w-5" />
-                                                </>
-                                            )}
+                                            {selectedItems.length === 0
+                                                ? 'Pilih produk terlebih dahulu'
+                                                : 'Lanjut ke Checkout'}
+                                            <ChevronRight className="ml-2 h-5 w-5" />
                                         </Button>
-                                        {/* </Link> */}
                                     </Card>
 
-                                    <Card className="rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-yellow-50 p-4">
-                                        <div className="space-y-3">
-                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
-                                                    <span className="text-[12px] text-white">
-                                                        ✓
-                                                    </span>
-                                                </div>
-                                                <span>
-                                                    100% Safe & Secure Payments
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
-                                                    <span className="text-[12px] text-white">
-                                                        ✓
-                                                    </span>
-                                                </div>
-                                                <span>
-                                                    Easy Returns & Refunds
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-2 text-[13px] text-gray-700">
-                                                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#FF6900]">
-                                                    <span className="text-[12px] text-white">
-                                                        ✓
-                                                    </span>
-                                                </div>
-                                                <span>
-                                                    Genuine Quality Products
-                                                </span>
-                                            </div>
-                                        </div>
+                                    {/* SECURITY INFO */}
+                                    <Card className="rounded-xl border border-orange-200 bg-orange-50 p-4 text-sm">
+                                        <ul className="space-y-2 text-gray-700">
+                                            <li>✓ Pembayaran Aman</li>
+                                            <li>✓ Pengembalian Mudah</li>
+                                            <li>✓ Produk Berkualitas</li>
+                                        </ul>
                                     </Card>
 
-                                    <Link href="/products2">
-                                        <Button className="w-full rounded-lg border-2 border-dashed border-[#FF6900] bg-white py-3 text-[#FF6900] transition-colors hover:bg-orange-50">
-                                            Add More Items
+                                    <Link href="/products">
+                                        <Button
+                                            variant="outline"
+                                            className="w-full border-dashed border-[#FF6900] text-[#FF6900]"
+                                        >
+                                            Tambah Produk
                                             <Plus className="ml-2 h-4 w-4" />
                                         </Button>
                                     </Link>
@@ -508,33 +353,25 @@ export default function CartPage({ user, cart }: productCartProps) {
             )}
 
             {currentPage === 'checkout' && (
-                <main className="flex-1">
-                    <CheckoutPage
-                        user={user}
-                        cartItems={selectedItems}
-                        onNavigateToLocation={() => setCurrentPage('location')}
-                        onNavigateToHome={() => setCurrentPage('/')}
-                    />
-                </main>
+                <CheckoutPage
+                    user={user}
+                    cartItems={selectedItems}
+                    onNavigateToLocation={() => setCurrentPage('location')}
+                    onNavigateToHome={() => setCurrentPage('/')}
+                />
             )}
         </div>
     );
 }
 
 function Label({
-    htmlFor,
     children,
     className,
 }: {
-    htmlFor?: string;
     children: React.ReactNode;
     className?: string;
 }) {
-    return (
-        <label htmlFor={htmlFor} className={className}>
-            {children}
-        </label>
-    );
+    return <label className={className}>{children}</label>;
 }
 
 CartPage.layout = (page: ReactNode) => <HomepageLayout>{page}</HomepageLayout>;

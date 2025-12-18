@@ -66,16 +66,16 @@ export default function ProductListingPage({ products }: ProductListingProps) {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
                 <div className="mb-12">
-                    <h2 className="mb-4 text-[30px] font-semibold text-gray-900">
+                    <h2 className="mb-3 text-2xl font-semibold text-gray-900 sm:text-[30px]">
                         Produk Kami
                     </h2>
-                    <p className="mb-8 text-xl text-gray-600">
+                    <p className="mb-6 text-base text-gray-600 sm:text-xl">
                         Temukan makanan cepat saji favorit anda!
                     </p>
 
-                    <div className="mb-6 flex flex-col gap-4 md:flex-row">
+                    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div className="relative flex-1">
                             <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
                             <input
@@ -83,16 +83,16 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                                 placeholder="Search products..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3 pr-4 pl-12 text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none"
+                                className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2.5 pr-4 pl-12 text-sm text-gray-900 placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none sm:py-3 sm:text-base"
                             />
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                             <select
                                 value={selectedCategory}
                                 onChange={(e) =>
                                     setSelectedCategory(e.target.value)
                                 }
-                                className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-6 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none"
+                                className="w-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none sm:w-auto sm:px-6 sm:py-3 sm:text-base"
                             >
                                 {categories.map((category) => (
                                     <option key={category} value={category}>
@@ -104,7 +104,7 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-6 py-3 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none"
+                                className="w-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-[#FF6900] focus:outline-none sm:w-auto sm:px-6 sm:py-3 sm:text-base"
                             >
                                 <option>Harga: Rendah ke Tinggi</option>
                                 <option>Harga: Tinggi ke Rendah</option>
@@ -118,7 +118,7 @@ export default function ProductListingPage({ products }: ProductListingProps) {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
                     {filteredProducts.map((product) => (
                         //Card from here
                         <ProductCard

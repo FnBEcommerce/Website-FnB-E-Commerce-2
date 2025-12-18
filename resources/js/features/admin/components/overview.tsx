@@ -24,7 +24,7 @@ export function Overview({ data }: any) {
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
-                    tickFormatter={(value) => `$${value}`}
+                    tickFormatter={(value) => `Rp${value}`}
                 />
                 <Bar
                     dataKey="total"

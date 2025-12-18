@@ -393,9 +393,12 @@ export function OneCheckoutPage({
                                 </div>
 
                                 <div className="flex items-center space-x-3 rounded-lg border-2 border-gray-200 p-4 hover:border-primary">
-                                    <RadioGroupItem value="cod" id="cod" />
+                                    <RadioGroupItem
+                                        value="transfer"
+                                        id="transfer"
+                                    />
                                     <Label
-                                        htmlFor="cod"
+                                        htmlFor="transfer"
                                         className="flex flex-1 items-center gap-3"
                                     >
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">

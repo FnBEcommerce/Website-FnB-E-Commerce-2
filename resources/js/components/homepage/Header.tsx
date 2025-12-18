@@ -144,7 +144,7 @@ export function Header({
                                 {/* Notification Bell with Dropdown */}
                                 <div className="relative" ref={notificationRef}>
                                     <button
-                                        className="relative rounded-full p-2 transition-colors hover:bg-gray-100"
+                                        className="relative rounded-full p-3 transition-colors hover:bg-gray-100 sm:p-2"
                                         aria-label="Notifications"
                                         onClick={() =>
                                             setShowNotifications(
@@ -152,19 +152,16 @@ export function Header({
                                             )
                                         }
                                     >
-                                        <Bell className="h-5 w-5 text-gray-700" />
+                                        <Bell className="h-6 w-6 text-gray-700 sm:h-5 sm:w-5" />
                                         {unreadCount > 0 && (
-                                            <span
-                                                className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
-                                                style={{ fontWeight: 600 }}
-                                            >
+                                            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[10px] font-semibold text-white sm:top-0 sm:right-0 sm:h-4 sm:w-4 sm:text-[11px]">
                                                 {unreadCount}
                                             </span>
                                         )}
                                     </button>
 
                                     {showNotifications && (
-                                        <div className="absolute top-full right-0 mt-2 w-96 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
+                                        <div className="fixed top-[4.5rem] right-4 left-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-2 sm:w-96">
                                             {/* Header */}
                                             <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-4">
                                                 <div className="flex items-center justify-between">
@@ -190,7 +187,7 @@ export function Header({
                                             </div>
 
                                             {/* Notification List */}
-                                            <div className="max-h-96 overflow-y-auto">
+                                            <div className="max-h-[60vh] overflow-y-auto sm:max-h-96">
                                                 {notifications.map(
                                                     (notification) => (
                                                         <button
@@ -202,7 +199,7 @@ export function Header({
                                                                     notification,
                                                                 )
                                                             }
-                                                            className={`w-full border-b border-gray-100 p-4 text-left transition-colors hover:bg-gray-50 ${
+                                                            className={`w-full border-b border-gray-100 p-3 text-left transition-colors hover:bg-gray-50 sm:p-4 ${
                                                                 notification.unread
                                                                     ? 'bg-orange-50/30'
                                                                     : ''
@@ -218,7 +215,7 @@ export function Header({
                                                                 />
                                                                 <div className="min-w-0 flex-1">
                                                                     <p
-                                                                        className="mb-1 text-[14px] text-gray-900"
+                                                                        className="mb-1 text-sm font-semibold text-gray-900 sm:text-[14px]"
                                                                         style={{
                                                                             fontWeight: 600,
                                                                         }}
@@ -227,12 +224,12 @@ export function Header({
                                                                             notification.title
                                                                         }
                                                                     </p>
-                                                                    <p className="mb-2 line-clamp-2 text-[13px] text-gray-600">
+                                                                    <p className="mb-2 line-clamp-2 text-xs text-gray-600 sm:text-[13px]">
                                                                         {
                                                                             notification.message
                                                                         }
                                                                     </p>
-                                                                    <p className="text-[12px] text-gray-500">
+                                                                    <p className="text-[11px] text-gray-500 sm:text-[12px]">
                                                                         {
                                                                             notification.time
                                                                         }

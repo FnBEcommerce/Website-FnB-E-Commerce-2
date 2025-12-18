@@ -23,10 +23,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SearchProvider } from '@/context/search-provider';
 import axios, { AxiosError } from 'axios';
-import { Download, Filter, Plus } from 'lucide-react';
+import { Filter, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -294,172 +293,157 @@ export default function ProductManagement({
         <AuthenticatedLayout>
             <SearchProvider>
                 <Header>
-                    {/* <TopNav links={topNav} /> */}
-                    <div className="ms-auto flex items-center space-x-4">
+                    <div className="ms-auto flex flex-wrap items-center gap-2 sm:gap-4">
                         <Search />
                         <ThemeSwitch />
                         <ConfigDrawer />
                         <ProfileDropdown />
                     </div>
                 </Header>
-
                 <Main>
-                    <div className="mb-2 flex items-center justify-between">
-                        <h1 className="text-2xl font-bold tracking-tight">
-                            Manajemen Produk
-                        </h1>
-                        <div className="flex items-center space-x-2">
-                            <Button onClick={() => handleOpenDialog()}>
-                                <Plus className="mr-2 h-4 w-4" />
-                                Tambah Produk
-                            </Button>
-                            <Button variant="outline">
-                                <Download className="mr-2 h-4 w-4" />
-                                Export Data
-                            </Button>
-                        </div>
+                    <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <Button
+                            className="w-full sm:w-auto"
+                            onClick={() => handleOpenDialog()}
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Tambah Produk
+                        </Button>
+                        {/* <Button className="w-full sm:w-auto" variant="outline">
+                            <Download className="mr-2 h-4 w-4" />
+                            Export Data
+                        </Button> */}
                     </div>
 
-                    <Tabs
-                        orientation="vertical"
+                    {/* <Tabs
                         value={activeTab}
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <TabsList>
-                            <TabsTrigger value="products">
+                        <TabsList className="w-full overflow-x-auto sm:w-auto">
+                            <TabsTrigger
+                                className="flex-1 sm:flex-none"
+                                value="products"
+                            >
                                 Daftar Produk
                             </TabsTrigger>
                         </TabsList>
-
-                        <TabsContent value="products">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Daftar Produk</CardTitle>
-                                    <CardDescription>
-                                        Kelola produk makanan dan minuman Anda.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-4">
-                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                            {/* KIRI: Input Search */}
-                                            <div className="min-w-[240px] flex-1">
-                                                <Input
-                                                    type="text"
-                                                    placeholder="Cari produk..."
-                                                    value={searchQuery}
-                                                    onChange={(e) =>
-                                                        setSearchQuery(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-
-                                            {/* KANAN: Filters (mentok kanan) */}
-                                            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-                                                {/* Filter Kategori */}
-                                                <div>
-                                                    <Select
-                                                        value={categoryFilter}
-                                                        onValueChange={
-                                                            setCategoryFilter
-                                                        }
-                                                    >
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Semua Kategori" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectItem value="all">
-                                                                Semua Kategori
-                                                            </SelectItem>
-                                                            <SelectItem value="Makanan">
-                                                                Makanan
-                                                            </SelectItem>
-                                                            <SelectItem value="Minuman">
-                                                                Minuman
-                                                            </SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </div>
-
-                                                {/* Filter Status */}
-                                                <div>
-                                                    <Select
-                                                        value={statusFilter}
-                                                        onValueChange={
-                                                            setStatusFilter
-                                                        }
-                                                    >
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Semua Status" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                                            <SelectItem value="all">
-                                                                Semua Status
-                                                            </SelectItem>
-                                                            <SelectItem value="Aktif">
-                                                                Aktif
-                                                            </SelectItem>
-                                                            <SelectItem value="Tidak Aktif">
-                                                                Tidak Aktif
-                                                            </SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <Filter className="h-4 w-4 text-muted-foreground" />
-                                                <span className="text-muted-foreground">
-                                                    Urutkan:
-                                                </span>
-                                                <Select
-                                                    value={sortBy}
-                                                    onValueChange={setSortBy}
-                                                >
-                                                    <SelectTrigger className="w-auto">
-                                                        <SelectValue placeholder="Urutkan" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="name">
-                                                            Nama (A-Z)
-                                                        </SelectItem>
-                                                        <SelectItem value="price-asc">
-                                                            Harga (Terendah)
-                                                        </SelectItem>
-                                                        <SelectItem value="price-desc">
-                                                            Harga (Tertinggi)
-                                                        </SelectItem>
-                                                        <SelectItem value="stock">
-                                                            Stok (Terbanyak)
-                                                        </SelectItem>
-                                                        <SelectItem value="rating">
-                                                            Rating (Tertinggi)
-                                                        </SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="text-sm text-muted-foreground">
-                                                Menampilkan{' '}
-                                                {
-                                                    filteredAndSortedProducts.length
-                                                }{' '}
-                                                dari {products.length} produk
-                                            </div>
-                                        </div>
-                                        <ProductTable
-                                            products={filteredAndSortedProducts}
-                                            onEdit={handleOpenDialog}
-                                            onDelete={handleDeleteProduct}
+                        <TabsContent value="products"> */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Daftar Produk</CardTitle>
+                            <CardDescription>
+                                Kelola produk makanan dan minuman Anda.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    {/* KIRI: Input Search */}
+                                    <div className="w-full sm:min-w-[240px] sm:flex-1">
+                                        <Input
+                                            type="text"
+                                            placeholder="Cari produk..."
+                                            value={searchQuery}
+                                            onChange={(e) =>
+                                                setSearchQuery(e.target.value)
+                                            }
                                         />
                                     </div>
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
-                    </Tabs>
+
+                                    {/* KANAN: Filters (mentok kanan) */}
+                                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                                        {/* Filter Kategori */}
+                                        <Select
+                                            value={categoryFilter}
+                                            onValueChange={setCategoryFilter}
+                                        >
+                                            <SelectTrigger className="w-full sm:w-[180px]">
+                                                <SelectValue placeholder="Semua Kategori" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">
+                                                    Semua Kategori
+                                                </SelectItem>
+                                                <SelectItem value="Makanan">
+                                                    Makanan
+                                                </SelectItem>
+                                                <SelectItem value="Minuman">
+                                                    Minuman
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+
+                                        {/* Filter Status */}
+                                        <Select
+                                            value={statusFilter}
+                                            onValueChange={setStatusFilter}
+                                        >
+                                            <SelectTrigger className="w-full sm:w-[180px]">
+                                                <SelectValue placeholder="Semua Status" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="all">
+                                                    Semua Status
+                                                </SelectItem>
+                                                <SelectItem value="Aktif">
+                                                    Aktif
+                                                </SelectItem>
+                                                <SelectItem value="Tidak Aktif">
+                                                    Tidak Aktif
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <Filter className="h-4 w-4 text-muted-foreground" />
+                                        <span className="text-sm text-muted-foreground">
+                                            Urutkan:
+                                        </span>
+                                        <Select
+                                            value={sortBy}
+                                            onValueChange={setSortBy}
+                                        >
+                                            <SelectTrigger className="w-full min-w-[180px] sm:w-auto">
+                                                <SelectValue placeholder="Urutkan" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="name">
+                                                    Nama (A-Z)
+                                                </SelectItem>
+                                                <SelectItem value="price-asc">
+                                                    Harga (Terendah)
+                                                </SelectItem>
+                                                <SelectItem value="price-desc">
+                                                    Harga (Tertinggi)
+                                                </SelectItem>
+                                                <SelectItem value="stock">
+                                                    Stok (Terbanyak)
+                                                </SelectItem>
+                                                <SelectItem value="rating">
+                                                    Rating (Tertinggi)
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="text-sm text-muted-foreground">
+                                        Menampilkan{' '}
+                                        {filteredAndSortedProducts.length} dari{' '}
+                                        {products.length} produk
+                                    </div>
+                                </div>
+                                <ProductTable
+                                    products={filteredAndSortedProducts}
+                                    onEdit={handleOpenDialog}
+                                    onDelete={handleDeleteProduct}
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                    {/* </TabsContent>
+                    </Tabs> */}
                 </Main>
             </SearchProvider>
 

@@ -1,11 +1,9 @@
 import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { TopNav } from '@/components/layout/top-nav';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { ThemeSwitch } from '@/components/theme-switch';
-import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -69,9 +67,9 @@ export function AdminDashboard({ data }: { data: AdminPageProps }) {
                     <h1 className="text-2xl font-bold tracking-tight">
                         Dashboard
                     </h1>
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                         <Button>Download</Button>
-                    </div>
+                    </div> */}
                 </div>
                 <Tabs
                     orientation="vertical"
@@ -85,12 +83,12 @@ export function AdminDashboard({ data }: { data: AdminPageProps }) {
                             <TabsTrigger value="analytics">
                                 Analytics
                             </TabsTrigger>
-                            <TabsTrigger value="reports" disabled>
+                            {/* <TabsTrigger value="reports" disabled>
                                 Reports
                             </TabsTrigger>
                             <TabsTrigger value="notifications" disabled>
                                 Notifications
-                            </TabsTrigger>
+                            </TabsTrigger> */}
                         </TabsList>
                     </div>
                     <TabsContent value="overview" className="space-y-4">
