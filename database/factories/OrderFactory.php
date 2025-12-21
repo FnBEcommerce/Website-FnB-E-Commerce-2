@@ -45,9 +45,6 @@ class OrderFactory extends Factory
         $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
         return [
-            'user_id' => User::factory(),
-            'shop_branch_id' => ShopBranch::factory(),
-            'courier_id' => Courier::factory(),
             'order_id' => fake()->unique()->randomNumber(4),
             'total_amount' => fake()->numberBetween(10000, 100000),
             'payment_type' => fake()->word(),

@@ -159,11 +159,11 @@ const COLORS = [
     '#84cc16',
 ];
 
-
 export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
+    console.log('monthlyAreaData', monthlyAreaData);
     const areaRevenueShare = areaData.map((area: any) => ({
-    name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
-    value: area.totalRevenue,
+        name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
+        value: area.totalRevenue,
     }));
 
     const [sortBy, setSortBy] = useState('revenue');
@@ -343,7 +343,9 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                     cy="50%"
                                     labelLine={false}
                                     label={({ name, percent }) => {
-                                        const formatted = name.split(/(?=[A-Z])/).join(' ');
+                                        const formatted = name
+                                            .split(/(?=[A-Z])/)
+                                            .join(' ');
                                         return `${formatted}: ${(percent * 100).toFixed(0)}%`;
                                     }}
                                     outerRadius={100}
@@ -546,13 +548,17 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-blue-600">
-                            <Users className="size-6" /> Area Terbanyak (Pelanggan)
+                            <Users className="size-6" /> Area Terbanyak
+                            (Pelanggan)
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-4">
                             {[...areaData]
-                                .sort((a, b) => b.totalCustomers - a.totalCustomers)
+                                .sort(
+                                    (a, b) =>
+                                        b.totalCustomers - a.totalCustomers,
+                                )
                                 .slice(0, 3)
                                 .map((area, index) => (
                                     <li
@@ -570,14 +576,22 @@ export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
                                         )}
 
                                         <div>
-                                            <p className="font-semibold">{area.area}</p>
+                                            <p className="font-semibold">
+                                                {area.area}
+                                            </p>
                                             <p className="text-sm text-muted-foreground">
-                                                {area.totalOrders.toLocaleString('id-ID')} pesanan
+                                                {area.totalOrders.toLocaleString(
+                                                    'id-ID',
+                                                )}{' '}
+                                                pesanan
                                             </p>
                                         </div>
 
                                         <p className="ms-auto text-base font-semibold text-blue-600">
-                                            {area.totalCustomers.toLocaleString('id-ID')} pelanggan
+                                            {area.totalCustomers.toLocaleString(
+                                                'id-ID',
+                                            )}{' '}
+                                            pelanggan
                                         </p>
                                     </li>
                                 ))}

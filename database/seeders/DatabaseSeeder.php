@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
         User::factory(50)->create();
         
         // Fetch existing data
-        $users = User::all();
+        $users = User::where('role', '!=', 'admin')->get();
         $products = Product::all();
         
         // Create some couriers
@@ -88,8 +88,8 @@ class DatabaseSeeder extends Seeder
             if ($users->count() > 0 && $couriers->count() > 0 && $shop->products->count() > 0) {
                 // For each shop, create a few orders
                 Order::factory(rand(15, 30))
-                    ->for($users->random()->first(), 'user')
-                    ->for($couriers->random()->first(), 'courier')
+                    ->for(User::inRandomOrder()->first(), 'user')
+                    ->for(Courier::inRandomOrder()->first(), 'courier')
                     ->for($shop, 'shopBranch')
                     ->has(
                         OrderDetail::factory(rand(1, 5))
