@@ -1,9 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Product, ReviewProps } from '@/types';
-import { getCSRFToken } from '@/utils/csrf';
 import { formatPrice } from '@/utils/format-price';
-import { router } from '@inertiajs/react';
 import { Minus, Plus, Star } from 'lucide-react';
 import { useCart } from '../homepage/CartContext';
 
@@ -36,60 +34,17 @@ export function ProductOverview({
         ? Math.round((totalRating / reviews.length) * 10) / 10
         : 0;
 
-    const { cart, checkExistence } = useCart();
-
-    console.log({
-        cart,
-        // cartItems,
-        // cartCount,
-        // addToCart,
-        // removeFromCart,
-        // updateQuantity,
-        // clearCart,
-    });
-
-    const isAlreadyAddedToCart = cart.items
-        .map((item) => item.id)
-        .includes(product.id);
-
-    const addCart = () => {
-        const csrf = getCSRFToken();
-        router.post(
-            '/cart/add',
-            {
-                product_id: product.id,
-            },
-            {
-                headers: {
-                    'X-CSRF-TOKEN': csrf ?? '',
-                },
-            },
-        );
-    };
-
-    const updateCart = () => {
-        const csrf = getCSRFToken();
-        router.post(
-            `/cart/update/${cart.id}`,
-            {
-                buyQuantity,
-            },
-            {
-                headers: {
-                    'X-CSRF-TOKEN': csrf ?? '',
-                },
-            },
-        );
-    };
+    const { cart, addToCart, sendToCart } = useCart();
 
     const handleAddToCart = () => {
-        if (isAlreadyAddedToCart) {
-            updateCart();
-        } else {
-            addCart();
-        }
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price_discount,
+            image: product.image ?? 'none',
+        });
+        sendToCart(product.id, buyQuantity);
     };
-    // console.log(reviews);
 
     return (
         <div className="space-y-6">

@@ -27,19 +27,15 @@ export  function ProductCard(props: ProductCardProps) {
         const [selectedCategory, setSelectedCategory] = useState('All Categories');
         const [sortBy, setSortBy] = useState('Featured');
         const [favorites, setFavorites] = useState<(number | string)[]>([]);
-        const { addToCart } = useCart();
+        const { addToCart, sendToCart } = useCart();
     
 
         const toggleFavorite = (productId: number | string) => {
-
-
             setFavorites((prev) =>
                 prev.includes(productId)
                     ? prev.filter((id) => id !== productId)
                     : [...prev, productId],
             );
-
-           
         };
         const isFavorite = favorites.includes(id);
         const handleAddToCart = () => {
@@ -49,6 +45,8 @@ export  function ProductCard(props: ProductCardProps) {
                 price: price_discount,
                 image: image ?? "none",
             });
+
+            sendToCart(id, 1);
         };
 
         const handleCardClick = (id : number) => {

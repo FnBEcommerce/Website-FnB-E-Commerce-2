@@ -1,5 +1,6 @@
 import { Cart, CartItem } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { getCSRFToken } from '@/utils/csrf';
+import { router, usePage } from '@inertiajs/react';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 // export interface SimpleCartItem {
@@ -19,6 +20,7 @@ interface CartContextType {
     updateQuantity: (id: number | string, quantity: number) => void;
     clearCart: () => void;
     checkExistence: (id: number) => boolean;
+    sendToCart: (productId: number, buyQuantity: number) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -51,6 +53,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         0,
     );
 
+    // BUG
     const addToCart = (item: Omit<CartItem, 'quantity'>) => {
         setCartItems((prev) => {
             const existingItem = prev.find((i) => i.id === item.id);
@@ -84,6 +87,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setCartItems([]);
     };
 
+    const sendToCart = (productId: number, buyQuantity: number) => {
+        const csrf = getCSRFToken();
+        router.post(
+            '/cart/add',
+            {
+                product_id: productId,
+                buy_quantity: buyQuantity,
+            },
+            {
+                headers: {
+                    'X-CSRF-TOKEN': csrf ?? '',
+                },
+            },
+        );
+    };
+
     return (
         <CartContext.Provider
             value={{
@@ -95,6 +114,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 updateQuantity,
                 clearCart,
                 checkExistence,
+                sendToCart,
             }}
         >
             {children}

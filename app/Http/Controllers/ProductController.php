@@ -195,7 +195,7 @@ class ProductController extends Controller
 
         validateNumeric($request, 'price_origin', $errors);
         validateInteger($request, 'quantity', $errors);
-        validateString($request, 'description', 255, $errors);
+        validateString($request, 'description', 10000, $errors);
 
         /* nullable|numeric */
         if ($request->filled('price_discount') && !is_numeric($request->price_discount)) {
@@ -279,8 +279,10 @@ class ProductController extends Controller
         if ($product->image) {
             Storage::disk('public')->delete(str_replace('/storage/', '', $product->image));
         }
-        $product->delete();
-        return response()->json(null, 204);
+        $deleted = $product->delete();
+        return response()->json([
+            'deleted' => $deleted
+        ]);
     }
 
     public function addReview(Request $request) {

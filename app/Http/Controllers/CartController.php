@@ -28,28 +28,31 @@ class CartController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
-        $item = $cart->items()->where('product_id', $request->product_id)->first();
+        $cartItem = $cart->items()->where('product_id', $request->product_id)->first();
 
-        if ($item) {
-            $item->increment('quantity');
+        $buy_quantity = $request->buy_quantity ?? 1;
+
+        if ($cartItem) {
+            $cartItem->quantity = $buy_quantity;
+            $cartItem->save();
         } else {
             $cart->items()->create([
                 'product_id' => $request->product_id,
-                'quantity' => 1
+                'quantity' => $buy_quantity,
             ]);
         }
 
         return back();
     }
 
-    public function update(Request $request, CartItem $item)
-    {
-        $item->update([
-            'quantity' => $request->quantity
-        ]);
+    // public function update(Request $request, CartItem $item)
+    // {
+    //     $item->update([
+    //         'quantity' => $request->quantity
+    //     ]);
 
-        return back();
-    }
+    //     return back();
+    // }
 
     public function destroy(CartItem $item)
     {

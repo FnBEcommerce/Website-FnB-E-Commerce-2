@@ -1,3 +1,5 @@
+// product-management.tsx
+
 import { ProductDialog } from '@/components/admin/product-management/ProductDialog';
 import { ProductTable } from '@/components/admin/product-management/ProductTable';
 import { ConfigDrawer } from '@/components/config-drawer';
@@ -210,6 +212,7 @@ export default function ProductManagement({
             );
             handleCloseDialog();
         } catch (error) {
+            console.log('handleEditProduct error', error);
             if (axios.isAxiosError(error)) {
                 const axiosError = error as AxiosError<{
                     errors: Record<string, string[]>;
@@ -232,7 +235,14 @@ export default function ProductManagement({
 
     const handleDeleteProduct = async (id: number) => {
         try {
-            await axios.post(`/api/products/delete/${id}`);
+            console.log('handleDeleteProduct');
+            console.log('handleDeleteProduct id', id);
+            const data = { _method: 'delete' };
+            const response = await axios.post(
+                `/api/products/remove/${id}`,
+                data,
+            );
+            console.log('handleDeleteProduct response', response);
             setProducts(products.filter((p) => p.id !== id));
         } catch (error) {
             console.error('Failed to delete product:', error);
