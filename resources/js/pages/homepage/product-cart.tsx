@@ -39,7 +39,10 @@ export default function CartPage({ user, cart }: productCartProps) {
     );
 
     const updateQuantity = (id: number, newQuantity: number) => {
+        console.log('cartItems', cartItems, id, newQuantity);
+        const item = cartItems.find((item) => item.id);
         if (newQuantity < 1) return;
+        if (item && newQuantity > item.product.quantity) return;
         setCartItems((items) =>
             items.map((item) =>
                 item.id === id ? { ...item, quantity: newQuantity } : item,
@@ -48,8 +51,16 @@ export default function CartPage({ user, cart }: productCartProps) {
     };
 
     const removeItem = (id: number) => {
-        router.delete(`/cart/destroy/${id}`, { preserveScroll: true });
-        setCartItems(cartItems.filter((item) => item.id !== id));
+        try {
+            console.log('removeItem');
+            const data = {
+                _method: 'delete',
+            };
+            router.post(`/cart/remove/${id}`, data, { preserveScroll: true });
+            setCartItems(cartItems.filter((item) => item.id !== id));
+        } catch (error) {
+            console.log('removeItem error', error);
+        }
     };
 
     const toggleItemSelection = (id: number) => {
@@ -204,7 +215,9 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                     <button
                                                                         onClick={() =>
                                                                             updateQuantity(
-                                                                                item.id,
+                                                                                Number(
+                                                                                    item.id,
+                                                                                ),
                                                                                 item.quantity -
                                                                                     1,
                                                                             )
@@ -221,7 +234,9 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                     <button
                                                                         onClick={() =>
                                                                             updateQuantity(
-                                                                                item.id,
+                                                                                Number(
+                                                                                    item.id,
+                                                                                ),
                                                                                 item.quantity +
                                                                                     1,
                                                                             )

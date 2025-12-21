@@ -53,7 +53,14 @@ class CartController extends Controller
 
     public function destroy(CartItem $item)
     {
-        $item->delete();
-        return back();
+        try {
+            $item->delete();
+            return back();
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to remove item from cart.',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

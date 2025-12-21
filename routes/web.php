@@ -74,7 +74,7 @@ Route::middleware(['role:user,admin'])->group(function() {
     Route::prefix('/cart')->group(function() {
         Route::post('/add', [CartController::class, 'add'])->name('cart.add');
         Route::post('/update/{item}', [CartController::class, 'update'])->name('cart.update');
-        Route::delete('/destroy/{item}', [CartController::class, 'destroy'])->name('cart.destroy');
+        Route::delete('/remove/{item}', [CartController::class, 'destroy'])->name('cart.destroy');
     });
 });
 
