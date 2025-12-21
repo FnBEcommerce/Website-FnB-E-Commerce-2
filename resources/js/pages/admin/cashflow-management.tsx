@@ -6,7 +6,6 @@ import { ConfigDrawer } from '@/components/config-drawer';
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { TopNav } from '@/components/layout/top-nav';
 import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { ThemeSwitch } from '@/components/theme-switch';
@@ -140,22 +139,26 @@ export default function CashflowManagement({
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <div className="w-full flex flex-col items-start justify-between gap-3 pb-2 md:flex-row md:items-center">
-                        {/* Tab List - Left */}
-                        <TabsList className="shrink-0">
-                            <TabsTrigger value="overview">Overview</TabsTrigger>
-                            <TabsTrigger value="charts">Charts</TabsTrigger>
-                            <TabsTrigger value="transactions">Transactions</TabsTrigger>
-                        </TabsList>
+                        <div className="flex w-full flex-col items-start justify-between gap-3 pb-2 md:flex-row md:items-center">
+                            {/* Tab List - Left */}
+                            <TabsList className="shrink-0">
+                                <TabsTrigger value="overview">
+                                    Overview
+                                </TabsTrigger>
+                                <TabsTrigger value="charts">Charts</TabsTrigger>
+                                <TabsTrigger value="transactions">
+                                    Transactions
+                                </TabsTrigger>
+                            </TabsList>
 
-                        {/* Date Range Filter - Right */}
-                        <DateRangeFilter
-                            period={period}
-                            setPeriod={setPeriod}
-                            selectedDate={selectedDate}
-                            setSelectedDate={setSelectedDate}
-                        />
-                    </div>
+                            {/* Date Range Filter - Right */}
+                            <DateRangeFilter
+                                period={period}
+                                setPeriod={setPeriod}
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                            />
+                        </div>
 
                         <TabsContent value="overview">
                             <Card>
@@ -167,53 +170,52 @@ export default function CashflowManagement({
                                 </CardHeader>
                                 <CardContent>
                                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                                        {/* Total Pendapatan */}
+                                        <CashflowSummaryCard
+                                            title="Total Pendapatan"
+                                            amount={summaryData.totalRevenue}
+                                            growth={summaryData.revenueGrowth}
+                                            icon={DollarSign}
+                                            iconBgColor="bg-emerald-100"
+                                            iconColor="text-emerald-500"
+                                            period={period}
+                                        />
 
-                                    {/* Total Pendapatan */}
-                                    <CashflowSummaryCard
-                                        title="Total Pendapatan"
-                                        amount={summaryData.totalRevenue}
-                                        growth={summaryData.revenueGrowth}
-                                        icon={DollarSign}
-                                        iconBgColor="bg-emerald-100"
-                                        iconColor="text-emerald-500"
-                                        period={period}
-                                    />
+                                        {/* Total Pesanan */}
+                                        <CashflowSummaryCard
+                                            title="Total Pesanan"
+                                            amount={summaryData.totalOrders}
+                                            growth={summaryData.ordersGrowth}
+                                            icon={ShoppingCart}
+                                            iconBgColor="bg-indigo-100"
+                                            iconColor="text-indigo-500"
+                                            period={period}
+                                            isCount
+                                        />
 
-                                    {/* Total Pesanan */}
-                                    <CashflowSummaryCard
-                                        title="Total Pesanan"
-                                        amount={summaryData.totalOrders}
-                                        growth={summaryData.ordersGrowth}
-                                        icon={ShoppingCart}
-                                        iconBgColor="bg-indigo-100"
-                                        iconColor="text-indigo-500"
-                                        period={period}
-                                        isCount
-                                    />
+                                        {/* Rata-rata Pesanan */}
+                                        <CashflowSummaryCard
+                                            title="Rata-rata Pesanan"
+                                            amount={summaryData.averageOrder}
+                                            growth={summaryData.averageGrowth}
+                                            icon={CreditCard}
+                                            iconBgColor="bg-amber-100"
+                                            iconColor="text-amber-500"
+                                            period={period}
+                                        />
 
-                                    {/* Rata-rata Pesanan */}
-                                    <CashflowSummaryCard
-                                        title="Rata-rata Pesanan"
-                                        amount={summaryData.averageOrder}
-                                        growth={summaryData.averageGrowth}
-                                        icon={CreditCard}
-                                        iconBgColor="bg-amber-100"
-                                        iconColor="text-amber-500"
-                                        period={period}
-                                    />
-
-                                    {/* Pertumbuhan */}
-                                    <CashflowSummaryCard
-                                        title="Pertumbuhan"
-                                        amount={summaryData.growth}
-                                        growth={summaryData.growth}
-                                        icon={TrendingUp}
-                                        iconBgColor="bg-rose-100"
-                                        iconColor="text-rose-500"
-                                        period={period}
-                                        isPercentage
-                                    />
-                                </div>
+                                        {/* Pertumbuhan */}
+                                        <CashflowSummaryCard
+                                            title="Pertumbuhan"
+                                            amount={summaryData.growth}
+                                            growth={summaryData.growth}
+                                            icon={TrendingUp}
+                                            iconBgColor="bg-rose-100"
+                                            iconColor="text-rose-500"
+                                            period={period}
+                                            isPercentage
+                                        />
+                                    </div>
                                 </CardContent>
                             </Card>
                         </TabsContent>

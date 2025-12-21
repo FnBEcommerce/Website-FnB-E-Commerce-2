@@ -20,7 +20,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
             </div>
 
             {/* Thumbnail Gallery */}
-            <div className="grid grid-cols-4 gap-3">
+            {/* <div className="grid grid-cols-4 gap-3">
                 {images.map((image, index) => (
                     <button
                         key={index}
@@ -38,7 +38,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
                         />
                     </button>
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 }
