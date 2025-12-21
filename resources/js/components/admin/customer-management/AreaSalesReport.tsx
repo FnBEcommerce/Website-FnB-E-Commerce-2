@@ -160,11 +160,12 @@ const COLORS = [
 ];
 
 export function AreaSalesReport({ data: { areaData, monthlyAreaData } }: any) {
-    console.log('monthlyAreaData', monthlyAreaData);
     const areaRevenueShare = areaData.map((area: any) => ({
         name: area.area.replace(/([a-z])([A-Z])/g, '$1 $2'),
         value: area.totalRevenue,
     }));
+
+    console.log('areaRevenueShare', areaRevenueShare);
 
     const [sortBy, setSortBy] = useState('revenue');
     const [timeFilter, setTimeFilter] = useState('month');

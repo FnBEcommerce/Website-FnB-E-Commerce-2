@@ -88,8 +88,8 @@ class DatabaseSeeder extends Seeder
             if ($users->count() > 0 && $couriers->count() > 0 && $shop->products->count() > 0) {
                 // For each shop, create a few orders
                 Order::factory(rand(15, 30))
-                    ->for(User::inRandomOrder()->first(), 'user')
-                    ->for(Courier::inRandomOrder()->first(), 'courier')
+                    ->for($users->random(), 'user')
+                    ->for($couriers->random(), 'courier')
                     ->for($shop, 'shopBranch')
                     ->has(
                         OrderDetail::factory(rand(1, 5))
