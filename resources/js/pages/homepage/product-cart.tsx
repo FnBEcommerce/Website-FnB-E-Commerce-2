@@ -218,7 +218,9 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                                 Number(
                                                                                     item.id,
                                                                                 ),
-                                                                                item.quantity -
+                                                                                Number(
+                                                                                    item.quantity,
+                                                                                ) -
                                                                                     1,
                                                                             )
                                                                         }
@@ -237,7 +239,9 @@ export default function CartPage({ user, cart }: productCartProps) {
                                                                                 Number(
                                                                                     item.id,
                                                                                 ),
-                                                                                item.quantity +
+                                                                                Number(
+                                                                                    item.quantity,
+                                                                                ) +
                                                                                     1,
                                                                             )
                                                                         }

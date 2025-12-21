@@ -57,6 +57,7 @@ export default function HomePage({ products }: HomePageProps) {
 
 function Products({ products }: HomePageProps) {
     const { dispatch } = useCart();
+    console.log('products[0]', products[0]);
 
     return (
         <div className="space-y-6">

@@ -15,6 +15,11 @@ class HomepageController extends Controller
 {
     public function index() {
         $products = Product::take(8)->get();
+
+        foreach ($products as $product) {
+            $reviews = $product->reviews()->get();
+            $product->rating = $reviews->avg('rating');
+        }
         
         $props = [
             'products' => $products,
@@ -51,6 +56,11 @@ class HomepageController extends Controller
      public function productListing() {
 
         $products = Product::all();
+
+        foreach ($products as $product) {
+            $reviews = $product->reviews()->get();
+            $product->rating = $reviews->avg('rating');
+        }
 
         $props = [
             'products' => $products,
