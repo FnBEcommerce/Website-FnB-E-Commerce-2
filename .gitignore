@@ -29,3 +29,4 @@ yarn-error.log
 /sandbox
 /bima-notes
 build.zip
+*.sql

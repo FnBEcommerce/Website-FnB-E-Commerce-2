@@ -553,6 +553,8 @@ class AdminController extends Controller
             ->groupBy('products.category')
             ->get();
 
+        // dd($categoryData);
+
         $transactionsData = Order::with(['user', 'shopBranch', 'orderDetails.product'])
             ->latest('confirmed_at') // Order by the main date
             ->take(50) // Limit to a reasonable number for the dashboard

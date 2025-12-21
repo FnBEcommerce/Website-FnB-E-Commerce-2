@@ -113,8 +113,6 @@ export function CashflowChart({
         );
     }
 
-    console.log('categoryData', categoryData);
-
     return (
         <div className="rounded-xl border bg-white p-6 shadow-sm">
             <div className="mb-6">

@@ -18,7 +18,7 @@ class ShopBranchFactory extends Factory
     {
         $createdAt = $this->faker->dateTimeBetween('-3 years', 'now');
 
-        $names = ['Surabaya', 'Sidoarjo', 'Gresik', 'Malang', 'Blitar'];
+        $names = ['Surabaya', 'Sidoarjo', 'Gresik', 'Malang', 'Blitar', 'Jakarta', 'Bandung', 'Semarang', 'Yogyakarta', 'Denpasar'];
 
         return [
             'name' => fake()->unique()->randomElement($names),
