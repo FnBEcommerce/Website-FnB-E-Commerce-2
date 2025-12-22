@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
 
         $notifications = [];
         $cart = null;
+        $orders = [];
         
         if (Auth::check()) {
             $notifications = Notification::where('users_id', Auth::id())->orderBy('created_at', 'desc')->get();
@@ -49,6 +50,7 @@ class HandleInertiaRequests extends Middleware
                 ->cart()
                 ->with('items.product')
                 ->first();
+            $orders = Auth::user()->orders()->with('orderDetails')->get();
         }
 
 
@@ -61,6 +63,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'notifications' => $notifications,
             'cart' => $cart,
+            'orders' => $orders,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

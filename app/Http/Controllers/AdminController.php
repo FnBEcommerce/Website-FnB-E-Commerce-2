@@ -252,14 +252,14 @@ class AdminController extends Controller
 
         // --- 3. Process Customers Data List ---
         $customersData = $customers->map(function ($user) {
-            $totalSpent = $user->orders->sum('order_total');
+            $totalSpent = $user->orders->sum('subtotal');
             $totalOrders = $user->orders->count();
-            $lastOrderDate = $user->orders->max('confirmed_at');
+            $lastOrderDate = $user->orders->max('created_at');
 
             $status = 'Baru';
             if ($totalOrders > 5) $status = 'Setia';
             elseif ($totalOrders > 0) $status = 'Aktif';
-            if ($lastOrderDate && Carbon::parse($lastOrderDate)->diffInMonths(now()) > 3) $status = 'Tidak Aktif';
+            if ($lastOrderDate && Carbon::parse($lastOrderDate)->diffInMonths(now()) > 12) $status = 'Tidak Aktif';
 
             return [
                 'id' => $user->id,

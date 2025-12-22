@@ -1,6 +1,3 @@
-import { TransactionRow } from '@/pages/admin/cashflow-management';
-import { ArrowUpDown, Download, Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -9,6 +6,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { TransactionRow } from '@/pages/admin/cashflow-management';
+import { ArrowUpDown, Download, Search } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 type TransactionTableProps = {
     transactions: TransactionRow[];
@@ -28,12 +28,7 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
     /* ================= FILTER + SORT ================= */
     const filteredTransactions = useMemo(() => {
         const filtered = transactions.filter((t) =>
-            [
-                t.description,
-                t.branch,
-                t.category,
-                t.customer,
-            ].some((field) =>
+            [t.description, t.branch, t.category, t.customer].some((field) =>
                 field.toLowerCase().includes(searchTerm.toLowerCase()),
             ),
         );
@@ -59,7 +54,7 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
         }).format(value);
 
     const totalRevenue = filteredTransactions.reduce(
-        (sum, t) => sum + t.amount,
+        (sum, t) => sum + Math.round(Number(t.amount)),
         0,
     );
 
@@ -81,12 +76,12 @@ export function TransactionTable({ transactions }: TransactionTableProps) {
                     <div className="flex flex-col gap-3 sm:flex-row">
                         {/* SEARCH */}
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
                             <input
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Cari transaksi..."
-                                className="w-full rounded-lg border py-2 pl-9 pr-4 focus:ring-2 focus:ring-emerald-500 sm:w-64"
+                                className="w-full rounded-lg border py-2 pr-4 pl-9 focus:ring-2 focus:ring-emerald-500 sm:w-64"
                             />
                         </div>
 

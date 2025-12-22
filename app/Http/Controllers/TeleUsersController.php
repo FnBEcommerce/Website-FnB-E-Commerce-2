@@ -21,7 +21,7 @@ class TeleUsersController extends Controller
     public function index()
     {
         $data = TeleUsers::latest()->get();
-        $usersData = User::whereIn('id', $data->pluck('users_id'))->get()   ;
+        $usersData = User::whereIn('id', $data->pluck('users_id'))->get();
         return Inertia::render('courier/courier-home', [
             'data' => $data,
             'usersData' => $usersData,

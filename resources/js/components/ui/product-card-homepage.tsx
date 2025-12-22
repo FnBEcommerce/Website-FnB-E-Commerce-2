@@ -71,7 +71,7 @@ export  function ProductCard(props: ProductCardProps) {
                 </div>
 
                 {/* Favorite */}
-                <button
+                {/* <button
                     onClick={(e) =>{toggleFavorite(id);  e.stopPropagation();}}
                     className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white shadow-md transition-transform hover:scale-110"
                 >
@@ -82,7 +82,7 @@ export  function ProductCard(props: ProductCardProps) {
                                 : 'text-gray-400'
                         }`}
                     />
-                </button>
+                </button> */}
 
                 <ImageWithFallback
                     src={image ?? "none"}

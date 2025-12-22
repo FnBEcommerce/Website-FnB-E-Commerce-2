@@ -110,22 +110,13 @@ const NotificationPage = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#FFF5F0]">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
                 {/* Statistik & Pencarian */}
-                <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <div className="rounded-xl border bg-white p-4 shadow-sm sm:col-span-2 sm:p-6">
                         <p className="mb-1 text-sm text-gray-600">
                             Total Notifikasi (tersaring / total)
                         </p>
                         <p className="text-lg font-semibold text-gray-900">
                             {filtered.length} / {notifications.length}
-                        </p>
-                    </div>
-
-                    <div className="rounded-xl border bg-white p-4 shadow-sm sm:p-6">
-                        <p className="mb-1 text-sm text-gray-600">
-                            Total Pengguna
-                        </p>
-                        <p className="text-lg font-semibold text-gray-900">
-                            {usersData.length}
                         </p>
                     </div>
 

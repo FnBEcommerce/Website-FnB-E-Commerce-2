@@ -151,6 +151,8 @@ export function CustomerList({ data: { customersData } }: CustomerListProps) {
     const [statusFilter, setStatusFilter] = useState('all');
     const [areaFilter, setAreaFilter] = useState('all');
 
+    console.log('customersData', customersData);
+
     const filteredCustomers = customersData.filter((customer) => {
         const matchesSearch =
             customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -162,6 +164,8 @@ export function CustomerList({ data: { customersData } }: CustomerListProps) {
             areaFilter === 'all' || customer.area === areaFilter;
         return matchesSearch && matchesStatus && matchesArea;
     });
+
+    console.log('filteredCustomers', filteredCustomers);
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -285,9 +289,11 @@ export function CustomerList({ data: { customersData } }: CustomerListProps) {
                                         {formatCurrency(customer.totalSpent)}
                                     </TableCell>
                                     <TableCell>
-                                        {new Date(
-                                            customer.lastOrder,
-                                        ).toLocaleDateString('id-ID')}
+                                        {customer.lastOrder === '-'
+                                            ? '-'
+                                            : new Date(
+                                                  customer.lastOrder,
+                                              ).toLocaleDateString('id-ID')}
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-1">

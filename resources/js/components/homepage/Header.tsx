@@ -25,7 +25,7 @@ export function Header({
     const [showNotifications, setShowNotifications] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
 
-    const { auth } = usePage().props;
+    const { auth, orders } = usePage().props;
     const user = auth ? auth.user : null;
 
     const unreadCount = notifications.filter((n) => n.unread).length;
@@ -133,12 +133,16 @@ export function Header({
                                     href="/product/status"
                                 >
                                     <Truck className="h-5 w-5 text-gray-700" />
-                                    <span
-                                        className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
-                                        style={{ fontWeight: 600 }}
-                                    >
-                                        1
-                                    </span>
+                                    {!orders.length ? (
+                                        ''
+                                    ) : (
+                                        <span
+                                            className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6900] text-[11px] text-white"
+                                            style={{ fontWeight: 600 }}
+                                        >
+                                            {orders.length}
+                                        </span>
+                                    )}
                                 </Link>
 
                                 {/* Notification Bell with Dropdown */}
@@ -165,14 +169,15 @@ export function Header({
                                             {/* Header */}
                                             <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-4">
                                                 <div className="flex items-center justify-between">
-                                                    <h3
+                                                    <a
+                                                        href="/notificat"
                                                         className="text-[16px] text-gray-900"
                                                         style={{
                                                             fontWeight: 700,
                                                         }}
                                                     >
                                                         Notifications
-                                                    </h3>
+                                                    </a>
                                                     {unreadCount > 0 && (
                                                         <span
                                                             className="text-[12px] text-[#FF6900]"
