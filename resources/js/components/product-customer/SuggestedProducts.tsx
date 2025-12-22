@@ -1,12 +1,12 @@
-import { Product } from '@/types';
-// import { SuggestedProduct } from '@/pages/homepage/product-details';
 import { ProductCard } from '@/components/ui/product-card-homepage';
+import { Product } from '@/types';
 
 interface SuggestedProductsProps {
     products: Product[];
 }
 
 export function SuggestedProducts({ products }: SuggestedProductsProps) {
+    console.log('Suggested products:', products);
     return (
         <div className="mt-16">
             <div className="mb-8 text-center">
