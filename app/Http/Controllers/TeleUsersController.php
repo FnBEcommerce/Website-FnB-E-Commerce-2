@@ -20,8 +20,18 @@ class TeleUsersController extends Controller
      */
     public function index()
     {
+        // Controller
         $data = TeleUsers::latest()->get();
-        $usersData = User::whereIn('id', $data->pluck('users_id'))->get();
+
+        // Hapus null, unique, dan ubah ke array
+        $usersIds = $data->pluck('users_id')
+            ->filter()      // hapus null/empty
+            ->unique()      // hapus duplikat
+            ->values()      // reset index
+            ->all();        // jadi array biasa
+
+        $usersData = User::whereIn('id', $usersIds)->get();
+
         return Inertia::render('courier/courier-home', [
             'data' => $data,
             'usersData' => $usersData,
@@ -123,7 +133,7 @@ class TeleUsersController extends Controller
 
         $validated = $request->validate([
             'email' => 'required|string', 
-            'chat_id' => 'required|integer',
+            'chat_id' => 'required|string',
             'name'   => 'required|string',
             'languange_code'  => 'required|string',
         ]);

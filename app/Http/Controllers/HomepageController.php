@@ -53,8 +53,6 @@ class HomepageController extends Controller
             'reviews' => $reviews,
             'suggestedProducts' => $suggestedProducts,
         ];
-
-        // dd($props);
         
         return Inertia::render('homepage/product-details', $props);
     }
@@ -165,6 +163,7 @@ class HomepageController extends Controller
                 'tracking_updates' => $tracking_updates,
             ];
         }
+
         $props = [
             'user' => $user,
             'currentOrder' => $currentOrder,

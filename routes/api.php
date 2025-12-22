@@ -11,13 +11,10 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\TeleUsersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopBranchController;
+use App\Http\Controllers\StatusController;
 
 Route::post('/midtrans/callback', [MidtransWebhookController::class, 'handle']);
-
-// Example: http://localhost:8000/api/images/products/49CzOHie3FRluAlHOg97VLSJZEL1ZQuWO7idWE70.png
 Route::get('/images/products/{filename}', [ProductController::class, 'getImage']);
-
-// /api/products/remove/{id}
 Route::delete('/products/remove/{product}', [ProductController::class, 'destroy']);
 
 Route::get('/user', function (Request $request) {
@@ -27,6 +24,7 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('products', ProductController::class);
 Route::apiResource('shop-branches', ShopBranchController::class)->only(['index']);
 
+Route::post('/send-status', [StatusController::class, 'update']);
 Route::post('/send-to-n8n-prepare', function (Request $request) {
     
     return Http::post('https://kanzul-jawad.app.n8n.cloud/webhook/n8nlaravelpreparetosend', $request->all());

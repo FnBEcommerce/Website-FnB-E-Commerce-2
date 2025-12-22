@@ -9,19 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-
-    // public function index()
-    // {
-    //     $cart = Auth::user()
-    //         ->cart()
-    //         ->with('items.product')
-    //         ->first();
-
-    //     return Inertia::render('Cart/Index', [
-    //         'cart' => $cart
-    //     ]);
-    // }
-
     public function add(Request $request)
     {
         $cart = Cart::firstOrCreate([
@@ -44,15 +31,6 @@ class CartController extends Controller
 
         return back();
     }
-
-    // public function update(Request $request, CartItem $item)
-    // {
-    //     $item->update([
-    //         'quantity' => $request->quantity
-    //     ]);
-
-    //     return back();
-    // }
 
     public function destroy(CartItem $item)
     {

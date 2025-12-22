@@ -170,7 +170,7 @@ export function Header({
                                             <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 p-4">
                                                 <div className="flex items-center justify-between">
                                                     <a
-                                                        href="/notificat"
+                                                        href="/notifications"
                                                         className="text-[16px] text-gray-900"
                                                         style={{
                                                             fontWeight: 700,

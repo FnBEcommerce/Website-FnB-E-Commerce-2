@@ -39,9 +39,9 @@ class NotificationController extends Controller
     public function sendNotificationSave(Request $request){
         $validated = $request->validate([
             'name'   => 'required|string',
-            'chat_id' => 'required|integer',
-            'title' => 'required|string',
+            'chat_id' => 'required|string',
             'pesan'  => 'required|string',
+            'title' => 'required|string',
         ]);
         $teleuser = TeleUsers::where('chat_id', $validated['chat_id'])->firstOrFail();
         $user_id = $teleuser->users_id;
@@ -53,7 +53,7 @@ class NotificationController extends Controller
                 ]);
 
         return response()->json([
-            'NotificationData'=>$data,
+            'NotificationData' => $data,
         ]);
     }
 

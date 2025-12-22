@@ -21,12 +21,6 @@ use App\Http\Controllers\CartController;
 
 
 Route::get('/', [HomepageController::class, 'index'])->name('homepage');
-
-// Begin payment integration dummy
-Route::get('/products-dummy/{product}', [HomepageController::class, 'productDetailDummy'])->name('products-dummy.detail');
-Route::get('/checkout-dummy', [HomepageController::class, 'checkoutDummy'])->name('checkout-dummy');
-// End payment integration dummy
-
 Route::get("/auth", [HomepageController::class, 'auth'])->name('auth');
 
 Route::get('/products', [HomepageController::class, 'productListing'])->name('product.listing');
@@ -43,7 +37,6 @@ Route::middleware(['role:user,admin'])->group(function() {
 
     Route::prefix('/cart')->group(function() {
         Route::post('/add', [CartController::class, 'add'])->name('cart.add');
-        // Route::post('/update/{item}', [CartController::class, 'update'])->name('cart.update');
         Route::delete('/remove/{item}', [CartController::class, 'destroy'])->name('cart.destroy');
     });
 });
@@ -68,13 +61,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['web'])->prefix('/api')->group(function() {
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/login', [UserController::class, 'login']);
-    Route::post('/logout', [UserController::class, 'logout']);
-    // TODO: Protect route
-    Route::post('/orders/create', [PaymentController::class, 'create'])
-    ;
-    Route::post('/orders/pay', [PaymentController::class, 'pay'])
-    ;
-    Route::post('/product/review', [ProductController::class, 'addReview']);
+
+    Route::middleware('auth')->group(function () {
+        Route::post('/logout', [UserController::class, 'logout']);
+        Route::post('/orders/create', [PaymentController::class, 'create']);
+        Route::post('/orders/pay', [PaymentController::class, 'pay']);
+        Route::post('/product/review', [ProductController::class, 'addReview']);
+    });
 });
 
 

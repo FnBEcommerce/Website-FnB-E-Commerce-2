@@ -51,10 +51,6 @@ export default function HomePage({ products }: HomePageProps) {
     );
 }
 
-// interface ProductsProps {
-//     products: Product[];
-// }
-
 function Products({ products }: HomePageProps) {
     const { dispatch } = useCart();
     console.log('products[0]', products[0]);

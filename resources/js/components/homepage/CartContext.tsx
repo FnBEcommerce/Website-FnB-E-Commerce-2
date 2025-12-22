@@ -53,7 +53,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         0,
     );
 
-    // BUG
     const addToCart = (item: Omit<CartItem, 'quantity'>) => {
         setCartItems((prev) => {
             const existingItem = prev.find((i) => i.id === item.id);
