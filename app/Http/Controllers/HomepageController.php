@@ -111,6 +111,8 @@ class HomepageController extends Controller
                 $estimatedDeliveryMinutes = Carbon::now()->diffInMinutes($order->estimated_delivery_at);
             }
 
+            $estimatedDeliveryMinutes = $estimatedDeliveryMinutes > 0 ? $estimatedDeliveryMinutes : 0;
+
             // Construct tracking_updates
             $tracking_updates = [];
             if ($order->processed_at) {
@@ -153,7 +155,7 @@ class HomepageController extends Controller
                 'user_id' => $order->user_id,
                 'order_items' => $orderItems,
                 'status' => $order->status,
-                'delivery_status' => 'on the way' /* $order->delivery_status */,
+                'delivery_status' => $order->delivery_status,
                 'estimated_delivery_at' => $estimatedDeliveryMinutes,
                 'street' => $order->user ? ($order->user->street . ', ' . $order->user->city . ', ' . $order->user->state) : 'N/A',
                 'created_at' => $order->created_at->format('M d, Y \a\t h:i A'),

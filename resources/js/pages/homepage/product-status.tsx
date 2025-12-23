@@ -177,7 +177,11 @@ export default function OrderStatusPage({
                                             className="text-[18px]"
                                             style={{ fontWeight: 600 }}
                                         >
-                                            {currentOrder.estimated_delivery_at}{' '}
+                                            {Math.ceil(
+                                                Number(
+                                                    currentOrder.estimated_delivery_at,
+                                                ),
+                                            )}{' '}
                                             Menit
                                         </span>
                                     </div>

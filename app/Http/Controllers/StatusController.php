@@ -66,9 +66,11 @@ class StatusController extends Controller
         if($validated['status'] === 'cooking'){
             $order->confirmed_at = now();
             $order->processed_at = now();
+            $order->estimated_delivery_at = now()->addMinutes(35);
         }else if ($validated['status'] === 'on the way') {
             $order->estimated_delivery_at = now()->addMinutes(15);
         }else {
+            $order->estimated_delivery_at = now();
             $order->delivered_at = now();
         }
 
