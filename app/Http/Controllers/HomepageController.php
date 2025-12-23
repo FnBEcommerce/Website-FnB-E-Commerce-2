@@ -42,8 +42,8 @@ class HomepageController extends Controller
         $suggestedProducts = Product::take(4)->get();
 
         foreach ($suggestedProducts as $suggestedProduct) {
-            $reviews = $suggestedProduct->reviews()->get();
-            $suggestedProduct->rating = $reviews->avg('rating');
+            $suggestedProductReviews = $suggestedProduct->reviews()->get();
+            $suggestedProduct->rating = $suggestedProductReviews->avg('rating');
         }
 
         $props = [
